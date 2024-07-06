@@ -135,6 +135,20 @@ const loginUser = async (req, res) => {
     }
 };
 
+// const logoutUser = async (req, res) => {
+//     const { token } = req.body;
+//     if (!token) {
+//         return res.status(400).json({ message: 'No token provided' });
+//     }
+//     try {
+//         const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+//         await RefreshToken.destroy({ where: { token } });
+//         res.status(200).json({ message: 'Logged out successfully' });
+//     } catch (error) {
+//         res.status(500).json({ message: 'Failed to log out' });
+//     }
+// };
+
 const logoutUser = async (req, res) => {
     const { token } = req.body;
     if (!token) {
@@ -142,9 +156,18 @@ const logoutUser = async (req, res) => {
     }
     try {
         const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-        await RefreshToken.destroy({ where: { token } });
+        console.log('Decoded token:', decoded);
+
+        const result = await RefreshToken.destroy({ where: { token } });
+        console.log('Delete result:', result);
+
+        if (result === 0) {
+            return res.status(400).json({ message: 'Token not found' });
+        }
+
         res.status(200).json({ message: 'Logged out successfully' });
     } catch (error) {
+        console.error('Error during logout:', error);
         res.status(500).json({ message: 'Failed to log out' });
     }
 };

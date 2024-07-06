@@ -1,9 +1,3 @@
-/* .container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 15px;
-} */
-
 /* pages/global.css */
 
 /* Використання шрифта Roboto з Google Fonts */
@@ -33,10 +27,12 @@ h3,
 h4,
 h5,
 h6 {
-    margin-bottom: 1rem;
+    /* margin-bottom: 1rem; */
     /* Відступи для заголовків */
-    color: #444;
+    /* color: #444; */
     /* Колір тексту для заголовків */
+    margin: 0;
+    padding: 0;
 }
 
 a {

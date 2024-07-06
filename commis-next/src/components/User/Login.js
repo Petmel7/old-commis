@@ -1,28 +1,31 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useRouter } from 'next/navigation';
 import { login } from '../../services/auth';
+import styles from './styles/Auth.module.css';
+import GoogleAuth from './GoogleAuth';
 
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const navigate = useNavigate();
+    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await login({ email, password });
-            navigate.push('/profile');
+            router.push('/profile');
         } catch (error) {
             console.error(error);
         }
     };
 
     return (
-        <form onSubmit={handleSubmit}>
-            <h2>Логін</h2>
-            <input type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-            <input type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Пароль" />
+        <form className={styles.authForm} onSubmit={handleSubmit}>
+            <h2 className={styles.authHeading}>Логін</h2>
+            <input className={styles.authInput} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+            <input className={styles.authInput} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Пароль" />
             <button type="submit">Увійти</button>
+            <GoogleAuth />
         </form>
     );
 };

@@ -1,17 +1,23 @@
 // pages/_app.js
-// src/pages/_app.js
+
 import React from 'react';
-import Header from '../components/Layout/Header';
+import Layout from '../components/Layout/Layout';
+import { SessionProvider } from 'next-auth/react';
+
 import '../styles/globals.css';
 
 function MyApp({ Component, pageProps }) {
     return (
-        <div>
-            <Header />
-            <Component {...pageProps} />
-        </div>
+        <SessionProvider session={pageProps.session}>
+            <Layout>
+                <div className='container'>
+                    <Component {...pageProps} />
+                </div>
+            </Layout>
+        </SessionProvider>
     );
 }
 
 export default MyApp;
+
 
