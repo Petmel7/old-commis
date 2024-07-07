@@ -74,9 +74,14 @@ button {
     /* Округлення кутів */
     cursor: pointer;
     /* Встановлення курсора вказівника */
+
 }
 
 button:hover {
     background-color: #005bb5;
     /* Зміна фону при наведенні */
+}
+
+svg {
+    fill: white;
 }

@@ -118,11 +118,6 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // // Дозволити користувачам входити в систему, навіть якщо телефон не підтверджений
-        // if (!user.phoneconfirmed) {
-        //     return res.status(400).json({ message: 'Phone number not confirmed' });
-        // }
-
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);
 
@@ -151,10 +146,14 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
     const { token } = req.body;
+    console.log('Received token:', token);
+
     if (!token) {
         return res.status(400).json({ message: 'No token provided' });
     }
+
     try {
+        // Verify the token with the same secret used to sign it
         const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
         console.log('Decoded token:', decoded);
 
@@ -237,3 +236,8 @@ module.exports = {
     refreshToken,
     deleteOldRefreshTokens
 };
+
+// // Дозволити користувачам входити в систему, навіть якщо телефон не підтверджений
+// if (!user.phoneconfirmed) {
+//     return res.status(400).json({ message: 'Phone number not confirmed' });
+// }

@@ -13,6 +13,7 @@
     width: 100%;
     max-width: 400px;
     box-sizing: border-box;
+    text-align: center;
 }
 
 .authHeading {
@@ -26,7 +27,12 @@
     padding: 10px;
     margin-bottom: 15px;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 50px;
     box-sizing: border-box;
     font-size: 16px;
+}
+
+.authButton {
+    border-radius: 50px;
+    margin-bottom: 20px;
 }
