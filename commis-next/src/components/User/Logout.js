@@ -9,7 +9,7 @@ const Logout = () => {
         e.preventDefault();
         try {
             const refreshToken = localStorage.getItem('token');
-            console.log('refreshToken', refreshToken);
+            console.log('Logout->refreshToken', refreshToken);
             if (!refreshToken) {
                 console.error('No token found in local storage');
                 return;

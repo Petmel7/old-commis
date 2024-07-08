@@ -7,44 +7,15 @@ export const register = async (data) => {
 
 export const login = async (data) => {
     const response = await api.post('/users/login', data);
+    localStorage.setItem('token', response.data.refreshToken);
+    console.log('login->refreshToken', response.data.refreshToken);
     return response.data;
 };
 
-// export const googleAuth = async (data) => {
-//     const response = await api.post('/users/google');
-//     localStorage.setItem('token', response.data.refreshToken);
-//     console.log('response', response);
-//     console.log('localStorage', response.data.refreshToken);
-//     return response.data
-// }
-
-export const googleAuth = async (data) => {
-    const response = await api.post('/users/google', data);
-    localStorage.setItem('refreshToken', response.data.refreshToken);
-    console.log('response', response);
-    console.log('localStorage', response.data.refreshToken);
-    return response.data;
+export const googleAuth = async () => {
+    // Виклик для початкового перенаправлення
+    window.location.href = 'http://localhost:5000/api/users/google';
 };
-
-import { useRouter } from 'next/router';
-import { useEffect } from 'react';
-
-const Auth = () => {
-    const router = useRouter();
-
-    useEffect(() => {
-        const { token } = router.query;
-        if (token) {
-            localStorage.setItem('token', token);
-            router.push('/profile');
-        }
-    }, [router]);
-
-    return <div>Redirecting...</div>;
-};
-
-export default Auth;
-
 
 export const addPhone = async (data) => {
     const response = await api.post('/users/add-phone', data);

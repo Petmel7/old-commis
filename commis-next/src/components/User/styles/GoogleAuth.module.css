@@ -1,6 +1,7 @@
 .googleAuthButton {
     background-color: gray;
     border-radius: 50px;
+    margin-bottom: 15px;
 }
 
 .googleAuthButton:hover {

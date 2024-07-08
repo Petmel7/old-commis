@@ -18,7 +18,7 @@ const Login = () => {
         e.preventDefault();
         try {
             await login({ email, password });
-            router.push('/profile');
+            router.push('/users/add-phone');
         } catch (error) {
             console.error(error);
         }
