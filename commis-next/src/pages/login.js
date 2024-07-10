@@ -1,9 +1,9 @@
 import React from 'react';
 import Login from '../components/User/Login';
 
-const LoginPage = () => (
+const LoginPage = ({ onLogin }) => (
     <div>
-        <Login />
+        <Login onLogin={onLogin} />
     </div>
 );
 

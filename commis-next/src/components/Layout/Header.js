@@ -1,38 +1,55 @@
 
-// components/Header/Header.js
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { toggleMenu } from '../../utils/utils';
 import styles from './styles/Header.module.css';
+import SearchIcon from '../../../public/img/Search.svg';
+import ProfileIcon from '../../../public/img/Profile.svg';
+import CloseIcon from '../../../public/img/close.svg';
+import Logout from '../User/Logout';
+import Link from 'next/link';
 
-import Menu from '../../../public/menu.svg';
-import Search from '../../../public/search.svg';
-import Shopping from '../../../public/shopping.svg';
+const Header = ({ isAuthenticated, onLogout }) => {
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-const Header = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const handleSearchClick = () => {
+        setIsMenuOpen(true);
+    };
+
+    const handleCloseClick = () => {
+        setIsMenuOpen(false);
+    };
 
     return (
-        <header className={styles.header}>
-            <div className={styles.searchContainer}>
-                <button className={styles.burgerButton} onClick={() => toggleMenu(isOpen, setIsOpen)}>
-                    <Menu />
+        <>
+            <header className={styles.header}>
+                <div className={styles.headerContainer}>
+                    <h1 className={styles.headerLogo}>Commis</h1>
+                    <div className={styles.iconContainer}>
+                        <button className={styles.searchButton} onClick={handleSearchClick}>
+                            <SearchIcon className={styles.headerSearchIcon} />
+                        </button>
+                        {isAuthenticated ? (
+                            <Logout onLogout={onLogout} />
+                        ) : (
+                            <button className={styles.searchButton}>
+                                <Link href='/login'>
+                                    <ProfileIcon className={styles.headerProfileIcon} />
+                                </Link>
+                            </button>
+                        )}
+                    </div>
+                </div>
+            </header>
+            <div className={`${styles.searchMenu} ${isMenuOpen ? styles.searchMenuOpen : ''}`}>
+                <button className={styles.closeButton} onClick={handleCloseClick}>
+                    <CloseIcon />
                 </button>
-                <input type="text" className={styles.searchInput} placeholder="Пошук..." />
-                <button className={styles.searchButton}>
-                    <Search />
-                </button>
-                <button className={styles.cartButton}>
-                    <Shopping />
-                </button>
+                <input className={styles.searchInput} type="text" placeholder="Пошук..." />
             </div>
-            <nav className={`${styles.headerNav} ${isOpen ? styles.open : ''}`}>
-                <Link className={styles.headerLink} href="/" onClick={() => toggleMenu(isOpen, setIsOpen)}>Головна</Link>
-                <Link className={styles.headerLink} href="/login" onClick={() => toggleMenu(isOpen, setIsOpen)}>Увійти</Link>
-                <Link className={styles.headerLink} href="/register" onClick={() => toggleMenu(isOpen, setIsOpen)}>Реєстрація</Link>
-            </nav>
-        </header>
+        </>
     );
 };
 
 export default Header;
+
+
+

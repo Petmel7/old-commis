@@ -2,7 +2,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
-const AuthCallback = () => {
+const AuthCallback = ({ onLogin }) => {
     const router = useRouter();
     const { refreshToken } = router.query;
 
@@ -11,8 +11,8 @@ const AuthCallback = () => {
             try {
                 localStorage.setItem('token', refreshToken);
                 console.log('AuthCallback->refreshToken', refreshToken);
-
-                router.push('/add-phone');
+                onLogin();
+                router.push('/');
             } catch (error) {
                 console.error('Помилка авторизації через Google:', error);
             }

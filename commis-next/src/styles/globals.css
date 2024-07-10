@@ -36,7 +36,7 @@ h6 {
 }
 
 a {
-    color: #0070f3;
+    color: rgba(148, 102, 255, 1);
     /* Колір для посилань */
     text-decoration: none;
     /* Видалення підкреслення у посилань */
@@ -62,7 +62,7 @@ ul {
 }
 
 button {
-    background-color: #0070f3;
+    background-color: rgba(148, 102, 255, 1);
     /* Фон для кнопок */
     color: white;
     /* Колір тексту для кнопок */
@@ -70,7 +70,7 @@ button {
     /* Видалення обводки */
     padding: 0.5rem 1rem;
     /* Внутрішні відступи */
-    border-radius: 0.25rem;
+    border-radius: 50rem;
     /* Округлення кутів */
     cursor: pointer;
     /* Встановлення курсора вказівника */
@@ -78,7 +78,7 @@ button {
 }
 
 button:hover {
-    background-color: #005bb5;
+    background-color: rgb(135, 83, 255);
     /* Зміна фону при наведенні */
 }
 

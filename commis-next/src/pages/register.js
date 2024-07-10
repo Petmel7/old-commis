@@ -1,9 +1,9 @@
 import React from 'react';
 import Register from '../components/User/Register';
 
-const RegisterPage = () => (
+const RegisterPage = ({ onLogin }) => (
     <div>
-        <Register />
+        <Register onLogin={onLogin} />
     </div>
 );
 

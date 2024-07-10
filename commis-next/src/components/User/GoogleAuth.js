@@ -1,6 +1,6 @@
 
 import { googleAuth } from '@/services/auth';
-import GoogleIcon from '../../../public/google.svg';
+import GoogleIcon from '../../../public/img/google.svg';
 import styles from './styles/GoogleAuth.module.css';
 
 const GoogleAuth = () => {

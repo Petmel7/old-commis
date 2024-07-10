@@ -1,5 +1,4 @@
 import React from 'react';
-import Logout from '../components/User/Logout';
 import AddProduct from '../components/Product/AddProduct';
 
 function ProfilePage() {
@@ -7,7 +6,6 @@ function ProfilePage() {
         <>
             <div>Profile</div>
             <AddProduct />
-            <Logout />
         </>
     )
 }

@@ -27,6 +27,7 @@ const HomePage = () => {
 
     return (
         <>
+            <div>Головна</div>
             <ProductList products={products} />
         </>
     );

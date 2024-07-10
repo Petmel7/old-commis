@@ -1,24 +1,22 @@
 
-// components/Login.js
 import React, { useState } from 'react';
-import Link from 'next/link';
-import { toggleMenu } from '../../utils/utils';
-import { useRouter } from 'next/navigation';
+import { useRouter } from 'next/router';
 import { login } from '../../services/auth';
-import styles from './styles/Auth.module.css';
 import GoogleAuth from './GoogleAuth';
+import styles from './styles/Auth.module.css';
+import Link from 'next/link';
 
-const Login = () => {
+const Login = ({ onLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [isOpen, setIsOpen] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await login({ email, password });
-            router.push('/users/add-phone');
+            onLogin();
+            router.push('/');
         } catch (error) {
             console.error(error);
         }
@@ -31,10 +29,10 @@ const Login = () => {
             <input className={styles.authInput} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Пароль" />
             <button className={styles.authButton} type="submit">Увійти</button>
             <GoogleAuth />
-            <Link className={styles.headerLink} href="/register" onClick={() => toggleMenu(isOpen, setIsOpen)}>Реєстрація</Link>
+            <span className={styles.authText}>Немає аккаунта?</span>
+            <Link href='/register'>Зареєструватися</Link>
         </form>
     );
 };
 
 export default Login;
-
