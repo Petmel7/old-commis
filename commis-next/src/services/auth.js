@@ -7,7 +7,9 @@ export const register = async (data) => {
 
 export const login = async (data) => {
     const response = await api.post('/users/login', data);
-    localStorage.setItem('token', response.data.refreshToken);
+    localStorage.setItem('accessToken', response.data.accessToken);
+    localStorage.setItem('refreshToken', response.data.refreshToken);
+    console.log('login->accessToken', response.data.accessToken);
     console.log('login->refreshToken', response.data.refreshToken);
     return response.data;
 };
@@ -18,7 +20,14 @@ export const googleAuth = async () => {
 };
 
 export const addPhone = async (data) => {
+    console.log('addPhone->api', api);
+    console.log('addPhone->data', data);
     const response = await api.post('/users/add-phone', data);
+    return response.data;
+};
+
+export const confirmEmail = async (data) => {
+    const response = await api.post('/users/confirm', data);
     return response.data;
 };
 
@@ -37,3 +46,4 @@ export const logoutUser = async (data) => {
 //     const response = await api.post('/users/refresh-token', { token: refreshToken });
 //     return response.data.accessToken;
 // };
+

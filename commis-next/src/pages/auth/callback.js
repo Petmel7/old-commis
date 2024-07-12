@@ -9,7 +9,7 @@ const AuthCallback = ({ onLogin }) => {
     useEffect(() => {
         const authenticate = async () => {
             try {
-                localStorage.setItem('token', refreshToken);
+                localStorage.setItem('refreshToken', refreshToken);
                 console.log('AuthCallback->refreshToken', refreshToken);
                 onLogin();
                 router.push('/');

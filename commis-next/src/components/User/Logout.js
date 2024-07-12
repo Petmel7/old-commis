@@ -1,24 +1,86 @@
 
-import React, { useState } from 'react';
+// import React from 'react';
+// import { useRouter } from 'next/router';
+// import { logoutUser } from '../../services/auth';
+// import LogoutIcon from '../../../public/img/logout.svg';
+// import Modal from '../Modal/Modal';
+// import useModal from '../../hooks/useModal';
+// import styles from './styles/Auth.module.css';
+
+// const Logout = ({ onLogout }) => {
+//     const { isModalOpen, openModal, closeModal } = useModal();
+//     const router = useRouter();
+
+//     const handleLogout = async () => {
+//         try {
+//             const refreshToken = localStorage.getItem('refreshToken');
+//             console.log('handleLogout->refreshToken', refreshToken);
+//             if (!refreshToken) {
+//                 console.error('No token found in local storage');
+//                 return;
+//             }
+
+//             await logoutUser({ token: refreshToken });
+//             localStorage.removeItem('accessToken');
+//             localStorage.removeItem('refreshToken');
+//             onLogout();
+//             router.push('/login');
+//         } catch (error) {
+//             console.error('Logout failed:', error);
+//         }
+//     };
+
+//     const handleConfirmLogout = () => {
+//         handleLogout();
+//         closeModal();
+//     };
+
+//     return (
+//         <>
+//             <button className={styles.logout} onClick={openModal}>
+//                 <LogoutIcon />
+//             </button>
+//             <Modal show={isModalOpen} onClose={closeModal} title="Ви справді хочете вийти?">
+//                 <div className={styles.modalButtons}>
+//                     <button onClick={handleConfirmLogout}>Так</button>
+//                     <button onClick={closeModal}>Ні</button>
+//                 </div>
+//             </Modal>
+//         </>
+//     );
+// };
+
+// export default Logout;
+
+
+
+
+
+
+import React from 'react';
 import { useRouter } from 'next/router';
 import { logoutUser } from '../../services/auth';
 import LogoutIcon from '../../../public/img/logout.svg';
+import Modal from '../Modal/Modal';
+import useModal from '../../hooks/useModal';
 import styles from './styles/Auth.module.css';
 
 const Logout = ({ onLogout }) => {
-    const [showModal, setShowModal] = useState(false);
+    const { isModalOpen, openModal, closeModal } = useModal();
     const router = useRouter();
 
     const handleLogout = async () => {
         try {
-            const refreshToken = localStorage.getItem('token');
+            const refreshToken = localStorage.getItem('refreshToken');
+            console.log('handleLogout->refreshToken', refreshToken);
             if (!refreshToken) {
-                console.error('No token found in local storage');
+                console.error('No refresh token found in local storage');
                 return;
             }
 
             await logoutUser({ token: refreshToken });
-            localStorage.removeItem('token');
+            localStorage.removeItem('accessToken');
+            localStorage.removeItem('refreshToken');
             onLogout();
             router.push('/login');
         } catch (error) {
@@ -26,38 +88,24 @@ const Logout = ({ onLogout }) => {
         }
     };
 
-    const handleOpenModal = () => {
-        setShowModal(true);
-    };
-
-    const handleCloseModal = () => {
-        setShowModal(false);
-    };
-
     const handleConfirmLogout = () => {
         handleLogout();
-        handleCloseModal();
+        closeModal();
     };
 
     return (
         <>
-            <button className={styles.logout} onClick={handleOpenModal}>
+            <button className={styles.logout} onClick={openModal}>
                 <LogoutIcon />
             </button>
-            {showModal && (
-                <div className={styles.modalOverlay}>
-                    <div className={styles.modalContent}>
-                        <h2>Ви справді хочете вийти?</h2>
-                        <div className={styles.modalButtons}>
-                            <button onClick={handleConfirmLogout}>Так</button>
-                            <button onClick={handleCloseModal}>Ні</button>
-                        </div>
-                    </div>
+            <Modal show={isModalOpen} onClose={closeModal} title="Ви справді хочете вийти?">
+                <div className={styles.modalButtons}>
+                    <button onClick={handleConfirmLogout}>Так</button>
+                    <button onClick={closeModal}>Ні</button>
                 </div>
-            )}
+            </Modal>
         </>
     );
 };
 
 export default Logout;
-

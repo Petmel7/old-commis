@@ -17,3 +17,4 @@ const Layout = ({ children, isAuthenticated, handleLogout }) => {
 };
 
 export default Layout;
+

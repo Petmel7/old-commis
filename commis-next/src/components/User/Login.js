@@ -1,22 +1,20 @@
 
+import Link from 'next/link';
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import { login } from '../../services/auth';
 import GoogleAuth from './GoogleAuth';
 import styles from './styles/Auth.module.css';
-import Link from 'next/link';
 
-const Login = ({ onLogin }) => {
+const Login = ({ onLogin, openModal }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         try {
             await login({ email, password });
             onLogin();
-            router.push('/');
+            openModal(); // Виклик функції відкриття модального вікна після успішного логування
         } catch (error) {
             console.error(error);
         }
@@ -36,3 +34,4 @@ const Login = ({ onLogin }) => {
 };
 
 export default Login;
+

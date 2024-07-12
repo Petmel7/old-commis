@@ -29,7 +29,7 @@ const registerUser = async (req, res) => {
         await transporter.sendMail({
             to: email,
             subject: 'Confirm your email',
-            html: `Click <a href="${url}">here</a> to confirm your email.`
+            html: `Натисніть <a href="${url}">тут</a> щоб підтвердити свою електронну адресу.`
         });
 
         res.status(201).json({ message: 'User registered successfully. Please check your email to confirm.' });
@@ -45,10 +45,33 @@ const confirmEmail = async (req, res) => {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         await User.update({ emailconfirmed: true }, { where: { email: decoded.email } });
         res.status(200).json({ message: 'Email confirmed successfully' });
+        // res.redirect('localhost:3000/login');
     } catch (error) {
         res.status(500).json({ message: 'Invalid or expired token' });
     }
 };
+
+// const confirmEmail = async (req, res) => {
+//     const token = req.params.token;
+//     try {
+//         const decoded = jwt.verify(token, process.env.JWT_SECRET);
+//         const email = decoded.email;
+
+//         const user = await User.findOne({ where: { email } });
+//         if (!user) {
+//             return res.status(400).json({ message: 'Invalid token' });
+//         }
+
+//         user.isConfirmed = true;
+//         await user.save();
+
+//         // Перенаправляємо користувача на сторінку логіну після підтвердження
+//         res.redirect('/login');
+//     } catch (error) {
+//         console.error('Error confirming email:', error);
+//         res.status(500).json({ message: 'Failed to confirm email' });
+//     }
+// };
 
 const addPhoneNumber = async (req, res) => {
     const { phone } = req.body;
@@ -129,20 +152,6 @@ const loginUser = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-// const logoutUser = async (req, res) => {
-//     const { token } = req.body;
-//     if (!token) {
-//         return res.status(400).json({ message: 'No token provided' });
-//     }
-//     try {
-//         const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-//         await RefreshToken.destroy({ where: { token } });
-//         res.status(200).json({ message: 'Logged out successfully' });
-//     } catch (error) {
-//         res.status(500).json({ message: 'Failed to log out' });
-//     }
-// };
 
 const logoutUser = async (req, res) => {
     const { token } = req.body;

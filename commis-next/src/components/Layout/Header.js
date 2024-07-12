@@ -50,6 +50,3 @@ const Header = ({ isAuthenticated, onLogout }) => {
 };
 
 export default Header;
-
-
-

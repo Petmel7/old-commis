@@ -16,29 +16,6 @@ router.post('/refresh-token', refreshToken); // Додано маршрут дл
 router.post('/add-phone', protect, addPhoneNumber); // Додано маршрут для додавання номера телефону
 router.post('/confirm-phone', protect, confirmPhoneNumber); // Додано маршрут для підтвердження номера телефону
 
-// // Маршрути для авторизації через Google
-// router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-
-// router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
-//     req.login(req.user, async (err) => {
-//         if (err) {
-//             return res.status(500).json({ message: 'Login error' });
-//         }
-//         try {
-//             const accessToken = generateAccessToken(req.user.id);
-//             const refreshToken = generateRefreshToken(req.user.id);
-
-//             // Збереження refresh token у базі даних
-//             await RefreshToken.create({ user_id: req.user.id, token: refreshToken });
-
-//             res.redirect(`http://localhost:5000?token=${accessToken}&refreshToken=${refreshToken}`);
-//         } catch (error) {
-//             console.error('Error during Google authentication:', error);
-//             res.status(500).json({ message: 'Failed to authenticate with Google' });
-//         }
-//     });
-// });
-
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
 router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
