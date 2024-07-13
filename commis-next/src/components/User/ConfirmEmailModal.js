@@ -30,13 +30,12 @@
 
 
 
-
 import React from 'react';
 import Modal from '../Modal/Modal';
 import styles from './styles/Auth.module.css';
 
 const ConfirmEmailModal = ({ show, onClose, email }) => {
-    const googleMailUrl = `https://mail.google.com/mail/u/0/#search/${email}`;
+    const googleMailUrl = `https://mail.google.com/mail/?authuser=${email}`;
 
     return (
         <Modal show={show} onClose={onClose} title="Підтвердіть електронну пошту">
@@ -51,4 +50,5 @@ const ConfirmEmailModal = ({ show, onClose, email }) => {
 };
 
 export default ConfirmEmailModal;
+
 

@@ -40,7 +40,7 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import ProductList from '../components/Product/ProductList';
-import AddPhoneNumber from '../components/User/AddPhoneNumber';
+import Login from '@/components/User/Login';
 import { getProducts } from '../services/products';
 
 const HomePage = ({ isAuthenticated, onLogin }) => {
@@ -72,7 +72,7 @@ const HomePage = ({ isAuthenticated, onLogin }) => {
 
     return (
         <>
-            <AddPhoneNumber isAuthenticated={isAuthenticated} onLogin={onLogin} />
+            <Login openModal={openModal} />
             <ProductList products={products} />
         </>
     );

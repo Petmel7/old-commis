@@ -42,7 +42,6 @@
 
 
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 import { register } from '../../services/auth';
 import GoogleAuth from './GoogleAuth';
 import styles from './styles/Auth.module.css';
@@ -50,12 +49,11 @@ import Link from 'next/link';
 import useModal from '../../hooks/useModal';
 import ConfirmEmailModal from './ConfirmEmailModal';
 
-const Register = ({ onLogin }) => {
+const Register = () => {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const { isModalOpen, openModal, closeModal } = useModal();
-    const router = useRouter();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -65,11 +63,6 @@ const Register = ({ onLogin }) => {
         } catch (error) {
             console.error(error);
         }
-    };
-
-    const handleConfirmEmail = () => {
-        closeModal();
-        router.push('/login'); // Після підтвердження перенаправляємо на сторінку логіну
     };
 
     return (
@@ -84,7 +77,7 @@ const Register = ({ onLogin }) => {
                 <span className={styles.authText}>Вже є аккаунт?</span>
                 <Link href='/login'>Увійти</Link>
             </form>
-            <ConfirmEmailModal show={isModalOpen} onClose={closeModal} onConfirm={handleConfirmEmail} email={email} />
+            <ConfirmEmailModal show={isModalOpen} onClose={closeModal} email={email} />
         </>
     );
 };
