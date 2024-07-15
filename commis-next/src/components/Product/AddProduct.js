@@ -47,6 +47,15 @@ const AddProduct = () => {
         try {
             await addProducts(formData);
             console.log('Product submitted:', product);
+
+            setProduct({
+                name: '',
+                description: '',
+                price: '',
+                stock: '',
+                image: null
+            });
+            setImagePreview(null);
         } catch (error) {
             console.log('handleSubmitError', error);
         }

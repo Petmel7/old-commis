@@ -1,7 +1,22 @@
 import api from './api';
 
 export const getProducts = async () => {
-    const response = await api.get('/products');
+    const response = await api.get('/products/all');
+    return response.data;
+};
+
+// export const getProductById = async (accessToken) => {
+//     const response = await api.get('/products', accessToken);
+//     console.log('getProductById????', response)
+//     return response.data;
+// };
+
+export const getUserProducts = async (accessToken) => {
+    const response = await api.get('/products', {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    });
     return response.data;
 };
 

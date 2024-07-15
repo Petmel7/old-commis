@@ -32,7 +32,7 @@ const registerUser = async (req, res) => {
             html: `<a href="${url}">Натисніть тут щоб підтвердити свою електронну адресу.</a>`
         });
 
-        res.status(201).json({ message: 'User registered successfully. Please check your email to confirm.' });
+        res.status(201).json({ message: 'User registered successfully. Please check your email to confirm.', isRegistered: true });
     } catch (error) {
         console.error('Error during registration:', error);
         res.status(500).json({ message: error.message });
@@ -73,8 +73,8 @@ const addPhoneNumber = async (req, res) => {
 
         await transporter.sendMail({
             to: email,
-            subject: 'Confirm your phone by email',
-            html: `<div>Your phone verification code ${confirmationcode}</div>`
+            subject: 'Підтвердьте свій телефон електронною поштою',
+            html: `<div>Код підтвердження вашого телефону ${confirmationcode}</div>`
         });
 
         console.log('Email sent successfully');
@@ -124,7 +124,16 @@ const loginUser = async (req, res) => {
         // Збереження refresh token у базі даних
         await RefreshToken.create({ user_id: user.id, token: refreshToken });
 
-        res.json({ accessToken, refreshToken });
+        // res.json({ accessToken, refreshToken });
+
+        res.status(200).json({
+            accessToken,
+            refreshToken,
+            user: {
+                email: user.email,
+                phone: user.phone // Повертаємо інформацію про телефон
+            }
+        });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
@@ -160,16 +169,24 @@ const logoutUser = async (req, res) => {
 const getUserProfile = async (req, res) => {
     try {
         const user = await User.findByPk(req.user.id, {
-            attributes: ['id', 'name', 'lastname', 'email', 'phone', 'phoneconfirmed']
+            attributes: ['id', 'name', 'lastname', 'email', 'phone', 'phoneconfirmed', 'googleid']
         });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });
         }
-        res.json(user);
+
+        const userProfile = {
+            ...user.toJSON(),
+            googleRegistered: !!user.googleid // Перевірка наявності googleid
+        };
+
+        res.json(userProfile);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+module.exports = getUserProfile;
 
 const refreshToken = async (req, res) => {
     const { token } = req.body;
@@ -222,8 +239,3 @@ module.exports = {
     refreshToken,
     deleteOldRefreshTokens
 };
-
-// // Дозволити користувачам входити в систему, навіть якщо телефон не підтверджений
-// if (!user.phoneconfirmed) {
-//     return res.status(400).json({ message: 'Phone number not confirmed' });
-// }

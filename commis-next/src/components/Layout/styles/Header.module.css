@@ -40,10 +40,15 @@
     height: 24px;
 }
 
-.headerProfileIcon {
+.profileIcon {
     width: 24px;
     height: 24px;
     margin-left: 20px;
+    fill: white;
+}
+
+.profileIcon.authenticated {
+    fill: green;
 }
 
 .searchMenu {

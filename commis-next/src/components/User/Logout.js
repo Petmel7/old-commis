@@ -2,7 +2,7 @@
 // import React from 'react';
 // import { useRouter } from 'next/router';
 // import { logoutUser } from '../../services/auth';
-// import LogoutIcon from '../../../public/img/logout.svg';
+// import More from '../../../public/img/More.svg';
 // import Modal from '../Modal/Modal';
 // import useModal from '../../hooks/useModal';
 // import styles from './styles/Auth.module.css';
@@ -16,7 +16,7 @@
 //             const refreshToken = localStorage.getItem('refreshToken');
 //             console.log('handleLogout->refreshToken', refreshToken);
 //             if (!refreshToken) {
-//                 console.error('No token found in local storage');
+//                 console.error('No refresh token found in local storage');
 //                 return;
 //             }
 
@@ -38,8 +38,9 @@
 //     return (
 //         <>
 //             <button className={styles.logout} onClick={openModal}>
-//                 <LogoutIcon />
+//                 <More />
 //             </button>
+
 //             <Modal show={isModalOpen} onClose={closeModal} title="Ви справді хочете вийти?">
 //                 <div className={styles.modalButtons}>
 //                     <button onClick={handleConfirmLogout}>Так</button>
@@ -54,13 +55,10 @@
 
 
 
-
-
-
 import React from 'react';
 import { useRouter } from 'next/router';
 import { logoutUser } from '../../services/auth';
-import LogoutIcon from '../../../public/img/logout.svg';
+import More from '../../../public/img/More.svg';
 import Modal from '../Modal/Modal';
 import useModal from '../../hooks/useModal';
 import styles from './styles/Auth.module.css';
@@ -96,8 +94,9 @@ const Logout = ({ onLogout }) => {
     return (
         <>
             <button className={styles.logout} onClick={openModal}>
-                <LogoutIcon />
+                <More className={styles.icon} />
             </button>
+
             <Modal show={isModalOpen} onClose={closeModal} title="Ви справді хочете вийти?">
                 <div className={styles.modalButtons}>
                     <button onClick={handleConfirmLogout}>Так</button>
@@ -109,3 +108,4 @@ const Logout = ({ onLogout }) => {
 };
 
 export default Logout;
+

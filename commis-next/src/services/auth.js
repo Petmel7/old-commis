@@ -2,6 +2,9 @@ import api from './api';
 
 export const register = async (data) => {
     const response = await api.post('/users/register', data);
+    localStorage.setItem('isRegistered', response.data.isRegistered);
+    console.log('register->isRegistered', response.data.isRegistered);
+    console.log('register->response', response);
     return response.data;
 };
 
@@ -36,14 +39,12 @@ export const confirmPhone = async (data) => {
     return response.data;
 };
 
+export const getUserProfile = async (data) => {
+    const response = await api.get('/users/profile', data);
+    return response.data;
+};
+
 export const logoutUser = async (data) => {
     const response = await api.post('/users/logout', data);
     return response.data;
 };
-
-// export const refreshAccessToken = async () => {
-//     const refreshToken = localStorage.getItem('refreshToken');
-//     const response = await api.post('/users/refresh-token', { token: refreshToken });
-//     return response.data.accessToken;
-// };
-

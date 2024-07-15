@@ -1,11 +1,12 @@
 import React from 'react';
 import AddProduct from '../components/Product/AddProduct';
+import UserProducts from '../components/Product/UserProducts';
 
 function ProfilePage() {
     return (
         <>
-            <div>Profile</div>
             <AddProduct />
+            <UserProducts />
         </>
     )
 }

@@ -1,17 +1,29 @@
-
+import Link from 'next/link';
 import React, { useState } from 'react';
 import styles from './styles/Header.module.css';
 import SearchIcon from '../../../public/img/Search.svg';
 import ProfileIcon from '../../../public/img/Profile.svg';
 import CloseIcon from '../../../public/img/close.svg';
-import Logout from '../User/Logout';
-import Link from 'next/link';
 
-const Header = ({ isAuthenticated, onLogout }) => {
+const AuthIcon = ({ isAuthenticated }) => {
+    const profileLink = isAuthenticated ? '/profile' : '/login';
+    const profileIconClass = isAuthenticated ? styles.authenticated : '';
+
+    return (
+        <Link href={profileLink}>
+            <ProfileIcon
+                className={`${styles.profileIcon} 
+                ${profileIconClass}`}
+            />
+        </Link>
+    )
+};
+
+const Header = ({ isAuthenticated }) => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleSearchClick = () => {
-        setIsMenuOpen(true);
+        setIsMenuOpen(!isMenuOpen);
     };
 
     const handleCloseClick = () => {
@@ -27,15 +39,7 @@ const Header = ({ isAuthenticated, onLogout }) => {
                         <button className={styles.searchButton} onClick={handleSearchClick}>
                             <SearchIcon className={styles.headerSearchIcon} />
                         </button>
-                        {isAuthenticated ? (
-                            <Logout onLogout={onLogout} />
-                        ) : (
-                            <button className={styles.searchButton}>
-                                <Link href='/login'>
-                                    <ProfileIcon className={styles.headerProfileIcon} />
-                                </Link>
-                            </button>
-                        )}
+                        <AuthIcon isAuthenticated={isAuthenticated} />
                     </div>
                 </div>
             </header>
@@ -43,10 +47,11 @@ const Header = ({ isAuthenticated, onLogout }) => {
                 <button className={styles.closeButton} onClick={handleCloseClick}>
                     <CloseIcon />
                 </button>
-                <input className={styles.searchInput} type="text" placeholder="Пошук..." />
+                <input type="text" className={styles.searchInput} placeholder="Пошук..." />
             </div>
         </>
     );
 };
 
 export default Header;
+

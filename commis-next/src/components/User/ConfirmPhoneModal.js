@@ -1,4 +1,4 @@
-
+import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import Modal from '../Modal/Modal';
 import { confirmPhone } from '../../services/auth';
@@ -6,11 +6,13 @@ import styles from './styles/Auth.module.css';
 
 const ConfirmPhoneModal = ({ show, onClose, phone }) => {
     const [confirm, setConfirm] = useState('');
+    const router = useRouter();
 
     const handleConfirm = async (e) => {
         e.preventDefault();
         try {
             await confirmPhone({ confirmationcode: confirm });
+            router.push('/profile');
         } catch (error) {
             console.log('confirmPhone->error', error);
         }
@@ -29,3 +31,6 @@ const ConfirmPhoneModal = ({ show, onClose, phone }) => {
 };
 
 export default ConfirmPhoneModal;
+
+
+
