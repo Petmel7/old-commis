@@ -1,13 +1,19 @@
 import React from 'react';
-import AddProduct from '../components/Product/AddProduct';
-import UserProducts from '../components/Product/UserProducts';
+import Link from 'next/link';
 
 function ProfilePage() {
     return (
-        <>
-            <AddProduct />
-            <UserProducts />
-        </>
+        <ul>
+            <li>
+                <Link href='/product'>Додати продукт</Link>
+            </li>
+            <li>
+                <Link href='/myProducts'>Мої продукти</Link>
+            </li>
+            <li>
+                <Link href='/oder'>Замовлення</Link>
+            </li>
+        </ul>
     )
 }
 

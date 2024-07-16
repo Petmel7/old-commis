@@ -36,11 +36,12 @@
 
 /* src/components/styles/Auth.module.css */
 
-.logout,
-.logout:hover {
+.logoutButton,
+.logoutButton:hover {
     background: none;
     border: none;
     cursor: pointer;
+    padding: 0;
 }
 
 .modalButtons {

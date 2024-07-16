@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { CartProvider } from '../context/CartContext';
 import Layout from '../components/Layout/Layout';
 import AddPhoneNumber from '../components/User/AddPhoneNumber';
 import ConfirmPhoneModal from '../components/User/ConfirmPhoneModal';
@@ -61,36 +62,38 @@ function MyApp({ Component, pageProps }) {
     };
 
     return (
-        <Layout
-            isAuthenticated={isAuthenticated}
-            handleLogin={handleLogin}
-            handleLogout={handleLogout}
-            isRegistered={isRegistered} // Передаємо стан зареєстрованого користувача
-        >
-            <div className='container'>
-                <Component
-                    {...pageProps}
-                    isAuthenticated={isAuthenticated}
-                    isRegistered={isRegistered} // Передаємо стан зареєстрованого користувача
-                    isGoogleRegistered={isGoogleRegistered}
-                    onLogin={handleLogin}
-                    onRegister={handleRegister} // Передаємо функцію реєстрації
-                    onPhoneAdded={handleOpenPhoneModal}
-                    onPhoneConfirmed={handleOpenConfirmModal}
-                    onLogout={handleLogout}
-                    setGoogleRegistered={setIsGoogleRegistered}
-                />
-                <AddPhoneNumber
-                    show={isPhoneModalOpen}
-                    onClose={handleClosePhoneModal}
-                    onPhoneConfirmed={handlePhoneAdded} // Викликаємо handlePhoneAdded після додавання номера
-                />
-                <ConfirmPhoneModal
-                    show={isConfirmModalOpen}
-                    onClose={handleCloseConfirmModal}
-                />
-            </div>
-        </Layout>
+        <CartProvider>
+            <Layout
+                isAuthenticated={isAuthenticated}
+                handleLogin={handleLogin}
+                handleLogout={handleLogout}
+                isRegistered={isRegistered} // Передаємо стан зареєстрованого користувача
+            >
+                <div className='container'>
+                    <Component
+                        {...pageProps}
+                        isAuthenticated={isAuthenticated}
+                        isRegistered={isRegistered} // Передаємо стан зареєстрованого користувача
+                        isGoogleRegistered={isGoogleRegistered}
+                        onLogin={handleLogin}
+                        onRegister={handleRegister} // Передаємо функцію реєстрації
+                        onPhoneAdded={handleOpenPhoneModal}
+                        onPhoneConfirmed={handleOpenConfirmModal}
+                        onLogout={handleLogout}
+                        setGoogleRegistered={setIsGoogleRegistered}
+                    />
+                    <AddPhoneNumber
+                        show={isPhoneModalOpen}
+                        onClose={handleClosePhoneModal}
+                        onPhoneConfirmed={handlePhoneAdded} // Викликаємо handlePhoneAdded після додавання номера
+                    />
+                    <ConfirmPhoneModal
+                        show={isConfirmModalOpen}
+                        onClose={handleCloseConfirmModal}
+                    />
+                </div>
+            </Layout>
+        </CartProvider>
     );
 }
 

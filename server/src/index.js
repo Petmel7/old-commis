@@ -25,23 +25,18 @@ console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 const app = express();
 
-// Додано для використання CORS
 app.use(cors());
 app.use(express.json());
 app.use(session({
     secret: process.env.SESSION_SECRET || 'default_session_secret',
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, // Якщо ви використовуєте HTTPS, змініть це на true
-
-    // origin: 'http://localhost:3000', // Дозволити доступ лише з вашого клієнта
-    // methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    // credentials: true, // Дозволити відправку куків та авторизацію
+    cookie: { secure: false },
 }));
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/uploads', express.static(path.join(__dirname, '../uploads'))); // Для обробки зображень
+app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
