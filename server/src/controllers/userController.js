@@ -166,6 +166,26 @@ const logoutUser = async (req, res) => {
     }
 };
 
+// const getUserProfile = async (req, res) => {
+//     try {
+//         const user = await User.findByPk(req.user.id, {
+//             attributes: ['id', 'name', 'lastname', 'email', 'phone', 'phoneconfirmed', 'googleid']
+//         });
+//         if (!user) {
+//             return res.status(404).json({ message: 'User not found' });
+//         }
+
+//         const userProfile = {
+//             ...user.toJSON(),
+//             googleRegistered: !!user.googleid // Перевірка наявності googleid
+//         };
+
+//         res.json(userProfile);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
 const getUserProfile = async (req, res) => {
     try {
         const user = await User.findByPk(req.user.id, {
@@ -185,8 +205,6 @@ const getUserProfile = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-module.exports = getUserProfile;
 
 const refreshToken = async (req, res) => {
     const { token } = req.body;

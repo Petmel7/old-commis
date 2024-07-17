@@ -1,10 +1,10 @@
 import React from 'react';
-// import Oder from '';
+import OrderList from '../components/Order/OrderList';
 
 function OderPage() {
     return (
         <div>
-            <div>Oder Page</div>
+            <OrderList />
         </div>
     )
 }

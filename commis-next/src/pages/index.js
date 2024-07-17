@@ -29,7 +29,10 @@ const HomePage = ({ isRegistered, isGoogleRegistered }) => {
 
     return (
         <>
-            <SellerButton isRegistered={isRegistered} isGoogleRegistered={isGoogleRegistered} /> {/* Передаємо isRegistered */}
+            <SellerButton
+                isRegistered={isRegistered}
+                isGoogleRegistered={isGoogleRegistered}
+            />
             <ProductList products={products} />
         </>
     );

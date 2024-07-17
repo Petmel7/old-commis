@@ -11,7 +11,7 @@ function ProfilePage() {
                 <Link href='/myProducts'>Мої продукти</Link>
             </li>
             <li>
-                <Link href='/oder'>Замовлення</Link>
+                <Link href='/orders'>Замовлення</Link>
             </li>
         </ul>
     )

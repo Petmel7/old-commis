@@ -4,6 +4,7 @@ const transporter = require('../config/emailConfig');
 
 const createOrder = async (req, res) => {
     const { items } = req.body;
+    console.log('createOrder->items', req.body.items);
     try {
         let total = 0;
         let orderDetails = '';

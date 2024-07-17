@@ -18,10 +18,13 @@ function MyApp({ Component, pageProps }) {
         if (accessToken) {
             setIsAuthenticated(true);
         }
-        const registered = localStorage.getItem('isRegistered') === 'true'; // Приводимо до булевого типу
-        console.log('MyApp->isRegistered', registered);
+        const registered = localStorage.getItem('isRegistered') === 'true';
         if (registered) {
             setIsRegistered(true);
+        }
+        const googleRegistered = localStorage.getItem('isGoogleRegistered') === 'true';
+        if (googleRegistered) {
+            setIsGoogleRegistered(true);
         }
     }, []);
 
@@ -57,8 +60,8 @@ function MyApp({ Component, pageProps }) {
     };
 
     const handlePhoneAdded = () => {
-        handleOpenConfirmModal(); // Відкриваємо модальне вікно для підтвердження номера телефону після додавання номера
-        handleClosePhoneModal(); // Закриваємо модальне вікно для додавання номера телефону
+        handleOpenConfirmModal();
+        handleClosePhoneModal();
     };
 
     return (
@@ -67,25 +70,28 @@ function MyApp({ Component, pageProps }) {
                 isAuthenticated={isAuthenticated}
                 handleLogin={handleLogin}
                 handleLogout={handleLogout}
-                isRegistered={isRegistered} // Передаємо стан зареєстрованого користувача
+                isRegistered={isRegistered}
             >
                 <div className='container'>
                     <Component
                         {...pageProps}
                         isAuthenticated={isAuthenticated}
-                        isRegistered={isRegistered} // Передаємо стан зареєстрованого користувача
+                        isRegistered={isRegistered}
                         isGoogleRegistered={isGoogleRegistered}
                         onLogin={handleLogin}
-                        onRegister={handleRegister} // Передаємо функцію реєстрації
+                        onRegister={handleRegister}
                         onPhoneAdded={handleOpenPhoneModal}
                         onPhoneConfirmed={handleOpenConfirmModal}
                         onLogout={handleLogout}
-                        setGoogleRegistered={setIsGoogleRegistered}
+                        setGoogleRegistered={(value) => {
+                            setIsGoogleRegistered(value);
+                            localStorage.setItem('isGoogleRegistered', value.toString());
+                        }}
                     />
                     <AddPhoneNumber
                         show={isPhoneModalOpen}
                         onClose={handleClosePhoneModal}
-                        onPhoneConfirmed={handlePhoneAdded} // Викликаємо handlePhoneAdded після додавання номера
+                        onPhoneConfirmed={handlePhoneAdded}
                     />
                     <ConfirmPhoneModal
                         show={isConfirmModalOpen}
@@ -98,3 +104,5 @@ function MyApp({ Component, pageProps }) {
 }
 
 export default MyApp;
+
+

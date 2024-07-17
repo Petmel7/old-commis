@@ -4,6 +4,7 @@ import GoogleIcon from '../../../public/img/google.svg';
 import styles from './styles/GoogleAuth.module.css';
 
 const GoogleAuth = () => {
+
     const handleGoogleSignIn = async (e) => {
         e.preventDefault();
         try {

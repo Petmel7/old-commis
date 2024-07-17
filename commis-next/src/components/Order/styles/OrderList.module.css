@@ -1,0 +1,56 @@
+.orderList {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.orderItem {
+    border: 1px solid #ccc;
+    margin-bottom: 16px;
+    padding: 16px;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+}
+
+.buyerName {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.buyerEmail,
+.buyerPhone {
+    display: block;
+    margin-bottom: 4px;
+    color: #555;
+}
+
+.product {
+    display: flex;
+    align-items: center;
+    margin-top: 16px;
+    padding: 8px;
+    border-top: 1px solid #ddd;
+}
+
+.productName {
+    flex: 2;
+    font-weight: bold;
+}
+
+.productPrice {
+    flex: 1;
+    color: #555;
+}
+
+.productImage {
+    flex: 1;
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+    margin-right: 16px;
+}
+
+.productQuantity {
+    flex: 1;
+    text-align: right;
+}

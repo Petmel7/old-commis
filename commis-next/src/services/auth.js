@@ -39,8 +39,17 @@ export const confirmPhone = async (data) => {
     return response.data;
 };
 
-export const getUserProfile = async (data) => {
-    const response = await api.get('/users/profile', data);
+// export const getUserProfile = async (data) => {
+//     const response = await api.get('/users/profile', data);
+//     return response.data;
+// };
+
+export const getUserProfile = async (accessToken) => {
+    const response = await api.get('/users/profile', {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        }
+    });
     return response.data;
 };
 
