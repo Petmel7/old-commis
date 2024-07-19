@@ -24,4 +24,5 @@
 .modalOnClose:hover {
     background: none;
     fill: black;
+    padding: 0;
 }

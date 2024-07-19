@@ -5,7 +5,7 @@ import { baseUrl } from '../Url/baseUrl';
 import styles from './styles/OrderList.module.css';
 
 const OrderList = () => {
-    const [orders, setOrders] = useState([]);
+    const [orders, setOrders] = useState([]); // Створюємо стан для збереження замовлень
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -20,41 +20,23 @@ const OrderList = () => {
         fetchOrders();
     }, []);
 
-    // return (
-    //     <ul className={styles}>
-    //         {orders.map(item => (
-    //             <li className={styles} key={item.id}>
-    //                 <p className={styles}>{item.buyer_name}</p>
-    //                 <span className={styles}>{item.buyer_email}</span>
-    //                 <span className={styles}>{item.buyer_phone}</span>
-    //                 {item.products.map(product => (
-    //                     <div className={styles}>
-    //                         <p className={styles}>{product.product_name}</p>
-    //                         <span className={styles}>{product.product_price}</span>
-    //                         <img className={styles} src={`${baseUrl}${product.product_image}`} />
-    //                         <span className={styles}>{product.quantity}</span>
-    //                     </div>
-    //                 ))}
-    //             </li>
-    //         ))}
-    //     </ul>
-    // );
-
     return (
         <ul className={styles.orderList}>
-            {orders.map(item => (
-                <li className={styles.orderItem} key={item.id}>
-                    <p className={styles.buyerName}>{item.buyer_name}</p>
-                    <span className={styles.buyerEmail}>{item.buyer_email}</span>
-                    <span className={styles.buyerPhone}>{item.buyer_phone}</span>
-                    {item.products.map(product => (
-                        <div className={styles.product} key={product.id}>
-                            <p className={styles.productName}>{product.product_name}</p>
-                            <span className={styles.productPrice}>{product.product_price}</span>
-                            <img className={styles.productImage} src={`${baseUrl}${product.product_image}`} alt={product.product_name} />
-                            <span className={styles.productQuantity}>{product.quantity}</span>
-                        </div>
-                    ))}
+            {orders.map(order => (
+                <li key={order.order_id} className={styles.orderItem}>
+                    <p className={styles.buyerName}>Покупець: {order.buyer_name}</p>
+                    <p className={styles.buyerEmail}>Email: {order.buyer_email}</p>
+                    <p className={styles.buyerPhone}>Телефон: {order.buyer_phone}</p>
+                    <ul className={styles.product}>
+                        {order.products.map(product => (
+                            <li key={`${order.order_id}-${product.product_name}`}>
+                                <p className={styles.productName}>Назва продукту: {product.product_name}</p>
+                                <p className={styles.productPrice}>Ціна: {product.product_price}</p>
+                                <p className={styles.productQuantity}>Кількість: {product.quantity}</p>
+                                <img className={styles.productImage} src={`${baseUrl}${product.product_image}`} alt={product.product_name} width="50" />
+                            </li>
+                        ))}
+                    </ul>
                 </li>
             ))}
         </ul>
@@ -62,3 +44,4 @@ const OrderList = () => {
 }
 
 export default OrderList;
+

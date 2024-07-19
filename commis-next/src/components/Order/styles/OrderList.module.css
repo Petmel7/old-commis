@@ -1,56 +1,75 @@
+/* Загальні стилі для списку замовлень */
 .orderList {
     list-style-type: none;
     padding: 0;
     margin: 0;
 }
 
+/* Стиль для кожного замовлення */
 .orderItem {
-    border: 1px solid #ccc;
-    margin-bottom: 16px;
+    border: 1px solid #ddd;
     padding: 16px;
+    margin-bottom: 16px;
     border-radius: 8px;
     background-color: #f9f9f9;
 }
 
+/* Стиль для імені покупця */
 .buyerName {
+    font-size: 18px;
     font-weight: bold;
     margin-bottom: 8px;
 }
 
-.buyerEmail,
-.buyerPhone {
-    display: block;
-    margin-bottom: 4px;
-    color: #555;
+/* Стиль для електронної пошти покупця */
+.buyerEmail {
+    font-size: 16px;
+    margin-bottom: 8px;
 }
 
+/* Стиль для телефону покупця */
+.buyerPhone {
+    font-size: 16px;
+    margin-bottom: 16px;
+}
+
+/* Стиль для списку продуктів всередині замовлення */
 .product {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Стиль для кожного продукту */
+.product li {
+    border-top: 1px solid #ddd;
+    padding: 8px 0;
     display: flex;
     align-items: center;
-    margin-top: 16px;
-    padding: 8px;
-    border-top: 1px solid #ddd;
 }
 
+/* Стиль для імені продукту */
 .productName {
-    flex: 2;
-    font-weight: bold;
+    font-size: 16px;
+    flex: 1;
 }
 
+/* Стиль для ціни продукту */
 .productPrice {
+    font-size: 16px;
     flex: 1;
-    color: #555;
 }
 
-.productImage {
-    flex: 1;
-    max-width: 100px;
-    max-height: 100px;
-    object-fit: cover;
-    margin-right: 16px;
-}
-
+/* Стиль для кількості продукту */
 .productQuantity {
+    font-size: 16px;
     flex: 1;
-    text-align: right;
+}
+
+/* Стиль для зображення продукту */
+.productImage {
+    width: 50px;
+    height: auto;
+    margin-left: 16px;
+    border-radius: 4px;
 }

@@ -33,4 +33,9 @@
     font-size: 1.2em;
     font-weight: bold;
     color: #333;
+    margin-bottom: 10px;
+}
+
+.productCardButton {
+    width: 100%;
 }

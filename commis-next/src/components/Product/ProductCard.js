@@ -20,7 +20,7 @@ const ProductCard = ({ product }) => {
             <h2 className={styles.productCardName}>{product.name}</h2>
             <p className={styles.productCardDescription}>{product.description}</p>
             <p className={styles.productCardPrice}>Ціна: {product.price} грн</p>
-            <button onClick={handleBuy}>Купити</button>
+            <button className={styles.productCardButton} onClick={handleBuy}>Купити</button>
         </div>
     );
 };
