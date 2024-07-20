@@ -3,24 +3,38 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { login } from '../../services/auth';
 import GoogleAuth from './GoogleAuth';
+import Loading from '../Loading/Loading';
+import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
 import styles from './styles/Auth.module.css';
 
 const Login = ({ onLogin, onPhoneAdded }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const router = useRouter()
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        setLoading(true);
+        setError(null);
+
         try {
             const response = await login({ email, password });
             const user = response.user;
             onLogin();
+
             user.phone ? router.push('/') : onPhoneAdded();
+
+            setLoading(false);
         } catch (error) {
-            console.error(error);
+            setError(error.message);
+            setLoading(false);
         }
     };
+
+    if (loading) return <Loading />
+    if (error) return <ErrorDisplay error={error} />;
 
     return (
         <form className={styles.authForm} onSubmit={handleSubmit}>

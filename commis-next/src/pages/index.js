@@ -4,6 +4,7 @@ import ProductList from '../components/Product/ProductList';
 import SellerButton from '../components/User/SellerButton';
 import { getProducts } from '../services/products';
 import Loading from '../components/Loading/Loading';
+import ErrorDisplay from '../components/ErrorDisplay/ErrorDisplay';
 
 const HomePage = ({ isRegistered, isGoogleRegistered }) => {
     const [products, setProducts] = useState([]);
@@ -16,8 +17,8 @@ const HomePage = ({ isRegistered, isGoogleRegistered }) => {
                 const data = await getProducts();
                 setProducts(data);
                 setLoading(false);
-            } catch (err) {
-                setError(err.message);
+            } catch (error) {
+                setError(error.message);
                 setLoading(false);
             }
         };
@@ -27,7 +28,7 @@ const HomePage = ({ isRegistered, isGoogleRegistered }) => {
     }, []);
 
     if (loading) return <Loading />;
-    if (error) return <div>Error: {error}</div>;
+    if (error) return <ErrorDisplay error={error} />;
 
     return (
         <>

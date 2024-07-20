@@ -7,7 +7,8 @@ const Loading = ({ size = '48px', color = '#007bff' }) => {
         <div className={styles.loadingContainer}>
             <div
                 className={styles.loading}
-                style={{ width: size, height: size, borderColor: color, borderBottomColor: 'transparent' }}>
+                style={{ width: size, height: size, borderColor: color, borderBottomColor: 'transparent' }}
+            >
             </div>
         </div>
     );
