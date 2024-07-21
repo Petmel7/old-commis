@@ -1,19 +1,24 @@
 import React from 'react';
 import Link from 'next/link';
+import Profile from '../components/Profile/Profile';
+
 
 function ProfilePage() {
     return (
-        <ul>
-            <li>
-                <Link href='/product'>Додати продукт</Link>
-            </li>
-            <li>
-                <Link href='/myProducts'>Мої продукти</Link>
-            </li>
-            <li>
-                <Link href='/orders'>Замовлення</Link>
-            </li>
-        </ul>
+        <>
+            {/* <Profile /> */}
+            <ul>
+                <li>
+                    <Link href='/product'>Додати продукт</Link>
+                </li>
+                <li>
+                    <Link href='/myProducts'>Мої продукти</Link>
+                </li>
+                <li>
+                    <Link href='/orders'>Замовлення</Link>
+                </li>
+            </ul>
+        </>
     )
 }
 

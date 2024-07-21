@@ -18,7 +18,12 @@ const Footer = ({ onLogout }) => (
                 </Link>
             </li>
             <li className={styles.iconItem}>
-                <Link href="/categories">
+                {/* <Link href="/categories">
+                    <Bullets className={styles.icon} />
+                    <p className={styles.text}>Каталог</p>
+                </Link> */}
+
+                <Link href="/test">
                     <Bullets className={styles.icon} />
                     <p className={styles.text}>Каталог</p>
                 </Link>

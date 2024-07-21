@@ -1,9 +1,10 @@
+
 import React, { useState } from 'react';
 import { addPhone } from '../../services/auth';
 import Modal from '../Modal/Modal';
 import styles from './styles/Auth.module.css';
 
-const AddPhoneNumber = ({ show, onClose, onPhoneConfirmed }) => {
+const AddPhoneNumber = ({ show, onClose, onPhoneAdded, onPhoneConfirmed }) => {
     const [phone, setPhone] = useState('');
 
     const handlePhoneSubmit = async (e) => {
@@ -11,6 +12,7 @@ const AddPhoneNumber = ({ show, onClose, onPhoneConfirmed }) => {
         try {
             await addPhone({ phone });
             onClose();
+            onPhoneAdded();
             onPhoneConfirmed();
         } catch (error) {
             console.error(error);

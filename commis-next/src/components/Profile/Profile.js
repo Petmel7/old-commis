@@ -1,21 +1,19 @@
 // import React, { useEffect, useState } from 'react';
 // import { useRouter } from 'next/router';
-// import { getUserProfile } from '../../services/auth';
-// import useModal from '../../hooks/useModal';
+// import { getUserProfile } from '../../services/auth'; // Ваш сервіс для отримання профілю користувача
 // import Loading from '../Loading/Loading';
 // import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
 // import ConfirmEmailModal from '../User/ConfirmEmailModal';
 // import AddPhoneNumber from '../User/AddPhoneNumber';
 // import ConfirmPhoneModal from '../User/ConfirmPhoneModal';
 
-// const Profile = ({ }) => {
+// const Profile = () => {
 //     const [loading, setLoading] = useState(true);
 //     const [error, setError] = useState(null);
 //     const [user, setUser] = useState(null);
-
-//     const { isModalOpen: isEmailModalOpen, openModal: openEmailModal, closeModal: closeEmailModal } = useModal()
-//     const { isModalOpen: isAddPhoneModalOpen, openModal: openAddPhoneModal, closeModal: closeAddPhoneModal } = useModal();
-//     const { isModalOpen: isConfirmPhoneModalOpen, openModal: openConfirmPhoneModal, closeModal: closeConfirmPhoneModal } = useModal();
+//     const [isEmailModalOpen, setIsEmailModalOpen] = useState(false);
+//     const [isPhoneModalOpen, setIsPhoneModalOpen] = useState(false);
+//     const [isConfirmPhoneModalOpen, setIsConfirmPhoneModalOpen] = useState(false);
 
 //     const router = useRouter();
 
@@ -24,17 +22,19 @@
 //             try {
 //                 const userProfile = await getUserProfile();
 
-//                 if (!userProfile.isAuthenticated) {
-//                     router.push('/login');
-//                     return;
-//                 }
+//                 console.log('Profile->userProfile', userProfile);
 
-//                 if (!userProfile.emailconfirmed) {
-//                     openEmailModal();
+//                 // if (!userProfile.isAuthenticated) {
+//                 //     router.push('/login');
+//                 //     return;
+//                 // }
+
+//                 if (!userProfile.emailConfirmed) {
+//                     setIsEmailModalOpen(true);
 //                 } else if (!userProfile.phone) {
-//                     openAddPhoneModal();
-//                 } else if (!userProfile.phoneconfirmed) {
-//                     openConfirmPhoneModal();
+//                     setIsPhoneModalOpen(true);
+//                 } else if (!userProfile.phoneConfirmed) {
+//                     setIsConfirmPhoneModalOpen(true);
 //                 } else {
 //                     setUser(userProfile);
 //                 }
@@ -62,9 +62,9 @@
 //                     <p>Телефон: {user.phone}</p>
 //                 </div>
 //             )}
-//             <ConfirmEmailModal show={isEmailModalOpen} onClose={openEmailModal()} email={user?.email} />
-//             <AddPhoneNumber show={isAddPhoneModalOpen} onClose={openAddPhoneModal()} onPhoneConfirmed={openConfirmPhoneModal()} />
-//             <ConfirmPhoneModal show={isConfirmPhoneModalOpen} onClose={openConfirmPhoneModal()} phone={user?.phone} />
+//             <ConfirmEmailModal show={isEmailModalOpen} onClose={() => setIsEmailModalOpen(false)} email={user?.email} />
+//             <AddPhoneNumber show={isPhoneModalOpen} onClose={() => setIsPhoneModalOpen(false)} onPhoneConfirmed={() => setIsConfirmPhoneModalOpen(true)} />
+//             <ConfirmPhoneModal show={isConfirmPhoneModalOpen} onClose={() => setIsConfirmPhoneModalOpen(false)} phone={user?.phone} />
 //         </div>
 //     );
 // };
