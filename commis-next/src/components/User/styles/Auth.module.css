@@ -34,8 +34,6 @@
     margin-right: 10px;
 }
 
-/* src/components/styles/Auth.module.css */
-
 .logoutButton,
 .logoutButton:hover {
     background: none;

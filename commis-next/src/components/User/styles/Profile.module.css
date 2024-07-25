@@ -1,0 +1,30 @@
+.profileContainer {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #fff;
+}
+
+.profileDetails {
+    margin-bottom: 20px;
+}
+
+.profileDetails p {
+    font-size: 16px;
+    color: #333;
+    margin: 5px 0;
+}
+
+.profileLinks li a {
+    text-decoration: none;
+    font-size: 16px;
+    color: #0070f3;
+    transition: color 0.3s ease;
+}
+
+.profileLinks li a:hover {
+    color: #005bb5;
+}

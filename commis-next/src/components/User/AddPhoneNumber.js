@@ -4,7 +4,7 @@ import { addPhone } from '../../services/auth';
 import Modal from '../Modal/Modal';
 import styles from './styles/Auth.module.css';
 
-const AddPhoneNumber = ({ show, onClose, onPhoneAdded, onPhoneConfirmed }) => {
+const AddPhoneNumber = ({ show, onClose, onPhoneAdded }) => {
     const [phone, setPhone] = useState('');
 
     const handlePhoneSubmit = async (e) => {
@@ -13,7 +13,6 @@ const AddPhoneNumber = ({ show, onClose, onPhoneAdded, onPhoneConfirmed }) => {
             await addPhone({ phone });
             onClose();
             onPhoneAdded();
-            onPhoneConfirmed();
         } catch (error) {
             console.error(error);
         }
@@ -29,12 +28,10 @@ const AddPhoneNumber = ({ show, onClose, onPhoneAdded, onPhoneConfirmed }) => {
                     onChange={e => setPhone(e.target.value)}
                     placeholder="Телефон"
                 />
-                <button type='submit'>Додати</button>
+                <button className={styles.authButton} type='submit'>Додати</button>
             </form>
         </Modal>
     );
 };
 
 export default AddPhoneNumber;
-
-

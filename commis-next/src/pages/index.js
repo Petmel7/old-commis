@@ -3,13 +3,14 @@ import React, { useEffect, useState } from 'react';
 import ProductList from '../components/Product/ProductList';
 import SellerButton from '../components/User/SellerButton';
 import { getProducts } from '../services/products';
-import Loading from '../components/Loading/Loading';
-import ErrorDisplay from '../components/ErrorDisplay/ErrorDisplay';
+import useLoadingAndError from '../hooks/useLoadingAndError';
 
 const HomePage = ({ isRegistered, isGoogleRegistered }) => {
     const [products, setProducts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {
         const fetchProducts = async () => {
@@ -27,8 +28,7 @@ const HomePage = ({ isRegistered, isGoogleRegistered }) => {
 
     }, []);
 
-    if (loading) return <Loading />;
-    if (error) return <ErrorDisplay error={error} />;
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <>
@@ -42,3 +42,7 @@ const HomePage = ({ isRegistered, isGoogleRegistered }) => {
 };
 
 export default HomePage;
+
+
+
+

@@ -38,13 +38,19 @@
 .headerSearchIcon {
     width: 24px;
     height: 24px;
+    margin-right: 20px;
 }
 
 .profileIcon {
     width: 24px;
     height: 24px;
-    margin-left: 20px;
     fill: white;
+}
+
+.defaultIcon {
+    width: 24px;
+    height: 24px;
+    border-radius: 50px;
 }
 
 .profileIcon.authenticated {
