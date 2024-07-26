@@ -5,14 +5,14 @@ import { baseUrl } from '../Url/baseUrl';
 import styles from './styles/OrderList.module.css';
 
 const OrderList = () => {
-    const [orders, setOrders] = useState([]); // Створюємо стан для збереження замовлень
+    const [orders, setOrders] = useState([]);
 
     useEffect(() => {
         const fetchOrders = async () => {
             try {
                 const fetchedOrders = await getSellerOrders();
                 console.log('OrderList->orders', fetchedOrders);
-                setOrders(fetchedOrders); // Оновлюємо стан замовленнями
+                setOrders(fetchedOrders);
             } catch (error) {
                 console.log('OrderList->error', error);
             }

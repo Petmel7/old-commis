@@ -2,8 +2,10 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { getUserProfile } from '@/services/auth';
+import { useAuth } from '@/context/AuthContext';
 
-const AuthCallback = ({ onLogin, onPhoneAdded, setGoogleRegistered }) => {
+const AuthCallback = () => {
+    const { handleLogin, setGoogleRegisteredStatus } = useAuth();
     const router = useRouter();
     const { refreshToken } = router.query;
 
@@ -12,7 +14,7 @@ const AuthCallback = ({ onLogin, onPhoneAdded, setGoogleRegistered }) => {
             try {
                 localStorage.setItem('refreshToken', refreshToken);
                 console.log('AuthCallback->refreshToken', refreshToken);
-                onLogin();
+                handleLogin();
 
                 const accessToken = localStorage.getItem('accessToken');
                 console.log('AuthCallback->accessToken******', accessToken);
@@ -20,17 +22,13 @@ const AuthCallback = ({ onLogin, onPhoneAdded, setGoogleRegistered }) => {
                 const userProfile = await getUserProfile(accessToken);
                 console.log('AuthCallback->userProfile$$$$', userProfile);
 
-                if (userProfile.phone) {
-                    router.push('/');
-                } else {
-                    onPhoneAdded();
-                }
+                router.push('/profile');
 
                 if (userProfile.googleRegistered) {
-                    setGoogleRegistered(true);
+                    setGoogleRegisteredStatus(true);
                     localStorage.setItem('isGoogleRegistered', 'true');
                 } else {
-                    setGoogleRegistered(false);
+                    setGoogleRegisteredStatus(false);
                     localStorage.setItem('isGoogleRegistered', 'false');
                 }
             } catch (error) {

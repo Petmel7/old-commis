@@ -3,17 +3,19 @@ import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getUserProfile } from '../../services/auth';
 import useModal from '../../hooks/useModal';
-import Loading from '../Loading/Loading';
-import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
 import ConfirmEmailModal from '../User/ConfirmEmailModal';
 import AddPhoneNumber from '../User/AddPhoneNumber';
 import ConfirmPhoneModal from '../User/ConfirmPhoneModal';
+import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/Profile.module.css';
 
 const Profile = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [user, setUser] = useState(null);
+
+    const loadingErrorComponent = useLoadingAndError(loading, error);
+
 
     const { isModalOpen: isEmailModalOpen, openModal: openEmailModal, closeModal: closeEmailModal } = useModal();
     const { isModalOpen: isAddPhoneModalOpen, openModal: openAddPhoneModal, closeModal: closeAddPhoneModal } = useModal();
@@ -46,8 +48,7 @@ const Profile = () => {
         checkUserStatus();
     }, [router]);
 
-    if (loading) return <Loading />;
-    if (error) return <ErrorDisplay error={error} />;
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <div>

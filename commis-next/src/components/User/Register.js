@@ -6,8 +6,7 @@ import styles from './styles/Auth.module.css';
 import Link from 'next/link';
 import useModal from '../../hooks/useModal';
 import ConfirmEmailModal from './ConfirmEmailModal';
-import Loading from '../Loading/Loading';
-import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
+import useLoadingAndError from '../../hooks/useLoadingAndError';
 
 const Register = () => {
     const [name, setName] = useState('');
@@ -16,6 +15,8 @@ const Register = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { isModalOpen, openModal, closeModal } = useModal();
+
+    const loadingErrorComponent = useLoadingAndError(loading, error);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,8 +33,7 @@ const Register = () => {
         }
     };
 
-    if (loading) return <Loading />
-    if (error) return <ErrorDisplay error={error} />;
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <>

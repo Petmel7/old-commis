@@ -4,14 +4,19 @@ import Footer from './Footer';
 import Header from './Header';
 import styles from './styles/Layout.module.css';
 
-const Layout = ({ isAuthenticated, handleLogin, handleLogout, children }) => (
-    <div className={styles.layout}>
-        <Header isAuthenticated={isAuthenticated} handleLogin={handleLogin} />
-        <div className={styles.layoutContent}>
-            <main className={styles.main}>{children}</main>
+const Layout = ({ children }) => {
+    return (
+        <div className={styles.layout}>
+            <Header />
+            <div className={styles.layoutContent}>
+                <main className={styles.main}>{children}</main>
+            </div>
+            <Footer />
         </div>
-        <Footer onLogout={handleLogout} />
-    </div>
-);
+    )
+}
 
 export default Layout;
+
+
+

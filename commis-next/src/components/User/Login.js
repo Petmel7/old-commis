@@ -2,18 +2,23 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import { login } from '../../services/auth';
 import GoogleAuth from './GoogleAuth';
 import Loading from '../Loading/Loading';
 import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
+import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/Auth.module.css';
 
-const Login = ({ onLogin }) => {
+const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const router = useRouter()
+    const { handleLogin } = useAuth();
+    const router = useRouter();
+
+    const loadingErrorComponent = useLoadingAndError(loading, error);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -22,7 +27,7 @@ const Login = ({ onLogin }) => {
 
         try {
             await login({ email, password });
-            onLogin();
+            handleLogin();
             router.push('/profile');
             setLoading(false);
         } catch (error) {
@@ -31,8 +36,7 @@ const Login = ({ onLogin }) => {
         }
     };
 
-    if (loading) return <Loading />;
-    if (error) return <ErrorDisplay error={error} />;
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <form className={styles.authForm} onSubmit={handleSubmit}>

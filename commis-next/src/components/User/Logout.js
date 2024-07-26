@@ -1,17 +1,19 @@
 
 import React from 'react';
 import { useRouter } from 'next/router';
+import { useAuth } from '../../context/AuthContext';
 import { logoutUser } from '../../services/auth';
 import More from '../../../public/img/More.svg';
 import Modal from '../Modal/Modal';
 import useModal from '../../hooks/useModal';
 import styles from './styles/Auth.module.css';
 
-const Logout = ({ onLogout }) => {
+const Logout = () => {
     const { isModalOpen, openModal, closeModal } = useModal();
     const router = useRouter();
+    const { handleLogout } = useAuth();
 
-    const handleLogout = async () => {
+    const handleConfirmLogout = async () => {
         try {
             const refreshToken = localStorage.getItem('refreshToken');
             console.log('handleLogout->refreshToken', refreshToken);
@@ -23,16 +25,13 @@ const Logout = ({ onLogout }) => {
             await logoutUser({ token: refreshToken });
             localStorage.removeItem('accessToken');
             localStorage.removeItem('refreshToken');
-            onLogout();
+            handleLogout();
             router.push('/login');
         } catch (error) {
             console.error('Logout failed:', error);
+        } finally {
+            closeModal();
         }
-    };
-
-    const handleConfirmLogout = () => {
-        handleLogout();
-        closeModal();
     };
 
     return (
@@ -52,4 +51,3 @@ const Logout = ({ onLogout }) => {
 };
 
 export default Logout;
-

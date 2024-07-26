@@ -8,7 +8,7 @@ import styles from './styles/Cart.module.css';
 import { baseUrl } from '../Url/baseUrl';
 
 const Cart = () => {
-    const { cart, increaseQuantity, decreaseQuantity } = useCart();
+    const { cart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
     console.log('Cart->cart', cart);
 
     const handleOrder = async () => {
@@ -23,6 +23,9 @@ const Cart = () => {
             const response = await createOrder({ items });
             console.log('Cart->response', response);
             console.log('handleOrder->response.message', response.message);
+
+            // Очищуємо кошик після успішного замовлення
+            clearCart();
         } catch (error) {
             console.error('handleOrder->error', error);
         }
@@ -40,8 +43,8 @@ const Cart = () => {
         <div className={styles.container}>
             <h1 className={styles.title}>Корзина</h1>
             {cart.map(item => (
-                <div className={styles.cartContainer}>
-                    <div className={styles.cartItem} key={item.id}>
+                <div className={styles.cartContainer} key={item.id}>
+                    <div className={styles.cartItem}>
                         <div>
                             <img className={styles.cartImage} src={`${baseUrl}${item.image}`} alt={item.name} />
                         </div>
@@ -61,7 +64,7 @@ const Cart = () => {
                     </div>
                 </div>
             ))}
-            <div >
+            <div>
                 {cart.length !== 0 ? (
                     <div className={styles.buttonContainer}>
                         <div className={styles.actionButtonContainer}>

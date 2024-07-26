@@ -1,8 +1,10 @@
 
 import Link from 'next/link';
+import { useAuth } from '@/context/AuthContext';
 import styles from './styles/Auth.module.css';
 
-const SellerButton = ({ isRegistered, isGoogleRegistered }) => {
+const SellerButton = () => {
+    const { isRegistered, isGoogleRegistered } = useAuth();
     console.log('SellerButton->isRegistered', isRegistered);
     console.log('SellerButton->isGoogleRegistered', isGoogleRegistered);
 

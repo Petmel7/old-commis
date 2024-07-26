@@ -2,7 +2,7 @@
 import React from 'react';
 import Profile from '../components/User/Profile';
 
-const ProfilePage = () => {
+function ProfilePage() {
     return (
         <div>
             <Profile />

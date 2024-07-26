@@ -1,13 +1,16 @@
+
 import Link from 'next/link';
 import Image from 'next/image';
 import React, { useState } from 'react';
+import { useAuth } from '@/context/AuthContext';
 import styles from './styles/Header.module.css';
 import SearchIcon from '../../../public/img/Search.svg';
 import ProfileIcon from '../../../public/img/Profile.svg';
 import DefaultIcon from '../../../public/jpg/default.jpg';
 import CloseIcon from '../../../public/img/close.svg';
 
-const AuthIcon = ({ isAuthenticated }) => {
+const AuthIcon = () => {
+    const { isAuthenticated } = useAuth()
     const profileLink = isAuthenticated ? '/profile' : '/login';
 
     return (
@@ -21,7 +24,7 @@ const AuthIcon = ({ isAuthenticated }) => {
     );
 };
 
-const Header = ({ isAuthenticated }) => {
+const Header = () => {
     const [isMenuOpen, setIsMenuOpen] = useState(false);
 
     const handleSearchClick = () => {
@@ -41,7 +44,7 @@ const Header = ({ isAuthenticated }) => {
                         <button className={styles.searchButton} onClick={handleSearchClick}>
                             <SearchIcon className={styles.headerSearchIcon} />
                         </button>
-                        <AuthIcon isAuthenticated={isAuthenticated} />
+                        <AuthIcon />
                     </div>
                 </div>
             </header>

@@ -1,5 +1,4 @@
 
-// src/components/AddProduct.js
 import React, { useState } from 'react';
 import { addProducts } from '../../services/products';
 import styles from './styles/AddProduct.module.css';
