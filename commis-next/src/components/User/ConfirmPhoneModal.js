@@ -2,14 +2,15 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { confirmPhone } from '../../services/auth';
 import Modal from '../Modal/Modal';
-import Loading from '../Loading/Loading';
-import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
+import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/Auth.module.css';
 
 const ConfirmPhoneModal = ({ show, onClose, phone }) => {
     const [confirm, setConfirm] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+
+    const loadingErrorComponent = useLoadingAndError(loading, error);
     const router = useRouter();
 
     const handleConfirm = async (e) => {
@@ -30,8 +31,7 @@ const ConfirmPhoneModal = ({ show, onClose, phone }) => {
         onClose();
     };
 
-    if (loading) return <Loading />
-    if (error) return <ErrorDisplay error={error} />;
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <Modal show={show} onClose={onClose} title="Підтвердіть номер телефону">

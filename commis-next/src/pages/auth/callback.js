@@ -1,11 +1,14 @@
-
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getUserProfile } from '@/services/auth';
 import { useAuth } from '@/context/AuthContext';
+import useLoadingAndError from '../../hooks/useLoadingAndError';
 
 const AuthCallback = () => {
     const { handleLogin, setGoogleRegisteredStatus } = useAuth();
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const loadingErrorComponent = useLoadingAndError(loading, error);
     const router = useRouter();
     const { refreshToken } = router.query;
 
@@ -17,12 +20,10 @@ const AuthCallback = () => {
                 handleLogin();
 
                 const accessToken = localStorage.getItem('accessToken');
-                console.log('AuthCallback->accessToken******', accessToken);
+                console.log('AuthCallback->accessToken', accessToken);
 
                 const userProfile = await getUserProfile(accessToken);
-                console.log('AuthCallback->userProfile$$$$', userProfile);
-
-                router.push('/profile');
+                console.log('AuthCallback->userProfile', userProfile);
 
                 if (userProfile.googleRegistered) {
                     setGoogleRegisteredStatus(true);
@@ -31,8 +32,12 @@ const AuthCallback = () => {
                     setGoogleRegisteredStatus(false);
                     localStorage.setItem('isGoogleRegistered', 'false');
                 }
+
+                setLoading(false);
+                router.push('/profile');
             } catch (error) {
-                console.error('Помилка авторизації через Google:', error);
+                setError(error.message);
+                setLoading(false);
             }
         };
 
@@ -41,10 +46,13 @@ const AuthCallback = () => {
         }
     }, [refreshToken, router]);
 
-    return <div>Authorizing...</div>;
+    if (loadingErrorComponent) return loadingErrorComponent;
+
+    return null;
 };
 
 export default AuthCallback;
+
 
 
 

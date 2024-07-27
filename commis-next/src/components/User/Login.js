@@ -5,8 +5,6 @@ import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { login } from '../../services/auth';
 import GoogleAuth from './GoogleAuth';
-import Loading from '../Loading/Loading';
-import ErrorDisplay from '../ErrorDisplay/ErrorDisplay';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/Auth.module.css';
 

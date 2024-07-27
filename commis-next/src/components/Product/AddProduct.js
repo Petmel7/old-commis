@@ -1,6 +1,6 @@
-
 import React, { useState } from 'react';
 import { addProducts } from '../../services/products';
+import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/AddProduct.module.css';
 
 const AddProduct = () => {
@@ -12,6 +12,10 @@ const AddProduct = () => {
         image: null
     });
     const [imagePreview, setImagePreview] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    const loadingErrorComponent = useLoadingAndError(loading, error);
 
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -43,6 +47,9 @@ const AddProduct = () => {
             formData.append('image', product.image);
         }
 
+        setLoading(true);
+        setError(null);
+
         try {
             await addProducts(formData);
             console.log('Product submitted:', product);
@@ -56,9 +63,13 @@ const AddProduct = () => {
             });
             setImagePreview(null);
         } catch (error) {
-            console.log('handleSubmitError', error);
+            setError(error.message);
+        } finally {
+            setLoading(false);
         }
     };
+
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <div className={styles.container}>
@@ -124,10 +135,11 @@ const AddProduct = () => {
                         <img src={imagePreview} alt="Image Preview" className={styles.imagePreview} />
                     )}
                 </div>
-                <button className={styles.button} type="submit">Додати</button>
+                <button className={styles.button} type="submit" disabled={loading}>Додати</button>
             </form>
         </div>
     );
 };
 
 export default AddProduct;
+

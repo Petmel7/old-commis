@@ -9,7 +9,8 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
-    /* Додаємо вертикальне прокручування */
+    padding-top: 60px;
+    /* Відступ для уникнення перекриття хедером */
 }
 
 .main {

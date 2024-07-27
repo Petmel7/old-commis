@@ -1,17 +1,27 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useCart } from '../../context/CartContext';
 import { createOrder } from '../../services/order';
-import DeleteOrder from './DeleteOrder';
-import styles from './styles/Cart.module.css';
 import { baseUrl } from '../Url/baseUrl';
+import DeleteOrder from './DeleteOrder';
+import useLoadingAndError from '../../hooks/useLoadingAndError';
+import styles from './styles/Cart.module.css';
+
 
 const Cart = () => {
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
     const { cart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
     console.log('Cart->cart', cart);
 
-    const handleOrder = async () => {
+    const loadingErrorComponent = useLoadingAndError(loading, error);
+
+    const handleOrder = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        setError(null);
+
         const items = cart.map(item => ({
             product_id: item.id,
             quantity: item.quantity
@@ -24,10 +34,11 @@ const Cart = () => {
             console.log('Cart->response', response);
             console.log('handleOrder->response.message', response.message);
 
-            // Очищуємо кошик після успішного замовлення
+            setLoading(false);
             clearCart();
         } catch (error) {
-            console.error('handleOrder->error', error);
+            setError(error.message);
+            setLoading(false);
         }
     };
 
@@ -38,6 +49,8 @@ const Cart = () => {
     const calculateGrandTotal = () => {
         return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
+
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <div className={styles.container}>

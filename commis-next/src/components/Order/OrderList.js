@@ -2,10 +2,15 @@
 import React, { useState, useEffect } from 'react';
 import { getSellerOrders } from '../../services/order';
 import { baseUrl } from '../Url/baseUrl';
+import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/OrderList.module.css';
 
 const OrderList = () => {
     const [orders, setOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+
+    const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {
         const fetchOrders = async () => {
@@ -13,12 +18,16 @@ const OrderList = () => {
                 const fetchedOrders = await getSellerOrders();
                 console.log('OrderList->orders', fetchedOrders);
                 setOrders(fetchedOrders);
+                setLoading(false);
             } catch (error) {
-                console.log('OrderList->error', error);
+                setError(err.message);
+                setLoading(false);
             }
         }
         fetchOrders();
     }, []);
+
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <ul className={styles.orderList}>
