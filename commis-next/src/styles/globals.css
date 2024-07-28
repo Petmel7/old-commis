@@ -54,11 +54,8 @@ ul {
 
 .container {
     max-width: 1200px;
-    /* Максимальна ширина контейнера */
     margin: 0 auto;
-    /* Вирівнювання контейнера по центру */
-    padding: 0 1rem;
-    /* Внутрішні відступи */
+    padding: 10px;
 }
 
 button {

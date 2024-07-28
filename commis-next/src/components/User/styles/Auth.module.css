@@ -64,5 +64,7 @@
 }
 
 .authButtonConteaner {
-    text-align: center;
+    position: fixed;
+    bottom: 526px;
+    right: 25px;
 }

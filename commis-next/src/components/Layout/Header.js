@@ -10,7 +10,7 @@ import DefaultIcon from '../../../public/jpg/default.jpg';
 import CloseIcon from '../../../public/img/close.svg';
 
 const AuthIcon = () => {
-    const { isAuthenticated } = useAuth()
+    const { isAuthenticated } = useAuth();
     const profileLink = isAuthenticated ? '/profile' : '/login';
 
     return (

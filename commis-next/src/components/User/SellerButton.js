@@ -23,5 +23,3 @@ const SellerButton = () => {
 };
 
 export default SellerButton;
-
-

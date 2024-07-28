@@ -1,7 +1,7 @@
 import React from 'react';
 import OrderList from '../components/Order/OrderList';
 
-function OderPage() {
+function OrderListPage() {
     return (
         <div>
             <OrderList />
@@ -9,4 +9,4 @@ function OderPage() {
     )
 }
 
-export default OderPage;
+export default OrderListPage;

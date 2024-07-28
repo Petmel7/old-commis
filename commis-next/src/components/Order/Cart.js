@@ -1,45 +1,55 @@
 
-import React, { useState } from 'react';
+// import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useCart } from '../../context/CartContext';
-import { createOrder } from '../../services/order';
+import { useAuth } from '@/context/AuthContext';
+// import { createOrder } from '../../services/order';
 import { baseUrl } from '../Url/baseUrl';
 import DeleteOrder from './DeleteOrder';
-import useLoadingAndError from '../../hooks/useLoadingAndError';
+// import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/Cart.module.css';
 
 
 const Cart = () => {
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    // const [loading, setLoading] = useState(false);
+    // const [error, setError] = useState(null);
     const { cart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
+    const { isAuthenticated } = useAuth();
+    const router = useRouter();
     console.log('Cart->cart', cart);
 
-    const loadingErrorComponent = useLoadingAndError(loading, error);
+    // const loadingErrorComponent = useLoadingAndError(loading, error);
 
-    const handleOrder = async (e) => {
+    const handleOrderClick = async (e) => {
         e.preventDefault();
-        setLoading(true);
-        setError(null);
+        // setLoading(true);
+        // setError(null);
 
-        const items = cart.map(item => ({
-            product_id: item.id,
-            quantity: item.quantity
-        }));
-
-        console.log('Cart->items', items);
-
-        try {
-            const response = await createOrder({ items });
-            console.log('Cart->response', response);
-            console.log('handleOrder->response.message', response.message);
-
-            setLoading(false);
-            clearCart();
-        } catch (error) {
-            setError(error.message);
-            setLoading(false);
+        if (isAuthenticated) {
+            router.push('/orderDetails');
+        } else {
+            router.push('/login');
         }
+
+        // const items = cart.map(item => ({
+        //     product_id: item.id,
+        //     quantity: item.quantity
+        // }));
+
+        // console.log('Cart->items', items);
+
+        // try {
+        //     const response = await createOrder({ items });
+        //     console.log('Cart->response', response);
+        //     console.log('handleOrder->response.message', response.message);
+
+        //     setLoading(false);
+        //     clearCart();
+        // } catch (error) {
+        //     setError(error.message);
+        //     setLoading(false);
+        // }
     };
 
     const calculateTotalPrice = (item) => {
@@ -50,7 +60,7 @@ const Cart = () => {
         return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
 
-    if (loadingErrorComponent) return loadingErrorComponent;
+    // if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <div className={styles.container}>
@@ -85,7 +95,7 @@ const Cart = () => {
                                 <button className={`${styles.actionButton} ${styles.continueShoppingButton}`}>Продовжити покупки</button>
                             </Link>
                         </div>
-                        <button className={styles.actionButton} onClick={handleOrder}>Продовжити замовлення</button>
+                        <button className={styles.actionButton} onClick={handleOrderClick}>Продовжити замовлення</button>
                     </div>
                 ) : (
                     <div className={styles.emptyCartMessage}>
