@@ -1,55 +1,27 @@
 
-// import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-// import { createOrder } from '../../services/order';
 import { baseUrl } from '../Url/baseUrl';
 import DeleteOrder from './DeleteOrder';
-// import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/Cart.module.css';
 
 
 const Cart = () => {
-    // const [loading, setLoading] = useState(false);
-    // const [error, setError] = useState(null);
-    const { cart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
+    const { cart, increaseQuantity, decreaseQuantity } = useCart();
     const { isAuthenticated } = useAuth();
     const router = useRouter();
     console.log('Cart->cart', cart);
 
-    // const loadingErrorComponent = useLoadingAndError(loading, error);
-
     const handleOrderClick = async (e) => {
         e.preventDefault();
-        // setLoading(true);
-        // setError(null);
 
         if (isAuthenticated) {
-            router.push('/orderDetails');
+            router.push('/placingAnOrder');
         } else {
             router.push('/login');
         }
-
-        // const items = cart.map(item => ({
-        //     product_id: item.id,
-        //     quantity: item.quantity
-        // }));
-
-        // console.log('Cart->items', items);
-
-        // try {
-        //     const response = await createOrder({ items });
-        //     console.log('Cart->response', response);
-        //     console.log('handleOrder->response.message', response.message);
-
-        //     setLoading(false);
-        //     clearCart();
-        // } catch (error) {
-        //     setError(error.message);
-        //     setLoading(false);
-        // }
     };
 
     const calculateTotalPrice = (item) => {
@@ -59,8 +31,6 @@ const Cart = () => {
     const calculateGrandTotal = () => {
         return cart.reduce((total, item) => total + (item.price * item.quantity), 0);
     };
-
-    // if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <div className={styles.container}>
@@ -72,10 +42,12 @@ const Cart = () => {
                             <img className={styles.cartImage} src={`${baseUrl}${item.image}`} alt={item.name} />
                         </div>
 
-                        <div className={styles.quantityButtonContainer}>
-                            <button className={styles.quantityButton} onClick={() => decreaseQuantity(item.id)}>-</button>
-                            <span className={styles.quantity}>{item.quantity}</span>
-                            <button className={styles.quantityButton} onClick={() => increaseQuantity(item.id)}>+</button>
+                        <div className={styles.quantityContainer}>
+                            <div className={styles.quantityButtonContainer}>
+                                <button className={styles.quantityButton} onClick={() => decreaseQuantity(item.id)}>-</button>
+                                <span className={styles.quantity}>{item.quantity}</span>
+                                <button className={styles.quantityButton} onClick={() => increaseQuantity(item.id)}>+</button>
+                            </div>
 
                             <DeleteOrder productId={item.id} />
                         </div>
@@ -95,7 +67,7 @@ const Cart = () => {
                                 <button className={`${styles.actionButton} ${styles.continueShoppingButton}`}>Продовжити покупки</button>
                             </Link>
                         </div>
-                        <button className={styles.actionButton} onClick={handleOrderClick}>Продовжити замовлення</button>
+                        <button className={styles.actionButton} onClick={handleOrderClick}>Oформити замовлення</button>
                     </div>
                 ) : (
                     <div className={styles.emptyCartMessage}>

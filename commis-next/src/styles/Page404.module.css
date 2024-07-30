@@ -1,0 +1,34 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #333;
+    padding: 2rem;
+}
+
+.title {
+    font-size: 6rem;
+    margin: 0;
+}
+
+.message {
+    font-size: 1.5rem;
+    margin: 1rem 0;
+}
+
+.homeLink {
+    font-size: 1.2rem;
+    text-decoration: none;
+    margin-top: 2rem;
+    padding: 0.5rem 1rem;
+    border: 2px solid rgba(148, 102, 255, 1);
+    border-radius: 50px;
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.homeLink:hover {
+    background-color: rgba(148, 102, 255, 1);
+    color: #fff;
+}

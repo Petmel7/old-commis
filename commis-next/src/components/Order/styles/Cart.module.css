@@ -47,8 +47,15 @@
     margin-right: 10px;
 }
 
+.quantityContainer {
+    display: flex;
+}
+
 .quantityButtonContainer {
     display: flex;
+    border-radius: 50px;
+    margin-right: 10px;
+    background-color: rgba(148, 102, 255, 1);
 }
 
 .cartPriceConteaner {
@@ -64,7 +71,11 @@
     width: 30px;
     height: 30px;
     border: none;
-    margin: 0 5px;
+    background: none;
+}
+
+.quantityButton:hover {
+    background: none;
 }
 
 .quantity {
@@ -131,4 +142,12 @@
     padding: 0;
     fill: #5f6368;
 
+}
+
+.cartTitle {
+    text-align: center;
+}
+
+.cartButton {
+    margin: 0 auto;
 }
