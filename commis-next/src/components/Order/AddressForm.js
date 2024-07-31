@@ -1,80 +1,76 @@
 
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import { getAreas, getCities, getWarehouses } from '../../services/novaposhtaService'; // Імпортуйте ваш сервіс
+import { getRegions, getCities, getPostOffices } from '../../services/novaposhtaService';
 import styles from './styles/AddressForm.module.css';
 
 const AddressForm = ({ onAddressSelected }) => {
-    const [areas, setAreas] = useState([]);
+    const [regions, setRegions] = useState([]);
     const [cities, setCities] = useState([]);
-    const [warehouses, setWarehouses] = useState([]);
-    const [selectedArea, setSelectedArea] = useState(null);
+    const [postOffices, setPostOffices] = useState([]);
+    const [selectedRegion, setSelectedRegion] = useState(null);
     const [selectedCity, setSelectedCity] = useState(null);
-    const [selectedWarehouse, setSelectedWarehouse] = useState(null);
+    const [selectedPostOffice, setSelectedPostOffice] = useState(null);
 
     useEffect(() => {
-        const fetchAreas = async () => {
-            const areas = await getAreas();
-            setAreas(areas.map(area => ({ value: area.Ref, label: area.Description })));
+        const fetchRegions = async () => {
+            const regions = await getRegions();
+            setRegions(regions.map(region => ({ value: region.Ref, label: region.Description })));
         };
-        fetchAreas();
+        fetchRegions();
     }, []);
 
-    const handleAreaChange = async (selectedOption) => {
-        setSelectedArea(selectedOption);
+    const handleRegionChange = async (selectedOption) => {
+        setSelectedRegion(selectedOption);
         setSelectedCity(null);
-        setSelectedWarehouse(null);
+        setSelectedPostOffice(null);
         const cities = await getCities(selectedOption.value);
         setCities(cities.map(city => ({ value: city.Ref, label: city.Description })));
     };
 
     const handleCityChange = async (selectedOption) => {
         setSelectedCity(selectedOption);
-        setSelectedWarehouse(null);
-        const warehouses = await getWarehouses(selectedOption.value);
-        setWarehouses(warehouses.map(warehouse => ({ value: warehouse.Ref, label: warehouse.Description })));
+        setSelectedPostOffice(null);
+        const postOffices = await getPostOffices(selectedOption.value);
+        setPostOffices(postOffices.map(postOffice => ({ value: postOffice.Ref, label: postOffice.Description })));
     };
 
-    const handleWarehouseChange = (selectedOption) => {
-        setSelectedWarehouse(selectedOption);
+    const handlePostOfficesChange = (selectedOption) => {
+        setSelectedPostOffice(selectedOption);
     };
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        if (selectedArea && selectedCity && selectedWarehouse) {
+    useEffect(() => {
+        if (selectedRegion && selectedCity && selectedPostOffice) {
             onAddressSelected({
-                area: selectedArea.label,
+                region: selectedRegion.label,
                 city: selectedCity.label,
-                warehouse: selectedWarehouse.label,
+                postoffice: selectedPostOffice.label,
             });
         }
-    };
+    }, [selectedRegion, selectedCity, selectedPostOffice]);
 
     return (
-        <form className={styles.addressForm} onSubmit={handleSubmit}>
-
+        <form className={styles.addressForm}>
             <Select
                 className={styles.select}
-                value={selectedArea}
-                onChange={handleAreaChange}
-                options={areas}
+                value={selectedRegion}
+                onChange={handleRegionChange}
+                options={regions}
                 placeholder="Виберіть область"
             />
-
             <Select
                 className={styles.select}
                 value={selectedCity}
                 onChange={handleCityChange}
                 options={cities}
                 placeholder="Виберіть місто"
-                isDisabled={!selectedArea}
+                isDisabled={!selectedRegion}
             />
-
             <Select
                 className={styles.select}
-                value={selectedWarehouse}
-                onChange={handleWarehouseChange}
-                options={warehouses}
+                value={selectedPostOffice}
+                onChange={handlePostOfficesChange}
+                options={postOffices}
                 placeholder="Виберіть відділення"
                 isDisabled={!selectedCity}
             />
@@ -83,4 +79,3 @@ const AddressForm = ({ onAddressSelected }) => {
 };
 
 export default AddressForm;
-

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_KEY = '7117ddde34fbe00bfdd633721af85e80'; // Замініть на ваш API ключ
 
-export const getAreas = async () => {
+export const getRegions = async () => {
     const response = await axios.post('https://api.novaposhta.ua/v2.0/json/', {
         "apiKey": API_KEY,
         "modelName": "Address",
@@ -24,7 +24,7 @@ export const getCities = async (areaRef) => {
     return response.data.data;
 };
 
-export const getWarehouses = async (cityRef) => {
+export const getPostOffices = async (cityRef) => {
     const response = await axios.post('https://api.novaposhta.ua/v2.0/json/', {
         "apiKey": API_KEY,
         "modelName": "AddressGeneral",

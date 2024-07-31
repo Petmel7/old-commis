@@ -16,11 +16,11 @@ const OrderList = () => {
         const fetchOrders = async () => {
             try {
                 const fetchedOrders = await getSellerOrders();
-                console.log('OrderList->orders', fetchedOrders);
+                console.log('OrderList->fetchedOrders', fetchedOrders);
                 setOrders(fetchedOrders);
                 setLoading(false);
             } catch (error) {
-                setError(err.message);
+                setError(error.message);
                 setLoading(false);
             }
         }
@@ -29,6 +29,8 @@ const OrderList = () => {
 
     if (loadingErrorComponent) return loadingErrorComponent;
 
+    console.log('OrderList->orders', orders);
+
     return (
         <ul className={styles.orderList}>
             {orders.map(order => (
@@ -36,13 +38,16 @@ const OrderList = () => {
                     <p className={styles.buyerName}>Покупець: {order.buyer_name}</p>
                     <p className={styles.buyerEmail}>Email: {order.buyer_email}</p>
                     <p className={styles.buyerPhone}>Телефон: {order.buyer_phone}</p>
+                    <p className={styles.shippingAddress}>Область: {order.shipping_address.region}</p>
+                    <p className={styles.shippingAddress}>Місто (Село): {order.shipping_address.city}</p>
+                    <p className={styles.shippingAddress}>Адреса: {order.shipping_address.postoffice}</p>
                     <ul className={styles.product}>
                         {order.products.map(product => (
                             <li key={`${order.order_id}-${product.product_name}`}>
-                                <p className={styles.productName}>Назва продукту: {product.product_name}</p>
+                                <img className={styles.productImage} src={`${baseUrl}${product.product_image}`} alt={product.product_name} width="50" />
+                                <p className={styles.productName}>Назва: {product.product_name}</p>
                                 <p className={styles.productPrice}>Ціна: {product.product_price}</p>
                                 <p className={styles.productQuantity}>Кількість: {product.quantity}</p>
-                                <img className={styles.productImage} src={`${baseUrl}${product.product_image}`} alt={product.product_name} width="50" />
                             </li>
                         ))}
                     </ul>
@@ -53,4 +58,5 @@ const OrderList = () => {
 }
 
 export default OrderList;
+
 

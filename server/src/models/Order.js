@@ -21,6 +21,18 @@ const Order = sequelize.define('Order', {
     total: {
         type: DataTypes.FLOAT,
         allowNull: false
+    },
+    region: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    city: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    postoffice: {
+        type: DataTypes.STRING,
+        allowNull: true
     }
 }, {
     timestamps: false,
@@ -28,8 +40,3 @@ const Order = sequelize.define('Order', {
 });
 
 module.exports = Order;
-
-
-
-
-

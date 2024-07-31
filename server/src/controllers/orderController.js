@@ -3,8 +3,10 @@ const { Product, User, Order, OrderItem } = require('../models');
 const transporter = require('../config/emailConfig');
 
 const createOrder = async (req, res) => {
-    const { items } = req.body;
-    console.log('createOrder->items', req.body.items);
+    const { items, address } = req.body;
+    console.log('createOrder->items', items);
+    console.log('createOrder->address', address);
+
     try {
         let total = 0;
         let orderDetails = '';
@@ -28,15 +30,14 @@ const createOrder = async (req, res) => {
                 sellers.add(seller.email);
             }
 
-            orderDetails += `
-                <tr>
+            orderDetails +=
+                `<tr>
                     <td><img src="${productImageURL}" alt="${product.name}" width="50"/></td>
                     <td>${product.name}</td>
                     <td>${item.quantity}</td>
                     <td>${product.price}</td>
                     <td>${seller.name} ${seller.lastname}</td>
-                </tr>
-            `;
+                </tr>`;
         }
 
         if (sellers.size === 0) {
@@ -45,7 +46,10 @@ const createOrder = async (req, res) => {
 
         const order = await Order.create({
             user_id: req.user.id,
-            total
+            total,
+            region: address[0].region,
+            city: address[0].city,
+            postoffice: address[0].postoffice
         });
 
         for (let item of items) {
@@ -84,6 +88,7 @@ const createOrder = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
 
 const deleteOrder = async (req, res) => {
     const { id } = req.params;
@@ -178,6 +183,11 @@ const getSellerOrders = async (req, res) => {
             buyer_name: order.buyer.name,
             buyer_email: order.buyer.email,
             buyer_phone: order.buyer.phone,
+            shipping_address: {
+                region: order.region,
+                city: order.city,
+                postoffice: order.postoffice
+            },
             products: order.OrderItems.map(item => ({
                 product_name: item.Product.name,
                 product_price: item.Product.price,

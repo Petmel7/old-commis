@@ -43,7 +43,7 @@ const PlacingAnOrder = () => {
 
         const orderDetails = {
             items,
-            address,
+            address: [address],
         };
 
         console.log('OrderDetails->orderDetails', orderDetails);
@@ -107,4 +107,6 @@ const PlacingAnOrder = () => {
 }
 
 export default PlacingAnOrder;
+
+
 

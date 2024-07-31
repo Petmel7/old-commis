@@ -44,7 +44,7 @@
 .product li {
     border-top: 1px solid #ddd;
     padding: 8px 0;
-    display: flex;
+    /* display: flex; */
     align-items: center;
 }
 
@@ -72,4 +72,10 @@
     height: auto;
     margin-left: 16px;
     border-radius: 4px;
+}
+
+.shippingAddress {
+    margin: 0.5rem 0;
+    font-size: 1em;
+    color: #666;
 }

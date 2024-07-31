@@ -44,7 +44,3 @@ OrderItem.belongsTo(Order, { foreignKey: 'order_id' });
 OrderItem.belongsTo(Product, { foreignKey: 'product_id' });
 
 module.exports = OrderItem;
-
-
-
-
