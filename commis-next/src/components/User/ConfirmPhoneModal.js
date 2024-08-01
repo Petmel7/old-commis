@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router';
 import React, { useState } from 'react';
+import { useCart } from '@/context/CartContext';
 import { confirmPhone } from '../../services/auth';
 import Modal from '../Modal/Modal';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
@@ -9,6 +10,7 @@ const ConfirmPhoneModal = ({ show, onClose, phone }) => {
     const [confirm, setConfirm] = useState('');
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { cart } = useCart();
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
     const router = useRouter();
@@ -21,7 +23,11 @@ const ConfirmPhoneModal = ({ show, onClose, phone }) => {
         try {
             await confirmPhone({ confirmationcode: confirm });
 
-            router.push('/profile');
+            if (cart) {
+                router.push('/placingAnOrder');
+            } else {
+                router.push('/profile');
+            }
 
             setLoading(false);
         } catch (error) {

@@ -89,7 +89,6 @@ const createOrder = async (req, res) => {
     }
 };
 
-
 const deleteOrder = async (req, res) => {
     const { id } = req.params;
     try {
@@ -158,9 +157,11 @@ const getSellerOrders = async (req, res) => {
             include: [
                 {
                     model: OrderItem,
+                    required: true,  // Це забезпечить, що ми отримаємо тільки ті замовлення, які мають OrderItems
                     include: [
                         {
                             model: Product,
+                            required: true,  // Це забезпечить, що ми отримаємо тільки ті OrderItems, які мають Products
                             where: { user_id: req.user.id },
                             include: [{ model: User, as: 'seller', attributes: ['name', 'email', 'phone'] }]
                         }
@@ -196,6 +197,7 @@ const getSellerOrders = async (req, res) => {
             }))
         }));
 
+        console.log('ordersWithBuyerInfo', ordersWithBuyerInfo);
         res.json(ordersWithBuyerInfo);
     } catch (error) {
         res.status(500).json({ message: error.message });

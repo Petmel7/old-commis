@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { createOrder } from '../../services/order';
 import { baseUrl } from '../Url/baseUrl';
+import { useRouter } from 'next/router';
 import useUserStatus from '../../hooks/useUserStatus';
 import ConfirmEmailModal from '../User/ConfirmEmailModal';
 import AddPhoneNumber from '../User/AddPhoneNumber';
@@ -11,8 +12,9 @@ import AddressForm from './AddressForm';
 import styles from './styles/Cart.module.css';
 
 const PlacingAnOrder = () => {
-    const { cart, increaseQuantity, decreaseQuantity, clearCart } = useCart();
+    const { cart, increaseQuantity, decreaseQuantity } = useCart();
     const [address, setAddress] = useState(null);
+    const router = useRouter();
 
     const {
         loading,
@@ -53,7 +55,7 @@ const PlacingAnOrder = () => {
             console.log('OrderDetails->response', response);
             console.log('handleOrder->response.message', response.message);
 
-            clearCart();
+            router.push('/thanksForTheOrder');
         } catch (error) {
             console.log('OrderDetails->error', error);
         }
@@ -87,7 +89,7 @@ const PlacingAnOrder = () => {
                                     <DeleteOrder productId={item.id} />
                                 </div>
                             </div>
-                            <div className={styles.cartPriceConteaner}>
+                            <div className={styles.cartPriceContainer}>
                                 <p className={styles.itemName}>{item.name}</p>
                                 <span className={styles.cartPrice}>Ціна за одиницю: {item.price}</span>
                                 <span className={styles.totalPrice}>Загальна ціна: {calculateTotalPrice(item)}</span>

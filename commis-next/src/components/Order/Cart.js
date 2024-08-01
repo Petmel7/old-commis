@@ -7,7 +7,6 @@ import { baseUrl } from '../Url/baseUrl';
 import DeleteOrder from './DeleteOrder';
 import styles from './styles/Cart.module.css';
 
-
 const Cart = () => {
     const { cart, increaseQuantity, decreaseQuantity } = useCart();
     const { isAuthenticated } = useAuth();
@@ -52,7 +51,7 @@ const Cart = () => {
                             <DeleteOrder productId={item.id} />
                         </div>
                     </div>
-                    <div className={styles.cartPriceConteaner}>
+                    <div className={styles.cartPriceContainer}>
                         <p className={styles.itemName}>{item.name}</p>
                         <span className={styles.cartPrice}>Ціна за одиницю: {item.price}</span>
                         <span className={styles.totalPrice}>Загальна ціна: {calculateTotalPrice(item)}</span>
