@@ -1,10 +1,11 @@
+
 import React from 'react';
-import AddProduct from '../components/Product/AddProduct';
+import AddOrUpdateProduct from '../components/Product/AddOrUpdateProduct';
 
 function ProductPage() {
     return (
         <div>
-            <AddProduct />
+            <AddOrUpdateProduct />
         </div>
     )
 }

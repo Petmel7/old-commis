@@ -7,7 +7,7 @@ import useUserStatus from '../../hooks/useUserStatus';
 import ConfirmEmailModal from '../User/ConfirmEmailModal';
 import AddPhoneNumber from '../User/AddPhoneNumber';
 import ConfirmPhoneModal from '../User/ConfirmPhoneModal';
-import DeleteOrder from './DeleteOrder';
+import DeleteOrder from './DeleteOrderCart';
 import AddressForm from './AddressForm';
 import styles from './styles/Cart.module.css';
 

@@ -1,8 +1,9 @@
-import { useCart } from '../../context/CartContext';
+
+import { useCart } from '@/context/CartContext';
 import DeleteIcon from '../../../public/img/delete.svg';
 import styles from './styles/Cart.module.css';
 
-const DeleteOrder = ({ productId }) => {
+const DeleteOrderCart = ({ productId }) => {
 
     const { removeFromCart } = useCart();
 
@@ -18,4 +19,4 @@ const DeleteOrder = ({ productId }) => {
     )
 }
 
-export default DeleteOrder;
+export default DeleteOrderCart;

@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { baseUrl } from '../Url/baseUrl';
-import DeleteOrder from './DeleteOrder';
+import DeleteOrderCart from './DeleteOrderCart';
 import styles from './styles/Cart.module.css';
 
 const Cart = () => {
@@ -48,7 +48,7 @@ const Cart = () => {
                                 <button className={styles.quantityButton} onClick={() => increaseQuantity(item.id)}>+</button>
                             </div>
 
-                            <DeleteOrder productId={item.id} />
+                            <DeleteOrderCart productId={item.id} />
                         </div>
                     </div>
                     <div className={styles.cartPriceContainer}>

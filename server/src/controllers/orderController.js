@@ -176,7 +176,7 @@ const getSellerOrders = async (req, res) => {
         });
 
         if (sellerOrders.length === 0) {
-            return res.status(404).json({ message: 'No orders found' });
+            return res.json([]);
         }
 
         const ordersWithBuyerInfo = sellerOrders.map(order => ({
@@ -197,7 +197,6 @@ const getSellerOrders = async (req, res) => {
             }))
         }));
 
-        console.log('ordersWithBuyerInfo', ordersWithBuyerInfo);
         res.json(ordersWithBuyerInfo);
     } catch (error) {
         res.status(500).json({ message: error.message });

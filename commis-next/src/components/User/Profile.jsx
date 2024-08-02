@@ -1,9 +1,9 @@
 
 import Link from 'next/link';
 import React from 'react';
-import ConfirmEmailModal from '../User/ConfirmEmailModal';
-import AddPhoneNumber from '../User/AddPhoneNumber';
-import ConfirmPhoneModal from '../User/ConfirmPhoneModal';
+import ConfirmEmailModal from './ConfirmEmailModal';
+import AddPhoneNumber from './AddPhoneNumber';
+import ConfirmPhoneModal from './ConfirmPhoneModal';
 import useUserStatus from '../../hooks/useUserStatus';
 import styles from './styles/Profile.module.css';
 
@@ -36,7 +36,7 @@ const Profile = () => {
                             <Link href='/product'>Додати продукт</Link>
                         </li>
                         <li>
-                            <Link href='/myProducts'>Мої продукти</Link>
+                            <Link href='/userProducts'>Мої продукти</Link>
                         </li>
                         <li>
                             <Link href='/orderList'>Замовлення</Link>

@@ -12,8 +12,8 @@ export const getSellerOrders = async () => {
     return response.data;
 };
 
-// export const deleteOrder = async (orderId) => {
-//     const response = await api.delete(`/orders/${orderId}`);
-//     console.log('deleteOrder->response', response);
-//     return response.data;
-// };
+export const deleteOrder = async (orderId) => {
+    const response = await api.delete(`/orders/${orderId}`);
+    console.log('deleteOrder->response', response);
+    return response.data;
+};

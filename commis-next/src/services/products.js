@@ -5,6 +5,11 @@ export const getProducts = async () => {
     return response.data;
 };
 
+export const getProductById = async (productId) => {
+    const response = await api.get(`/products/${productId}`);
+    return response.data;
+};
+
 export const getUserProducts = async (accessToken) => {
     const response = await api.get('/products', {
         headers: {
@@ -14,11 +19,21 @@ export const getUserProducts = async (accessToken) => {
     return response.data;
 };
 
-export const addProducts = async (formData) => {
+export const addProduct = async (formData) => {
     const response = await api.post('/products', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
     });
+    return response.data;
+};
+
+export const updateProduct = async (productId, productData) => {
+    const response = await api.patch(`/products/${productId}`, productData);
+    return response.data;
+};
+
+export const deleteProduct = async (productId) => {
+    const response = await api.delete(`/products/${productId}`);
     return response.data;
 };
