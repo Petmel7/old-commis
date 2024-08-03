@@ -44,7 +44,7 @@ const UserProducts = () => {
                         <p className={styles.productCardPrice}>Ціна: {product.price} грн</p>
                         <DeleteProduct productId={product.id} fetchProducts={fetchProducts} />
                         <Link href={`/product/${product.id}`}>
-                            <button >Оновити</button>
+                            <button className={styles.productCardButton}>Редагувати</button>
                         </Link>
                     </div>
                 </li>

@@ -1,6 +1,8 @@
 import { deleteProduct } from '../../services/products';
+import styles from './styles/DeleteProduct.module.css';
 
 const DeleteProduct = ({ productId, fetchProducts }) => {
+
     const handleDeleteProduct = async (e) => {
         e.preventDefault();
         try {
@@ -11,7 +13,7 @@ const DeleteProduct = ({ productId, fetchProducts }) => {
         }
     }
     return (
-        <button onClick={handleDeleteProduct}>Видалити</button>
+        <button className={styles.deleteProduct} onClick={handleDeleteProduct}>Видалити</button>
     )
 }
 

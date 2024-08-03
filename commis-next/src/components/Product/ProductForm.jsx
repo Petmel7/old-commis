@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { baseUrl } from '../Url/baseUrl';
 import styles from './styles/ProductForm.module.css';
 
 const ProductForm = ({ initialData = {}, onSubmit }) => {
@@ -7,30 +8,34 @@ const ProductForm = ({ initialData = {}, onSubmit }) => {
     const [description, setDescription] = useState(initialData.description || '');
     const [price, setPrice] = useState(initialData.price || '');
     const [stock, setStock] = useState(initialData.stock || '');
-    const [image, setImage] = useState(initialData.image || null);
+    const [image, setImage] = useState(null);
+    const [imagePreview, setImagePreview] = useState(initialData.image ? `${baseUrl}${initialData.image}` : '');
 
     useEffect(() => {
         setName(initialData.name || '');
         setDescription(initialData.description || '');
         setPrice(initialData.price || '');
         setStock(initialData.stock || '');
-        setImage(initialData.image || null);
-    }, [initialData]);
+        setImagePreview(initialData.image ? `${baseUrl}${initialData.image}` : '');
+    }, [initialData, baseUrl]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const productData = {
-            name,
-            description,
-            price,
-            stock,
-            image
-        };
+        const productData = new FormData();
+        productData.append('name', name);
+        productData.append('description', description);
+        productData.append('price', price);
+        productData.append('stock', stock);
+        if (image) {
+            productData.append('image', image);
+        }
         onSubmit(productData);
     };
 
     const handleImageChange = (e) => {
-        setImage(e.target.files[0]);
+        const file = e.target.files[0];
+        setImage(file);
+        setImagePreview(URL.createObjectURL(file));
     };
 
     return (
@@ -81,6 +86,9 @@ const ProductForm = ({ initialData = {}, onSubmit }) => {
                     onChange={handleImageChange}
                     required={!initialData.image}
                 />
+                {imagePreview && (
+                    <img src={imagePreview} alt="Image Preview" className={styles.imagePreview} />
+                )}
             </div>
             <button type="submit">{initialData.id ? 'Оновити' : 'Додати'} продукт</button>
         </form>
@@ -88,3 +96,4 @@ const ProductForm = ({ initialData = {}, onSubmit }) => {
 };
 
 export default ProductForm;
+

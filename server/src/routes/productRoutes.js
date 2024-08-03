@@ -5,14 +5,15 @@ const { protect } = require('../middleware/authMiddleware');
 const upload = require('../config/multerConfig');
 const router = express.Router();
 
-router.get('/', protect, getUserProducts); // Змінено для отримання продуктів конкретного користувача
-router.get('/all', getProducts); // Новий маршрут для отримання всіх продуктів (опціонально)
+router.get('/', protect, getUserProducts);
+router.get('/all', getProducts);
 router.get('/:id', getProductById);
 router.post('/', protect, upload.single('image'), addProduct);
 router.patch('/:id', protect, upload.single('image'), updateProduct);
 router.delete('/:id', protect, deleteProduct);
 
 module.exports = router;
+
 
 
 

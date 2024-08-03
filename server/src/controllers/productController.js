@@ -57,20 +57,32 @@ const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, description, price, stock } = req.body;
     const image = req.file ? req.file.path : null;
+
     try {
         const product = await Product.findByPk(id);
+
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
+
         if (product.user_id !== req.user.id) {
             return res.status(403).json({ message: 'Not authorized to update this product' });
         }
-        await product.update({ name, description, price, stock, image });
+
+        const updateData = { name, description, price, stock };
+
+        if (image) {
+            updateData.image = image;
+        }
+
+        await product.update(updateData);
         res.json({ message: 'Product updated successfully', product });
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
+
+module.exports = updateProduct;
 
 const deleteProduct = async (req, res) => {
     const { id } = req.params;
