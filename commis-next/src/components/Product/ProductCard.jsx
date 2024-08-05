@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/router';
+import Link from 'next/link';
 import { useCart } from '../../context/CartContext';
 import { baseUrl } from '../Url/baseUrl';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
@@ -32,9 +33,11 @@ const ProductCard = ({ product }) => {
 
     return (
         <div className={styles.productCard}>
-            <div className={styles.productCardImageContainer}>
-                <img className={styles.productCardImage} src={`${baseUrl}${product.image}`} alt={product.name} />
-            </div>
+            <Link href={`products/details${product.id}`}>
+                <div className={styles.productCardImageContainer}>
+                    <img className={styles.productCardImage} src={`${baseUrl}${product.image}`} alt={product.name} />
+                </div>
+            </Link>
             <h2 className={styles.productCardName}>{product.name}</h2>
             <p className={styles.productCardDescription}>{product.description}</p>
             <p className={styles.productCardPrice}>Ціна: {product.price} грн</p>
@@ -44,4 +47,9 @@ const ProductCard = ({ product }) => {
 };
 
 export default ProductCard;
+
+
+
+
+
 
