@@ -35,7 +35,7 @@ const getProductById = async (req, res) => {
 
 const addProduct = async (req, res) => {
     const { name, description, price, stock } = req.body;
-    const image = req.file ? req.file.filename : null;
+    const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
 
     try {
         const product = await Product.create({
@@ -44,7 +44,7 @@ const addProduct = async (req, res) => {
             description,
             price,
             stock,
-            image: image ? path.join('uploads', image) : null
+            images: images.length ? images : null
         });
 
         res.status(201).json({ message: 'Product added successfully', product });
@@ -56,7 +56,7 @@ const addProduct = async (req, res) => {
 const updateProduct = async (req, res) => {
     const { id } = req.params;
     const { name, description, price, stock } = req.body;
-    const image = req.file ? req.file.path : null;
+    const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : null;
 
     try {
         const product = await Product.findByPk(id);
@@ -71,8 +71,8 @@ const updateProduct = async (req, res) => {
 
         const updateData = { name, description, price, stock };
 
-        if (image) {
-            updateData.image = image;
+        if (images) {
+            updateData.images = images;
         }
 
         await product.update(updateData);
@@ -81,8 +81,6 @@ const updateProduct = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-module.exports = updateProduct;
 
 const deleteProduct = async (req, res) => {
     const { id } = req.params;

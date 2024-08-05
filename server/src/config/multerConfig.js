@@ -1,10 +1,8 @@
 
-// server/src/config/multerConfig.js
 const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 
-// Переконайтеся, що папка uploads існує
 const uploadsDir = path.join(__dirname, '../../uploads');
 if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
@@ -20,24 +18,22 @@ const storage = multer.diskStorage({
     }
 });
 
-// Фільтрація файлів за типом
 const fileFilter = (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png/;
-    const mimetype = filetypes.test(file.mimetype);
-    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
-
-    if (mimetype && extname) {
-        return cb(null, true);
+    const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png'];
+    if (!allowedTypes.includes(file.mimetype)) {
+        const error = new Error('Wrong file type');
+        error.code = 'LIMIT_FILE_TYPES';
+        return cb(error, false);
     }
-    cb(new Error('File type not supported'));
+    cb(null, true);
 };
 
 const upload = multer({
     storage,
     fileFilter,
-    limits: { fileSize: 1024 * 1024 * 5 } // обмеження на розмір файлу 5MB
+    limits: {
+        fileSize: 5000000, // 5 MB
+    },
 });
 
 module.exports = upload;
-
-

@@ -1,35 +1,36 @@
-import { useState, useRouter } from "next/router";
-import { useEffect } from "react";
+
+import React, { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { getProductById } from '../../services/products';
-import { baseUrl } from '../../components/Url/baseUrl';
+import { baseUrl } from '../Url/baseUrl';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
-import styles from '../../components/Product/styles/ProductDetails.module.css';
+import styles from './styles/ProductDetails.module.css';
 
 const ProductDetails = () => {
-    const [product, setProduct] = useState();
+    const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const router = useRouter();
-    const { productDetailsId } = router.query;
+    const { productId } = router.query;
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {
-        if (productDetailsId) {
+        if (productId) {
             const fetchProductById = async () => {
                 try {
-                    const productData = await getProductById(productDetailsId);
+                    const productData = await getProductById(productId);
                     setProduct(productData);
                     setLoading(false);
                 } catch (error) {
                     setError(error.message);
                     setLoading(false);
                 }
-            }
+            };
 
             fetchProductById();
         }
-    }, [productDetailsId]);
+    }, [productId]);
 
     if (loadingErrorComponent) return loadingErrorComponent;
 
@@ -42,7 +43,7 @@ const ProductDetails = () => {
             <p className={styles.productDescription}>{product.description}</p>
             <p className={styles.productPrice}>Ціна: {product.price} грн</p>
         </div>
-    )
-}
+    );
+};
 
 export default ProductDetails;

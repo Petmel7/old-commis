@@ -1,3 +1,11 @@
 import AddOrUpdateProduct from "@/components/Product/AddOrUpdateProduct";
 
-export default AddOrUpdateProduct;
+function AddOrUpdateProductPage() {
+    return (
+        <div>
+            <AddOrUpdateProduct />
+        </div>
+    )
+}
+
+export default AddOrUpdateProductPage;

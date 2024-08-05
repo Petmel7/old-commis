@@ -1,3 +1,9 @@
 import ProductDetails from "@/components/Product/ProductDetails";
 
-export default ProductDetails;
+function ProductDetailsPage() {
+    return (
+        <ProductDetails />
+    )
+}
+
+export default ProductDetailsPage;

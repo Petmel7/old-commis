@@ -8,14 +8,10 @@ const router = express.Router();
 router.get('/', protect, getUserProducts);
 router.get('/all', getProducts);
 router.get('/:id', getProductById);
-router.post('/', protect, upload.single('image'), addProduct);
-router.patch('/:id', protect, upload.single('image'), updateProduct);
+router.post('/', protect, upload.array('images', 10), addProduct);
+router.patch('/:id', protect, upload.array('images', 10), updateProduct);
 router.delete('/:id', protect, deleteProduct);
 
 module.exports = router;
-
-
-
-
 
 

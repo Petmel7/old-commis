@@ -15,6 +15,7 @@ const Home = () => {
         const fetchProducts = async () => {
             try {
                 const data = await getProducts();
+                console.log('Home->data', data);
                 setProducts(data);
                 setLoading(false);
             } catch (error) {
