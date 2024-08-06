@@ -20,6 +20,7 @@ export const getUserProducts = async (accessToken) => {
 };
 
 export const addProduct = async (formData) => {
+    console.log('addProduct->formData', formData);
     const response = await api.post('/products', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -35,5 +36,10 @@ export const updateProduct = async (productId, productData) => {
 
 export const deleteProduct = async (productId) => {
     const response = await api.delete(`/products/${productId}`);
+    return response.data;
+};
+
+export const deleteImage = async (productId, index) => {
+    const response = await api.delete(`/products/${productId}/images/${index}`);
     return response.data;
 };

@@ -33,7 +33,7 @@ const Profile = () => {
                     </div>
                     <ul className={styles.profileLinks}>
                         <li>
-                            <Link href='/product'>Додати продукт</Link>
+                            <Link href='/productAdd'>Додати продукт</Link>
                         </li>
                         <li>
                             <Link href='/userProducts'>Мої продукти</Link>

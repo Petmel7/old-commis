@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import Slider from 'react-slick';
 import { useRouter } from 'next/router';
 import { getProductById } from '../../services/products';
 import { baseUrl } from '../Url/baseUrl';
@@ -36,9 +37,23 @@ const ProductDetails = () => {
 
     if (!product) return <p>Продукт не знайдено</p>;
 
+    const settings = {
+        dots: true,
+        infinite: true,
+        speed: 500,
+        slidesToShow: 1,
+        slidesToScroll: 1
+    };
+
     return (
         <div className={styles.productDetails}>
-            <img className={styles.productImage} src={`${baseUrl}${product.image}`} alt={product.name} />
+            <Slider {...settings} className={styles.slider}>
+                {product.images.map((image, index) => (
+                    <div key={index} className={styles.imageContainer}>
+                        <img className={styles.productImage} src={`${baseUrl}${image}`} alt={product.name} />
+                    </div>
+                ))}
+            </Slider>
             <h1 className={styles.productName}>{product.name}</h1>
             <p className={styles.productDescription}>{product.description}</p>
             <p className={styles.productPrice}>Ціна: {product.price} грн</p>
@@ -47,3 +62,4 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
+

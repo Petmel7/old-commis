@@ -27,6 +27,7 @@ const AddOrUpdateProduct = () => {
             console.log('updateProduct->productData', productData);
         } else {
             await addProduct(productData);
+            console.log('addProduct->productData', productData);
         }
         router.push('/userProducts');
     };
