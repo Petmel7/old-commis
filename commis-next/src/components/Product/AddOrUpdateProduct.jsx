@@ -10,13 +10,15 @@ const AddOrUpdateProduct = () => {
     const { productId } = router.query;
     const [initialData, setInitialData] = useState({});
 
+    const fetchProduct = async () => {
+        const productData = await getProductById(productId);
+        setInitialData(productData);
+        console.log('fetchProduct->productData', productData);
+    };
+
     useEffect(() => {
         if (productId) {
-            const fetchProduct = async () => {
-                const productData = await getProductById(productId);
-                setInitialData(productData);
-                console.log('fetchProduct->productData', productData);
-            };
+
             fetchProduct();
         }
     }, [productId]);
@@ -34,7 +36,7 @@ const AddOrUpdateProduct = () => {
 
     return (
         <div className={styles.container}>
-            <ProductForm initialData={initialData} onSubmit={handleSubmit} />
+            <ProductForm initialData={initialData} fetchProduct={fetchProduct} onSubmit={handleSubmit} />
         </div>
     );
 };

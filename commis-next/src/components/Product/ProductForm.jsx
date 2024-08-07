@@ -4,7 +4,7 @@ import { baseUrl } from '../Url/baseUrl';
 import DeleteImage from './DeleteImage';
 import styles from './styles/ProductForm.module.css';
 
-const ProductForm = ({ initialData = {}, onSubmit }) => {
+const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [name, setName] = useState(initialData.name || '');
     const [description, setDescription] = useState(initialData.description || '');
     const [price, setPrice] = useState(initialData.price || '');
@@ -45,6 +45,13 @@ const ProductForm = ({ initialData = {}, onSubmit }) => {
         const previews = files.map(file => URL.createObjectURL(file));
         setImagePreviews(previews);
     };
+
+    const handleRemoveImage = (index) => {
+        setImages(prevImages => prevImages.filter((_, i) => i !== index));
+        setImagePreviews(prevPreviews => prevPreviews.filter((_, i) => i !== index));
+    };
+
+    console.log('ProductForm->imagePreviews', imagePreviews);
 
     return (
         <form className={styles.form} onSubmit={handleSubmit}>
@@ -99,7 +106,11 @@ const ProductForm = ({ initialData = {}, onSubmit }) => {
                     {imagePreviews.map((preview, index) => (
                         <li key={index}>
                             <img src={preview} alt="Image Preview" className={styles.imagePreview} />
-                            <DeleteImage productId={initialData.id} index={index} />
+                            {initialData.id ? (
+                                <DeleteImage productId={initialData.id} index={index} fetchProduct={fetchProduct} />
+                            ) : (
+                                <button type="button" onClick={() => handleRemoveImage(index)}>Видалити</button>
+                            )}
                         </li>
                     ))}
                 </ul>

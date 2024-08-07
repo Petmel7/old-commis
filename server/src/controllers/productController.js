@@ -100,74 +100,36 @@ const deleteProduct = async (req, res) => {
     }
 };
 
-// const deleteImage = async (req, res) => {
-//     const { id, imageIndex } = req.params; // Отримуємо id продукту та індекс зображення
-
-//     try {
-//         const product = await Product.findByPk(id);
-
-//         if (!product) {
-//             return res.status(404).json({ message: 'Product not found' });
-//         }
-
-//         if (product.user_id !== req.user.id) {
-//             return res.status(403).json({ message: 'Not authorized to update this product' });
-//         }
-
-//         if (imageIndex < 0 || imageIndex >= product.images.length) {
-//             return res.status(400).json({ message: 'Invalid image index' });
-//         }
-
-//         // Видаляємо зображення з файлової системи
-//         const imagePath = path.join(__dirname, '../../uploads', path.basename(product.images[imageIndex]));
-//         if (fs.existsSync(imagePath)) {
-//             fs.unlinkSync(imagePath);
-//         }
-
-//         // Видаляємо зображення з масиву
-//         product.images.splice(imageIndex, 1);
-//         await product.save();
-
-//         res.json({ message: 'Image deleted successfully', product });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
 const deleteImage = async (req, res) => {
-    const { id, imageIndex } = req.params;
-
     try {
+        const { id } = req.params;
+        const { indices } = req.body;
+
         const product = await Product.findByPk(id);
 
         if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
+            return res.status(404).send('Product not found');
         }
 
-        if (product.user_id !== req.user.id) {
-            return res.status(403).json({ message: 'Not authorized to update this product' });
-        }
+        // Знаходження файлів для видалення за індексами
+        const filesToDelete = indices.map(index => product.images[index]).filter(Boolean);
 
-        const images = product.images;
+        // Видалення файлів
+        filesToDelete.forEach(imagePath => {
+            const fullPath = path.join(__dirname, '..', '..', imagePath);
+            if (fs.existsSync(fullPath)) {
+                fs.unlinkSync(fullPath);
+            }
+        });
 
-        if (imageIndex < 0 || imageIndex >= images.length) {
-            return res.status(400).json({ message: 'Invalid image index' });
-        }
-
-        const imagePath = path.join(__dirname, '../../uploads', path.basename(images[imageIndex]));
-        if (fs.existsSync(imagePath)) {
-            fs.unlinkSync(imagePath);
-        }
-
-        images.splice(imageIndex, 1);
-
-        // Збереження зміненого масиву images
-        product.images = images;
+        // Оновлення масиву images продукту
+        product.images = product.images.filter((image, index) => !indices.includes(index));
         await product.save();
 
-        res.json({ message: 'Image deleted successfully', product });
+        res.send('Images deleted successfully');
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        console.error(error);
+        res.status(500).send('Server error');
     }
 };
 

@@ -39,7 +39,11 @@ export const deleteProduct = async (productId) => {
     return response.data;
 };
 
-export const deleteImage = async (productId, index) => {
-    const response = await api.delete(`/products/${productId}/images/${index}`);
+export const deleteImage = async (productId, indices) => {
+    console.log('deleteImage->productId-indices', productId, indices);
+    const response = await api.delete(`/products/${productId}/images`, {
+        data: { indices }
+    });
+    console.log('deleteImage->response', response);
     return response.data;
 };
