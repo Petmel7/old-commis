@@ -1,29 +1,49 @@
+/* UserProducts.module.css */
+
+.productList {
+    display: flex;
+    flex-wrap: wrap;
+    /* Елементи переносяться на новий ряд, якщо не вміщаються */
+    gap: 5px;
+    /* Відступи між елементами */
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    /* Вимикає стандартний список */
+    justify-content: center;
+    /* Центрує елементи по горизонталі */
+}
+
 .productItem {
-    flex: 1 1 calc(33.333% - 16px);
+    flex: 1 1 calc(33.333% - 32px);
+    /* Ширина елемента: 1/3 контейнера мінус відступи */
     box-sizing: border-box;
+    /* Враховує відступи та рамки в ширині */
+    margin: 8px;
+    /* Відступи між елементами */
+    min-width: 150px;
+    /* Мінімальна ширина елементу */
 }
 
 .productCard {
-    background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     padding: 16px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    background-color: #fff;
+    border-radius: 4px;
+    text-align: center;
+    transition: box-shadow 0.3s;
 }
 
-.slider {
-    width: 100%;
-    margin-bottom: 16px;
+.productCard:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* Ефект тіні при наведенні */
 }
 
 .imageContainer {
     width: 100%;
-    position: relative;
     padding-top: 75%;
-    /* Регулюйте співвідношення сторін за необхідністю */
+    /* Зберігає пропорції зображення 4:3 */
+    position: relative;
 }
 
 .productImage {
@@ -32,26 +52,18 @@
     left: 0;
     width: 100%;
     height: 100%;
-    object-fit: contain;
-    border-radius: 8px;
+    object-fit: cover;
+    /* Масштабує зображення, зберігаючи пропорції */
+    border-radius: 4px;
 }
 
 .productName {
-    font-size: 1.25em;
-    margin: 16px 0;
-    text-align: center;
-}
-
-.productDescription {
-    font-size: 1em;
-    color: #666;
-    margin-bottom: 16px;
-    text-align: center;
+    font-size: 1rem;
+    margin: 12px 0;
+    color: #333;
 }
 
 .productPrice {
-    font-size: 1.2em;
-    font-weight: bold;
-    color: #333;
-    margin-bottom: 16px;
+    font-size: 0.875rem;
+    color: #777;
 }

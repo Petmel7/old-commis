@@ -7,6 +7,7 @@ const DeleteProduct = ({ productId, fetchProducts }) => {
         e.preventDefault();
         try {
             await deleteProduct(productId);
+            console.log('DeleteProduct->productId', DeleteProduct)
             fetchProducts();
         } catch (error) {
             console.log('handleDeleteProduct->error', error);

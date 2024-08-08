@@ -1,37 +1,17 @@
 
-import React, { useState, useEffect } from 'react';
 import Slider from 'react-slick';
 import { useRouter } from 'next/router';
-import { getProductById } from '../../services/products';
 import { baseUrl } from '../Url/baseUrl';
+import useProduct from '@/hooks/useProduct';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/ProductDetails.module.css';
 
 const ProductDetails = () => {
-    const [product, setProduct] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
     const router = useRouter();
     const { productId } = router.query;
 
+    const { product, loading, error } = useProduct(productId);
     const loadingErrorComponent = useLoadingAndError(loading, error);
-
-    useEffect(() => {
-        if (productId) {
-            const fetchProductById = async () => {
-                try {
-                    const productData = await getProductById(productId);
-                    setProduct(productData);
-                    setLoading(false);
-                } catch (error) {
-                    setError(error.message);
-                    setLoading(false);
-                }
-            };
-
-            fetchProductById();
-        }
-    }, [productId]);
 
     if (loadingErrorComponent) return loadingErrorComponent;
 
@@ -39,7 +19,7 @@ const ProductDetails = () => {
 
     const settings = {
         dots: true,
-        infinite: true,
+        infinite: false,
         speed: 500,
         slidesToShow: 1,
         slidesToScroll: 1
@@ -62,4 +42,3 @@ const ProductDetails = () => {
 };
 
 export default ProductDetails;
-

@@ -54,3 +54,14 @@
     border: 1px solid #ccc;
     border-radius: 4px;
 }
+
+.imagesContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.deleteImageForm,
+.deleteImageForm:hover {
+    background: none;
+}

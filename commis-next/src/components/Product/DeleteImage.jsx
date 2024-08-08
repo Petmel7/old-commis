@@ -1,5 +1,7 @@
 
 import { deleteImage } from '../../services/products';
+import DeleteIcon from '../../../public/img/delete.svg';
+import styles from './styles/ProductForm.module.css';
 
 const DeleteImage = ({ productId, index, fetchProduct }) => {
 
@@ -17,7 +19,9 @@ const DeleteImage = ({ productId, index, fetchProduct }) => {
     }
 
     return (
-        <button onClick={handleDeleteImage}>Delete</button>
+        <button className={styles.deleteImageForm} onClick={handleDeleteImage}>
+            <DeleteIcon />
+        </button>
     )
 }
 
