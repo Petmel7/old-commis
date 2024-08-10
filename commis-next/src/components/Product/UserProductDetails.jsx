@@ -5,6 +5,7 @@ import { baseUrl } from '../Url/baseUrl';
 import useProduct from '@/hooks/useProduct';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import DeleteProduct from './DeleteProduct';
+import BackButton from '../BackButton/BackButton';
 import Slider from 'react-slick';
 import styles from './styles/UserProductDetails.module.css';
 
@@ -31,6 +32,7 @@ const UserProductDetails = () => {
 
     return (
         <div className={styles.productDetails}>
+            <BackButton />
             {[product].map(product => (
                 <div key={product.id} className={styles.productCard}>
                     <Slider {...settings} className={styles.slider}>

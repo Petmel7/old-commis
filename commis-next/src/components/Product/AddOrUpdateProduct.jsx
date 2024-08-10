@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import ProductForm from './ProductForm';
 import { addProduct, updateProduct, getProductById } from '../../services/products';
+import BackButton from '../BackButton/BackButton';
 import styles from './styles/ProductForm.module.css';
 
 const AddOrUpdateProduct = () => {
@@ -35,9 +36,12 @@ const AddOrUpdateProduct = () => {
     };
 
     return (
-        <div className={styles.container}>
-            <ProductForm initialData={initialData} fetchProduct={fetchProduct} onSubmit={handleSubmit} />
-        </div>
+        <>
+            <BackButton />
+            <div className={styles.container}>
+                <ProductForm initialData={initialData} fetchProduct={fetchProduct} onSubmit={handleSubmit} />
+            </div>
+        </>
     );
 };
 

@@ -1,81 +1,74 @@
-/* Загальні стилі для списку замовлень */
 .orderList {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
 }
 
-/* Стиль для кожного замовлення */
 .orderItem {
     border: 1px solid #ddd;
-    padding: 16px;
-    margin-bottom: 16px;
-    border-radius: 8px;
+    padding: 20px;
     background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease-in-out;
 }
 
-/* Стиль для імені покупця */
-.buyerName {
-    font-size: 18px;
+.orderItem:hover {
+    transform: translateY(-3px);
+}
+
+.orderTitle {
+    font-size: 1.25rem;
+    color: #333;
+    margin-bottom: 10px;
     font-weight: bold;
-    margin-bottom: 8px;
+    border-bottom: 2px solid #0070f3;
+    padding-bottom: 5px;
 }
 
-/* Стиль для електронної пошти покупця */
-.buyerEmail {
-    font-size: 16px;
-    margin-bottom: 8px;
+.orderReplica {
+    font-size: 1rem;
+    color: #555;
+    margin: 10px 0;
 }
 
-/* Стиль для телефону покупця */
-.buyerPhone {
-    font-size: 16px;
-    margin-bottom: 16px;
+.orderReplica span {
+    font-weight: bold;
+    color: #000;
 }
 
-/* Стиль для списку продуктів всередині замовлення */
-.product {
-    list-style-type: none;
-    padding: 0;
-    margin: 0;
-}
-
-/* Стиль для кожного продукту */
-.product li {
-    border-top: 1px solid #ddd;
-    padding: 8px 0;
-    /* display: flex; */
-    align-items: center;
-}
-
-/* Стиль для імені продукту */
-.productName {
-    font-size: 16px;
-    flex: 1;
-}
-
-/* Стиль для ціни продукту */
-.productPrice {
-    font-size: 16px;
-    flex: 1;
-}
-
-/* Стиль для кількості продукту */
+.orderName,
+.orderEmail,
+.orderPhone,
+.orderShipping,
+.productName,
+.productPrice,
 .productQuantity {
-    font-size: 16px;
-    flex: 1;
+    margin-left: 5px;
 }
 
-/* Стиль для зображення продукту */
+.product {
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
 .productImage {
+    border-radius: 4px;
+    object-fit: cover;
     width: 50px;
-    height: auto;
-    margin-left: 16px;
+    height: 50px;
+}
+
+.productImageModal {
+    width: 200px;
+    background-image: url('');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
     border-radius: 4px;
 }
 
-.shippingAddress {
-    margin: 0.5rem 0;
-    font-size: 1em;
-    color: #666;
+.productImageButton,
+.productImageButton:hover {
+    background: none;
 }

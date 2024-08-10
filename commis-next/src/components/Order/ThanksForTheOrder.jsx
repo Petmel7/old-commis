@@ -38,7 +38,7 @@ const ThanksForTheOrder = () => {
             {cart.map(item => (
                 <div className={styles.cartContainer} key={item.id}>
                     <div className={styles.cartImageContainer}>
-                        <img className={styles.cartImage} src={`${baseUrl}${item.image}`} alt={item.name} />
+                        <img className={styles.cartImage} src={`${baseUrl}${item.images[0]}`} alt={item.name} />
                     </div>
                     <div className={styles.cartPriceContainer}>
                         <p className={styles.itemName}>{item.name}</p>

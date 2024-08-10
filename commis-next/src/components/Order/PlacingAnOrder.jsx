@@ -17,8 +17,6 @@ const PlacingAnOrder = () => {
     const router = useRouter();
 
     const {
-        loading,
-        error,
         user,
         loadingErrorComponent,
         isEmailModalOpen,
@@ -76,7 +74,7 @@ const PlacingAnOrder = () => {
                         <div className={styles.cartContainer} key={item.id}>
                             <div className={styles.cartItem}>
                                 <div>
-                                    <img className={styles.cartImage} src={`${baseUrl}${item.image}`} alt={item.name} />
+                                    <img className={styles.cartImage} src={`${baseUrl}${item.images[0]}`} alt={item.name} />
                                 </div>
 
                                 <div className={styles.quantityContainer}>

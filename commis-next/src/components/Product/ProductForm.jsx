@@ -120,7 +120,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
                     ))}
                 </ul>
             </div>
-            <button type="submit">{initialData.id ? 'Оновити' : 'Додати'} продукт</button>
+            <button type="submit">{initialData.id ? 'Редагувати' : 'Додати'}</button>
         </form >
     );
 };

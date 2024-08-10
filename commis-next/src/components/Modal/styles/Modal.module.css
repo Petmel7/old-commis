@@ -19,6 +19,8 @@
     max-width: 300px;
     width: 100%;
     position: relative;
+
+    box-sizing: border-box;
 }
 
 .modalOnClose {
