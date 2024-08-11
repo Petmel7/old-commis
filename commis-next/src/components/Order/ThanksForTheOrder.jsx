@@ -31,7 +31,7 @@ const ThanksForTheOrder = () => {
     };
 
     return (
-        <div>
+        <div className={styles.container}>
             <h3 className={styles.cartTitle}>Дякую за покупку!</h3>
             <p className={styles.cartTitle}>Скоро з вами зв'яжеться продавець</p>
             <p className={styles.cartTitle}>Ваше замовлення</p>

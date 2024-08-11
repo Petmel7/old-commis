@@ -42,6 +42,10 @@
     padding: 0;
 }
 
+.modalContainer {
+    padding: 20px;
+}
+
 .modalButtons {
     display: flex;
     justify-content: space-around;

@@ -40,11 +40,14 @@ const ConfirmPhoneModal = ({ show, onClose, phone }) => {
     if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
-        <Modal show={show} onClose={onClose} title="Підтвердіть номер телефону">
-            <div className={styles.confirmPhoneContent}>
-                <p>Ми надіслали код підтвердження на номер: {phone}</p>
-                <input className={styles.authInput} type="number" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Введіть код" />
-                <button className={styles.authButton} onClick={handleConfirm}>Підтвердити</button>
+        <Modal show={show} onClose={onClose} >
+            <div className={styles.modalContainer}>
+                <h3>Підтвердіть номер телефону</h3>
+                <div className={styles.confirmPhoneContent}>
+                    <p>Ми надіслали код підтвердження на номер: {phone}</p>
+                    <input className={styles.authInput} type="number" value={confirm} onChange={e => setConfirm(e.target.value)} placeholder="Введіть код" />
+                    <button className={styles.authButton} onClick={handleConfirm}>Підтвердити</button>
+                </div>
             </div>
         </Modal>
     );

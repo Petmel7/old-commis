@@ -1,6 +1,6 @@
 .container {
     padding: 20px;
-    max-width: 800px;
+    max-width: 500px;
     margin: 0 auto;
     background-color: #f9f9f9;
     border-radius: 8px;
@@ -30,9 +30,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    /* опціонально, якщо потрібно вертикальне вирівнювання */
     margin-bottom: 1rem;
-    /* можна додати відступ знизу для візуального розділення */
 }
 
 .cartImage {
@@ -62,9 +60,16 @@
 
 .quantityButtonContainer {
     display: flex;
+    justify-content: center;
+    align-items: center;
     border-radius: 50px;
     margin-right: 10px;
-    background-color: rgba(148, 102, 255, 1);
+    background-color: #7F8C8D;
+}
+
+.quantityButtonContainer:hover {
+    /* background-color: #566573; */
+    background-color: #7F8C8D;
 }
 
 .cartPriceContainer {
@@ -79,17 +84,20 @@
     align-items: center;
     width: 30px;
     height: 30px;
+    font-size: large;
     border: none;
-    background: none;
+    background-color: #7F8C8D;
 }
 
 .quantityButton:hover {
-    background: none;
+    /* background-color: #566573; */
+    background-color: #7F8C8D;
 }
 
 .quantity {
     font-size: 16px;
     margin: 0 10px;
+    color: #fff;
 }
 
 .totalPrice {
@@ -123,9 +131,17 @@
     width: 100%;
 }
 
+.continueShoppingButton {
+    background-color: #7F8C8D;
+}
+
 .emptyCartMessage {
     text-align: center;
     margin-top: 20px;
+}
+
+.continueShoppingButton:hover {
+    background-color: #566573;
 }
 
 .emptyCartMessage p {
@@ -142,6 +158,10 @@
 }
 
 .cartTitle {
+    text-align: center;
+}
+
+.cartButtonContainer {
     text-align: center;
 }
 

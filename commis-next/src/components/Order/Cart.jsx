@@ -43,9 +43,13 @@ const Cart = () => {
 
                         <div className={styles.quantityContainer}>
                             <div className={styles.quantityButtonContainer}>
-                                <button className={styles.quantityButton} onClick={() => decreaseQuantity(item.id)}>-</button>
+                                <button className={styles.quantityButton} onClick={() => decreaseQuantity(item.id)}>
+                                    -
+                                </button>
                                 <span className={styles.quantity}>{item.quantity}</span>
-                                <button className={styles.quantityButton} onClick={() => increaseQuantity(item.id)}>+</button>
+                                <button className={styles.quantityButton} onClick={() => increaseQuantity(item.id)}>
+                                    +
+                                </button>
                             </div>
 
                             <DeleteOrderCart productId={item.id} />
@@ -71,7 +75,7 @@ const Cart = () => {
                 ) : (
                     <div className={styles.emptyCartMessage}>
                         <p>Корзина порожня. Продовжуйте покупки!</p>
-                        <Link href="/">
+                        <Link href="/" >
                             <button className={`${styles.actionButton} ${styles.continueShoppingButton}`}>Продовжити покупки</button>
                         </Link>
                     </div>

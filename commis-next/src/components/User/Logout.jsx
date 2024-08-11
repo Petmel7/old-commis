@@ -40,10 +40,13 @@ const Logout = () => {
                 <More className={styles.icon} />
             </button>
 
-            <Modal show={isModalOpen} onClose={closeModal} title="Ви справді хочете вийти?">
-                <div className={styles.modalButtons}>
-                    <button onClick={handleConfirmLogout}>Так</button>
-                    <button onClick={closeModal}>Ні</button>
+            <Modal show={isModalOpen} onClose={closeModal}>
+                <div className={styles.modalContainer}>
+                    <h3>Ви справді хочете вийти?</h3>
+                    <div className={styles.modalButtons}>
+                        <button onClick={handleConfirmLogout}>Так</button>
+                        <button onClick={closeModal}>Ні</button>
+                    </div>
                 </div>
             </Modal>
         </>

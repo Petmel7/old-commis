@@ -66,7 +66,7 @@ const PlacingAnOrder = () => {
     if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
-        <div>
+        <div className={styles.container}>
             {user && (
                 <div>
                     <h3 className={styles.cartTitle}>Оформлення замовлення</h3>
@@ -96,7 +96,9 @@ const PlacingAnOrder = () => {
                     ))}
                     <h3 className={styles.cartTitle}>Доставка</h3>
                     <AddressForm onAddressSelected={setAddress} />
-                    <button className={styles.cartButton} onClick={handleOrder}>Підтвердити замовлення</button>
+                    <div className={styles.cartButtonContainer}>
+                        <button className={styles.cartButton} onClick={handleOrder}>Підтвердити замовлення</button>
+                    </div>
                 </div>
             )}
             {isEmailModalOpen && <ConfirmEmailModal show={isEmailModalOpen} onClose={closeEmailModal} email={user?.email} />}

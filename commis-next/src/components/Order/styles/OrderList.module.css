@@ -1,20 +1,19 @@
 .orderList {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
 }
 
 .orderItem {
+    width: 100%;
+    max-width: 600px;
     border: 1px solid #ddd;
     padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
-}
-
-.orderItem:hover {
-    transform: translateY(-3px);
 }
 
 .orderTitle {
@@ -60,8 +59,8 @@
 }
 
 .productImageModal {
-    width: 200px;
-    background-image: url('');
+    width: 300px;
+    height: 200px;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -71,4 +70,5 @@
 .productImageButton,
 .productImageButton:hover {
     background: none;
+    padding: 0;
 }

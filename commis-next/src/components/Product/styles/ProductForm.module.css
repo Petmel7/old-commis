@@ -1,7 +1,7 @@
 /* src/components/AddProduct.module.css */
 
 .container {
-    max-width: 600px;
+    max-width: 400px;
     margin: 0 auto;
     padding: 20px;
     border: 1px solid #ccc;
@@ -59,9 +59,32 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: relative;
 }
 
 .deleteImageForm,
 .deleteImageForm:hover {
     background: none;
+}
+
+.inputFile {
+    display: none;
+}
+
+.customUploadButton {
+    /* display: inline-block; */
+    padding: 5px 10px;
+    background-color: #7F8C8D;
+    color: white;
+    font-size: 16px;
+    border-radius: 50px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.customUploadButton:hover {
+    background-color: #566573;
+    ;
 }

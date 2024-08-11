@@ -1,4 +1,5 @@
 import { deleteOrder } from '../../services/order';
+import styles from './styles/DeleteOrderList.module.css';
 
 const DeleteOrderList = ({ orderId, fetchOrders }) => {
 
@@ -13,7 +14,9 @@ const DeleteOrderList = ({ orderId, fetchOrders }) => {
         }
     }
     return (
-        <button onClick={hamdlerDelete}>Видалити</button>
+        <div className={styles.deleteOrderConteaner}>
+            <button onClick={hamdlerDelete}>Видалити</button>
+        </div>
     )
 }
 

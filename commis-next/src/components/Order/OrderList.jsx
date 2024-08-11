@@ -82,10 +82,11 @@ const OrderList = () => {
                                         <img className={styles.productImage} src={`${baseUrl}${product.product_images[0]}`} alt={product.product_name} width="50" />
                                     </button>
                                     <Modal show={isModalOpen} onClose={closeModal}>
-                                        {/* <img className={styles.productImageModal} src={`${baseUrl}${product.product_images[0]}`} alt={product.product_name} width="50" /> */}
                                         <div
                                             className={styles.productImageModal}
-                                            style={{ width: 128, height: 193, backgroundImage: `url(${baseUrl}${product.product_images[0]})` }}
+                                            style={{
+                                                backgroundImage: `url(${baseUrl}${product.product_images[0].replace(/\\/g, '/')})`
+                                            }}
                                         ></div>
                                     </Modal>
                                     <p className={styles.orderReplica}>Назва:

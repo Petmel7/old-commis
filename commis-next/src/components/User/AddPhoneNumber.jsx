@@ -30,17 +30,20 @@ const AddPhoneNumber = ({ show, onClose, onPhoneAdded }) => {
     if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
-        <Modal show={show} onClose={onClose} title="Додайте номер телефону">
-            <form className={styles.authForm} onSubmit={handlePhoneSubmit}>
-                <input
-                    className={styles.authInput}
-                    type="number"
-                    value={phone}
-                    onChange={e => setPhone(e.target.value)}
-                    placeholder="Телефон"
-                />
-                <button className={styles.authButton} type='submit'>Додати</button>
-            </form>
+        <Modal show={show} onClose={onClose} >
+            <div className={styles.modalContainer}>
+                <h3>Додайте номер телефону</h3>
+                <form className={styles.authForm} onSubmit={handlePhoneSubmit}>
+                    <input
+                        className={styles.authInput}
+                        type="number"
+                        value={phone}
+                        onChange={e => setPhone(e.target.value)}
+                        placeholder="Телефон"
+                    />
+                    <button className={styles.authButton} type='submit'>Додати</button>
+                </form>
+            </div>
         </Modal>
     );
 };

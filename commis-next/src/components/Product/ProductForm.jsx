@@ -97,12 +97,17 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             </div>
             <div className={styles.formGroup}>
                 <input
-                    className={styles.input}
+                    id="fileUpload"
+                    className={styles.inputFile}
                     type="file"
                     multiple
                     onChange={handleImageChange}
                     required={!initialData.images || initialData.images.length === 0}
                 />
+                <label htmlFor="fileUpload" className={styles.customUploadButton}>
+                    Вибрати зображення
+                </label>
+
                 <ul className={styles.imagePreviewContainer}>
                     {imagePreviews.map((preview, index) => (
                         <li key={index}>
@@ -120,6 +125,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
                     ))}
                 </ul>
             </div>
+
             <button type="submit">{initialData.id ? 'Редагувати' : 'Додати'}</button>
         </form >
     );
