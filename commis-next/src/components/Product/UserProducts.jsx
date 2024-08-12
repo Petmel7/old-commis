@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import { getUserProducts } from '../../services/products';
+import { truncateText } from '@/utils/truncateText';
 import { baseUrl } from '../Url/baseUrl';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
@@ -48,8 +49,12 @@ const UserProducts = () => {
                                     />
                                 </div>
                             </Link>
-                            <h2 className={styles.productName}>{product.name}</h2>
-                            <p className={styles.productPrice}>Ціна: {product.price} грн</p>
+                            <h2 className={styles.productName}>
+                                {truncateText(product.name, 15)}
+                            </h2>
+                            <p className={styles.productPrice}>
+                                Ціна: {product.price} грн
+                            </p>
                         </div>
                     </li>
                 ))}

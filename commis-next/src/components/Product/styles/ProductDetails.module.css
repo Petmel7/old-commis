@@ -1,11 +1,11 @@
 .productDetails {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    max-width: 500px;
+    margin: 0 auto;
+    text-align: center;
 }
 
 .slider {
-    width: 80%;
+    width: 100%;
     margin-bottom: 20px;
 }
 
@@ -22,15 +22,79 @@
 
 .productName {
     font-size: 2rem;
-    margin: 20px 0;
 }
 
 .productDescription {
     font-size: 1.2rem;
-    margin: 20px 0;
 }
 
 .productPrice {
     font-size: 1.5rem;
     font-weight: bold;
+    margin-bottom: 20px;
 }
+
+
+
+
+/* src/components/ProductDetails/styles/ProductDetails.module.css */
+
+/* .productDetails {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.slider {
+    width: 100%;
+    max-width: 600px;
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.imageContainer {
+    position: relative;
+}
+
+.productImage {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.slick-prev,
+.slick-next {
+    width: 40px;
+    height: 40px;
+    z-index: 1;
+    color: white;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+.slick-prev {
+    left: 10px;
+    transform: translateY(-50%);
+}
+
+.slick-next {
+    right: 10px;
+    transform: translateY(-50%);
+}
+
+.slick-prev::before,
+.slick-next::before {
+    font-size: 20px;
+    color: white;
+} */

@@ -2,93 +2,6 @@ const path = require('path');
 const { Product, User, Order, OrderItem } = require('../models');
 const transporter = require('../config/emailConfig');
 
-// const createOrder = async (req, res) => {
-//     const { items, address } = req.body;
-//     console.log('createOrder->items', items);
-//     console.log('createOrder->address', address);
-
-//     try {
-//         let total = 0;
-//         let orderDetails = '';
-//         let sellers = new Set();
-//         const baseURL = 'http://localhost:5000/uploads';
-
-//         for (let item of items) {
-//             const product = await Product.findByPk(item.product_id);
-
-//             if (!product) {
-//                 return res.status(404).json({ message: `Product with id ${item.product_id} not found` });
-//             }
-//             if (product.stock < item.quantity) {
-//                 return res.status(400).json({ message: `Insufficient stock for product ${product.name}. Only ${product.stock} items left.` });
-//             }
-//             total += product.price * item.quantity;
-//             const productImageURL = `${baseURL}/${path.basename(product.image)}`;
-
-//             const seller = await User.findByPk(product.user_id, { attributes: ['name', 'lastname', 'email'] });
-//             if (seller) {
-//                 sellers.add(seller.email);
-//             }
-
-//             orderDetails +=
-//                 `<tr>
-//                     <td><img src="${productImageURL}" alt="${product.name}" width="50"/></td>
-//                     <td>${product.name}</td>
-//                     <td>${item.quantity}</td>
-//                     <td>${product.price}</td>
-//                     <td>${seller.name} ${seller.lastname}</td>
-//                 </tr>`;
-//         }
-
-//         if (sellers.size === 0) {
-//             return res.status(404).json({ message: 'No sellers found for the provided products' });
-//         }
-
-//         const order = await Order.create({
-//             user_id: req.user.id,
-//             total,
-//             region: address[0].region,
-//             city: address[0].city,
-//             postoffice: address[0].postoffice
-//         });
-
-//         for (let item of items) {
-//             const product = await Product.findByPk(item.product_id);
-//             await OrderItem.create({
-//                 order_id: order.id,
-//                 product_id: item.product_id,
-//                 quantity: item.quantity,
-//                 price: product.price * item.quantity
-//             });
-//             await product.update({ stock: product.stock - item.quantity });
-//         }
-
-//         const sellerEmailsArray = Array.from(sellers);
-//         await transporter.sendMail({
-//             to: req.user.email,
-//             subject: `Ваше замовлення ${order.id} отримано продавцями`,
-//             html: `
-//                 <h1>Деталі замовлення</h1>
-//                 <table>
-//                     <tr>
-//                         <th>Фото</th>
-//                         <th>Назва товару</th>
-//                         <th>Кількість</th>
-//                         <th>Ціна</th>
-//                         <th>Продавець</th>
-//                     </tr>
-//                     ${orderDetails}
-//                 </table>
-//                 <p>Загальна сума: ${total}</p>
-//             `
-//         });
-
-//         res.status(201).json({ message: 'Order created successfully' });
-//     } catch (error) {
-//         res.status(500).json({ message: error.message });
-//     }
-// };
-
 const createOrder = async (req, res) => {
     const { items, address } = req.body;
     console.log('createOrder->items', items);
@@ -177,7 +90,6 @@ const createOrder = async (req, res) => {
         res.status(500).json({ message: `Server error: ${error.message}` });
     }
 };
-
 
 const deleteOrder = async (req, res) => {
     const { id } = req.params;

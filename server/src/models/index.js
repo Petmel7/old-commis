@@ -5,6 +5,7 @@ const Product = require('./Product');
 const Order = require('./Order');
 const OrderItem = require('./OrderItem');
 const RefreshToken = require('./RefreshToken');
+const Favorite = require('./Favorite');
 
 // Визначення асоціацій
 User.hasMany(Product, { foreignKey: 'user_id' });
@@ -22,10 +23,17 @@ OrderItem.belongsTo(Product, { foreignKey: 'product_id' });
 User.hasMany(RefreshToken, { foreignKey: 'user_id' });
 RefreshToken.belongsTo(User, { foreignKey: 'user_id' });
 
+User.hasMany(Favorite, { foreignKey: 'user_id' });
+Favorite.belongsTo(User, { foreignKey: 'user_id' });
+
+Product.hasMany(Favorite, { foreignKey: 'product_id' });
+Favorite.belongsTo(Product, { foreignKey: 'product_id' });
+
 module.exports = {
     User,
     Product,
     Order,
     OrderItem,
-    RefreshToken
+    RefreshToken,
+    Favorite
 };

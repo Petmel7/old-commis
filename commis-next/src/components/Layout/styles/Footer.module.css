@@ -62,3 +62,7 @@
     align-items: center;
     justify-content: center;
 }
+
+.iconItem a:hover {
+    text-decoration: none;
+}

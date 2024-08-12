@@ -3,6 +3,8 @@ import Slider from 'react-slick';
 import { useRouter } from 'next/router';
 import { baseUrl } from '../Url/baseUrl';
 import useProduct from '@/hooks/useProduct';
+import BackButton from '../BackButton/BackButton';
+import BuyButton from '../BuyButton/BuyButton';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/ProductDetails.module.css';
 
@@ -26,18 +28,22 @@ const ProductDetails = () => {
     };
 
     return (
-        <div className={styles.productDetails}>
-            <Slider {...settings} className={styles.slider}>
-                {product.images.map((image, index) => (
-                    <div key={index} className={styles.imageContainer}>
-                        <img className={styles.productImage} src={`${baseUrl}${image}`} alt={product.name} />
-                    </div>
-                ))}
-            </Slider>
-            <h1 className={styles.productName}>{product.name}</h1>
-            <p className={styles.productDescription}>{product.description}</p>
-            <p className={styles.productPrice}>Ціна: {product.price} грн</p>
-        </div>
+        <>
+            <BackButton />
+            <div className={styles.productDetails}>
+                <Slider {...settings} className={styles.slider}>
+                    {product.images.map((image, index) => (
+                        <div key={index} className={styles.imageContainer}>
+                            <img className={styles.productImage} src={`${baseUrl}${image}`} alt={product.name} />
+                        </div>
+                    ))}
+                </Slider>
+                <h1 className={styles.productName}>{product.name}</h1>
+                <p className={styles.productDescription}>{product.description}</p>
+                <p className={styles.productPrice}>Ціна: {product.price} грн</p>
+                <BuyButton product={product} />
+            </div>
+        </>
     );
 };
 

@@ -21,7 +21,7 @@ const User = sequelize.define('User', {
     },
     password: {
         type: DataTypes.STRING,
-        allowNull: true // Дозволяємо null значення для пароля, оскільки користувач може авторизуватися через Google
+        allowNull: true
     },
     emailconfirmed: {
         type: DataTypes.BOOLEAN,
@@ -29,7 +29,7 @@ const User = sequelize.define('User', {
     },
     phone: {
         type: DataTypes.STRING,
-        allowNull: true // Дозволяємо null значення для поля phone
+        allowNull: true
     },
     phoneconfirmed: {
         type: DataTypes.BOOLEAN,
@@ -37,11 +37,11 @@ const User = sequelize.define('User', {
     },
     confirmationcode: {
         type: DataTypes.STRING,
-        allowNull: true // Дозволяємо null значення для поля confirmationCode
+        allowNull: true
     },
     googleid: {
         type: DataTypes.STRING,
-        allowNull: true // Дозволяємо null значення для поля googleId
+        allowNull: true
     }
 }, {
     timestamps: false,

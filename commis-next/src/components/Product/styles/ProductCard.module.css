@@ -9,7 +9,6 @@
 
 .productChildren {
     flex: 1 1 calc(33.333% - 10px);
-    /* max-width: calc(33.333% - 10px); */
     box-sizing: border-box;
     min-width: 150px;
 }
@@ -46,18 +45,18 @@
 }
 
 .productCardName {
-    font-size: 1rem;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
     color: #333;
 }
 
 .productCardDescription {
-    font-size: 0.875rem;
+    font-size: clamp(0.75rem, 2vw, 1rem);
     color: #777;
     margin-bottom: 12px;
 }
 
 .productCardPrice {
-    font-size: 1rem;
+    font-size: clamp(1rem, 2.5vw, 1.5rem);
     color: #000;
     font-weight: bold;
     margin-bottom: 16px;
@@ -65,5 +64,7 @@
 
 .productCardButton {
     width: 100%;
+    padding: clamp(8px, 2vw, 12px);
+    font-size: clamp(0.875rem, 2vw, 1rem);
     transition: background-color 0.3s ease;
 }
