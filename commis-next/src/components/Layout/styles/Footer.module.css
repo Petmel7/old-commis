@@ -47,10 +47,19 @@
     display: inline-block;
 }
 
+.favoritesBadge {
+    top: -5px;
+    right: 5px;
+}
+
 .cartBadge {
-    position: absolute;
     top: -5px;
     right: -5px;
+}
+
+.favoritesBadge,
+.cartBadge {
+    position: absolute;
     background-color: red;
     color: white;
     border-radius: 50%;

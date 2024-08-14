@@ -67,4 +67,17 @@
     padding: clamp(8px, 2vw, 12px);
     font-size: clamp(0.875rem, 2vw, 1rem);
     transition: background-color 0.3s ease;
+    margin-bottom: 10px;
+}
+
+.favoriteButton {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    fill: gray;
+}
+
+.favoriteButton.favorite {
+    fill: red;
 }

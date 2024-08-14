@@ -21,7 +21,7 @@ const addFavorite = async (req, res) => {
     }
 };
 
-const removeFavorite = async (req, res) => {
+const deleteFavorite = async (req, res) => {
     const { id } = req.params;
     try {
         const result = await Favorite.findByPk(id);
@@ -45,19 +45,27 @@ const getFavorites = async (req, res) => {
             include: [
                 {
                     model: Product,
-                    as: 'Product'
+                    as: 'Product',
+                    attributes: ['id', 'name', 'description', 'price', 'stock', 'images', 'user_id'] // Вкажіть поля, які хочете повернути
                 }
             ]
         });
 
-        res.json(favorites);
+        const response = favorites.map(favorite => ({
+            id: favorite.id,
+            product_id: favorite.product_id,
+            product: favorite.Product
+        }));
+
+        res.json(response);
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
 };
 
+
 module.exports = {
     addFavorite,
-    removeFavorite,
+    deleteFavorite,
     getFavorites
 }
