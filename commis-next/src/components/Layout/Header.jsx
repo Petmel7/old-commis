@@ -16,7 +16,7 @@ const AuthIcon = () => {
     return (
         <Link href={profileLink}>
             {!isAuthenticated ? (
-                <ProfileIcon className={styles.profileIcon} />
+                <ProfileIcon className={styles.headerIcon} />
             ) : (
                 <Image className={styles.defaultIcon} src={DefaultIcon} alt="Default Icon" width={40} height={40} />
             )}
@@ -42,7 +42,7 @@ const Header = () => {
                     <h1 className={styles.headerLogo}>Commis</h1>
                     <div className={styles.iconContainer}>
                         <button className={styles.searchButton} onClick={handleSearchClick}>
-                            <SearchIcon className={styles.headerSearchIcon} />
+                            <SearchIcon className={styles.headerIcon} />
                         </button>
                         <AuthIcon />
                     </div>

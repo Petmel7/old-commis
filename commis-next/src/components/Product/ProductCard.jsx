@@ -12,7 +12,7 @@ import { useFavorites } from '../../context/FavoritesContext';  // Підклю�
 const ProductCard = ({ product, isFavorite = false, favoriteId = null }) => {
     const [favoriteStatus, setFavoriteStatus] = useState(isFavorite);
     const [favoriteRecordId, setFavoriteRecordId] = useState(favoriteId);
-    const { saveFavorite, removeFavorite } = useFavorites();  // Отримуємо функції з контексту
+    const { saveFavorite, removeFavorite, loadFavorites } = useFavorites();  // Отримуємо функції з контексту
 
     useEffect(() => {
         setFavoriteStatus(isFavorite);
@@ -32,6 +32,7 @@ const ProductCard = ({ product, isFavorite = false, favoriteId = null }) => {
                 setFavoriteRecordId(response.id);
                 saveFavorite(response);  // Оновлюємо контекст після додавання
             }
+            await loadFavorites();
         } catch (error) {
             console.error('Помилка при оновленні статусу вибраного:', error);
         }
@@ -53,7 +54,7 @@ const ProductCard = ({ product, isFavorite = false, favoriteId = null }) => {
             <BuyButton product={product} />
 
             <HeartIcon
-                className={`${styles.favoriteButton} 
+                className={`${styles.favoriteButton}
                 ${favoriteStatus ? styles.favorite : ''}`}
                 onClick={handleFavoriteClick}
             />

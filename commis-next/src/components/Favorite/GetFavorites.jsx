@@ -1,8 +1,10 @@
 
 import React, { useState, useEffect } from 'react';
-import ProductCard from '../Product/ProductCard';
-import styles from '../Product/styles/ProductCard.module.css';
 import { useFavorites } from '@/context/FavoritesContext';
+import ProductCard from '../Product/ProductCard';
+import BackButton from '../BackButton/BackButton';
+import NoSelectedProducts from '../NoSelectedProducts/NoSelectedProducts';
+import styles from '../Product/styles/ProductCard.module.css';
 import useLoadingAndError from '@/hooks/useLoadingAndError';
 
 const GetFavorites = () => {
@@ -29,23 +31,26 @@ const GetFavorites = () => {
     if (loadingErrorComponent) return loadingErrorComponent;
 
     if (favorites.length === 0) {
-        return <p>Немає вибраних товарів</p>;
+        return <NoSelectedProducts />;
     }
 
     return (
-        <ul className={styles.productList}>
-            {favorites.map(favorite => (
-                favorite.product && (
-                    <li className={styles.productChildren} key={favorite.product.id}>
-                        <ProductCard
-                            product={favorite.product}
-                            isFavorite={true}
-                            favoriteId={favorite.id}
-                        />
-                    </li>
-                )
-            ))}
-        </ul>
+        <>
+            <BackButton />
+            <ul className={styles.productList}>
+                {favorites.map(favorite => (
+                    favorite.product && (
+                        <li className={styles.productChildren} key={favorite.product.id}>
+                            <ProductCard
+                                product={favorite.product}
+                                isFavorite={true}
+                                favoriteId={favorite.id}
+                            />
+                        </li>
+                    )
+                ))}
+            </ul>
+        </>
     );
 };
 
