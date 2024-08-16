@@ -19,6 +19,11 @@ export const getUserProducts = async (accessToken) => {
     return response.data;
 };
 
+export const searchProducts = async (query) => {
+    const response = await api.get(`/products/search?query=${query}`);
+    return response.data;
+};
+
 export const addProduct = async (formData) => {
     console.log('addProduct->formData', formData);
     const response = await api.post('/products', formData, {

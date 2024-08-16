@@ -1,6 +1,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const { Op } = require('sequelize');
 const Product = require('../models/Product');
 
 const getProducts = async (req, res) => {
@@ -133,6 +134,26 @@ const deleteImage = async (req, res) => {
     }
 };
 
+const searchProducts = async (req, res) => {
+    try {
+        const { query } = req.query;
+
+        // Виконання пошуку за назвою та описом продукту
+        const products = await Product.findAll({
+            where: {
+                name: {
+                    [Op.iLike]: `%${query}%` // Пошук за частковим співпадінням
+                }
+            }
+        });
+
+        res.json({ products });
+    } catch (error) {
+        console.error('Помилка при пошуку продуктів:', error);
+        res.status(500).json({ message: 'Помилка при пошуку продуктів' });
+    }
+};
+
 module.exports = {
     getProducts,
     getUserProducts,
@@ -140,5 +161,6 @@ module.exports = {
     addProduct,
     updateProduct,
     deleteProduct,
-    deleteImage
+    deleteImage,
+    searchProducts
 };

@@ -1,13 +1,13 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
+import SearchMenu from './SearchMenu';
 import styles from './styles/Header.module.css';
 import SearchIcon from '../../../public/img/Search.svg';
 import ProfileIcon from '../../../public/img/Profile.svg';
 import DefaultIcon from '../../../public/jpg/default.jpg';
-import CloseIcon from '../../../public/img/close.svg';
 
 const AuthIcon = () => {
     const { isAuthenticated } = useAuth();
@@ -49,12 +49,7 @@ const Header = () => {
                 </div>
             </header>
 
-            <div className={`${styles.searchMenu} ${isMenuOpen ? styles.searchMenuOpen : ''}`}>
-                <button className={styles.closeButton} onClick={handleCloseClick}>
-                    <CloseIcon />
-                </button>
-                <input type="text" className={styles.searchInput} placeholder="Пошук..." />
-            </div>
+            <SearchMenu isMenuOpen={isMenuOpen} handleCloseClick={handleCloseClick} />
         </>
     );
 };
