@@ -7,11 +7,8 @@
     width: 100%;
     margin-bottom: 20px;
     position: fixed;
-    /* Фіксуємо хедер */
     top: 0;
-    /* Встановлюємо його у верхній частині екрану */
     z-index: 1000;
-    /* Встановлюємо високий індекс для перекриття іншого контенту */
 }
 
 .headerContainer {
@@ -86,6 +83,12 @@
     margin-bottom: 20px;
     font-size: 16px;
     background-color: #313233;
+    color: #fff;
+    caret-color: #fff;
+}
+
+.searchInput::placeholder {
+    color: #ddd;
 }
 
 .searchMenuOpen {

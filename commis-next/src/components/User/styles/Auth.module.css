@@ -1,3 +1,14 @@
+.errorText {
+    color: red;
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 10px;
+}
+
+.errorInput {
+    outline: 1px solid red;
+}
+
 .authForm {
     max-width: 400px;
     margin: 0 auto;

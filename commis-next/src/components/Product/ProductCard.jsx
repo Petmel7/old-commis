@@ -51,13 +51,15 @@ const ProductCard = ({ product, isFavorite = false, favoriteId = null }) => {
                 {truncateText(product.name, 15)}
             </h2>
             <p className={styles.productCardPrice}>Ціна: {product.price} грн</p>
-            <BuyButton product={product} />
+            <div className={styles.buttonContainer}>
+                <BuyButton product={product} />
 
-            <HeartIcon
-                className={`${styles.favoriteButton}
+                <HeartIcon
+                    className={`${styles.favoriteButton}
                 ${favoriteStatus ? styles.favorite : ''}`}
-                onClick={handleFavoriteClick}
-            />
+                    onClick={handleFavoriteClick}
+                />
+            </div>
         </div>
     );
 };

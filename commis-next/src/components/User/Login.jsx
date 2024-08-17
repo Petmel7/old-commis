@@ -4,6 +4,7 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { login } from '../../services/auth';
+import { validateEmail, validatePassword } from '@/utils/validation';
 import GoogleAuth from './GoogleAuth';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/Auth.module.css';
@@ -11,6 +12,7 @@ import styles from './styles/Auth.module.css';
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { handleLogin } = useAuth();
@@ -18,8 +20,19 @@ const Login = () => {
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
+    const validateForm = () => {
+        const emailErrors = validateEmail(email);
+        const passwordErrors = validatePassword(password);
+        const errors = { ...emailErrors, ...passwordErrors };
+        setErrors(errors);
+        return Object.keys(errors).length === 0;
+    };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!validateForm()) return;
+
         setLoading(true);
         setError(null);
 
@@ -39,8 +52,13 @@ const Login = () => {
     return (
         <form className={styles.authForm} onSubmit={handleSubmit}>
             <h2 className={styles.authHeading}>Увійти</h2>
-            <input className={styles.authInput} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-            <input className={styles.authInput} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Пароль" />
+
+            <input className={`${styles.authInput} ${errors.email ? styles.errorInput : ''}`} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+            {errors.email && <p className={styles.errorText}>{errors.email}</p>}
+
+            <input className={`${styles.authInput} ${errors.password ? styles.errorInput : ''}`} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Пароль" />
+            {errors.password && <p className={styles.errorText}>{errors.password}</p>}
+
             <button className={styles.authButton} type="submit">Увійти</button>
             <GoogleAuth />
             <span className={styles.authText}>Немає аккаунта?</span>
