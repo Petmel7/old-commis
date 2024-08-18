@@ -20,7 +20,7 @@ export const validatePassword = (password) => {
     const errors = {};
     if (!password.trim()) {
         errors.password = "Пароль є обов'язковим";
-    } else if (password.length < 6) {
+    } else if (password.length < 4) {
         errors.password = "Пароль повинен містити щонайменше 6 символів";
     }
     return errors;
