@@ -9,8 +9,6 @@ import styles from './styles/Profile.module.css';
 
 const Profile = () => {
     const {
-        loading,
-        error,
         user,
         loadingErrorComponent,
         isEmailModalOpen,
@@ -21,6 +19,8 @@ const Profile = () => {
         isConfirmPhoneModalOpen,
         closeConfirmPhoneModal,
     } = useUserStatus();
+
+    console.log('Profile->user', user);
 
     if (loadingErrorComponent) return loadingErrorComponent;
 
@@ -46,7 +46,7 @@ const Profile = () => {
             )}
             {isEmailModalOpen && <ConfirmEmailModal show={isEmailModalOpen} onClose={closeEmailModal} email={user?.email} />}
             {isAddPhoneModalOpen && <AddPhoneNumber show={isAddPhoneModalOpen} onClose={closeAddPhoneModal} onPhoneAdded={openConfirmPhoneModal} />}
-            {isConfirmPhoneModalOpen && <ConfirmPhoneModal show={isConfirmPhoneModalOpen} onClose={closeConfirmPhoneModal} phone={user?.phone} />}
+            {isConfirmPhoneModalOpen && <ConfirmPhoneModal show={isConfirmPhoneModalOpen} onClose={closeConfirmPhoneModal} />}
         </div>
     );
 };

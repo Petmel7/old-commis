@@ -169,7 +169,7 @@ const logoutUser = async (req, res) => {
 const getUserProfile = async (req, res) => {
     try {
         const user = await User.findByPk(req.user.id, {
-            attributes: ['id', 'name', 'lastname', 'email', 'emailconfirmed', 'phone', 'phoneconfirmed', 'googleid']
+            attributes: ['id', 'name', 'lastname', 'email', 'emailconfirmed', 'phone', 'phoneconfirmed', 'confirmationcode', 'googleid']
         });
         if (!user) {
             return res.status(404).json({ message: 'User not found' });

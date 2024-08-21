@@ -3,15 +3,15 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
-// dotenv.config({ path: path.resolve(__dirname, '../.env') });
-const cors = require('cors'); // Додано
+const cors = require('cors');
 const session = require('express-session');
-const passport = require('./config/passport'); // Переконайтеся, що файл passport.js налаштовано
+const passport = require('./config/passport');
 const sequelize = require('./config/db');
 const productRoutes = require('./routes/productRoutes');
 const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
 const errorHandler = require('./utils/errorHandler');
 const cron = require('node-cron');
 const { deleteOldRefreshTokens } = require('./controllers/userController');
@@ -43,6 +43,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/favorites', favoriteRoutes);
+app.use('/api/payments', paymentRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to the eCommerce API');
