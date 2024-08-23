@@ -42,6 +42,11 @@ const User = sequelize.define('User', {
     googleid: {
         type: DataTypes.STRING,
         allowNull: true
+    },
+    role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'buyer'
     }
 }, {
     timestamps: false,

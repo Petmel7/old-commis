@@ -3,6 +3,8 @@ import styles from './styles/DeleteOrderList.module.css';
 
 const DeleteOrderList = ({ orderId, fetchOrders }) => {
 
+    console.log('DeleteOrderList->orderId', orderId);
+
     const hamdlerDelete = async (e) => {
         e.preventDefault();
 

@@ -2,7 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const { Op } = require('sequelize');
-const Product = require('../models/Product');
+const { Product, User } = require('../models');
 
 const getProducts = async (req, res) => {
     try {
@@ -48,6 +48,17 @@ const addProduct = async (req, res) => {
             stock,
             images: images.length ? images : null
         });
+
+        console.log('$$$$$$$$$req.user.role', req.user.role);
+
+        // Оновлення ролі користувача з buyer на seller, якщо продукт успішно доданий
+        if (req.user.role === 'buyer') {
+            await User.update(
+                { role: 'seller' }, // Зміна ролі на seller
+                { where: { id: req.user.id } } // Умова для оновлення
+            );
+            req.user.role = 'seller'; // Оновлюємо роль в поточній сесії, якщо це необхідно
+        }
 
         res.status(201).json({ message: 'Product added successfully', product });
     } catch (error) {
