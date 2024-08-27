@@ -12,6 +12,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [stock, setStock] = useState(initialData.stock || '');
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState(initialData.images ? initialData.images.map(image => `${baseUrl}${image}`) : []);
+    const [errors, setErrors] = useState('');
 
     useEffect(() => {
         setName(initialData.name || '');
@@ -23,6 +24,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         const productData = new FormData();
         productData.append('name', name);
         productData.append('description', description);

@@ -9,6 +9,7 @@ import useUserStatus from '../../hooks/useUserStatus';
 import ConfirmEmailModal from '../User/ConfirmEmailModal';
 import AddPhoneNumber from '../User/AddPhoneNumber';
 import ConfirmPhoneModal from '../User/ConfirmPhoneModal';
+import useLoadingAndError from '@/hooks/useLoadingAndError';
 import DeleteOrder from './DeleteOrderCart';
 import AddressForm from './AddressForm';
 import styles from './styles/Cart.module.css';
@@ -16,12 +17,15 @@ import styles from './styles/Cart.module.css';
 const PlacingAnOrder = () => {
     const { cart, increaseQuantity, decreaseQuantity } = useCart();
     const [address, setAddress] = useState(null);
-    const [paymentMethod, setPaymentMethod] = useState(''); // Додаємо стан для зберігання вибраного методу оплати
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [paymentMethod, setPaymentMethod] = useState('');
     const router = useRouter();
+
+    const loadingErrorComponent = useLoadingAndError(loading, error);
 
     const {
         user,
-        loadingErrorComponent,
         isEmailModalOpen,
         closeEmailModal,
         isAddPhoneModalOpen,
@@ -34,15 +38,17 @@ const PlacingAnOrder = () => {
     const handleOrder = async (e) => {
         e.preventDefault();
 
-        const items = cart.map(item => ({
-            product_id: item.id,
-            quantity: item.quantity
-        }));
-
         if (!address) {
             alert('Будь ласка, виберіть адресу для доставки');
             return;
         }
+
+        setLoading(true);
+
+        const items = cart.map(item => ({
+            product_id: item.id,
+            quantity: item.quantity
+        }));
 
         const orderDetails = {
             items,
@@ -94,7 +100,9 @@ const PlacingAnOrder = () => {
             } else {
                 alert('Будь ласка, виберіть метод оплати');
             }
+            setLoading(false);
         } catch (error) {
+            setError(error);
             console.error('OrderDetails->error', error.message || error);
             alert('Щось пішло не так. Спробуйте ще раз.');
         }
@@ -109,6 +117,7 @@ const PlacingAnOrder = () => {
     };
 
     if (loadingErrorComponent) return loadingErrorComponent;
+    console.log('loadingErrorComponent', loadingErrorComponent);
 
     return (
         <div className={styles.container}>
