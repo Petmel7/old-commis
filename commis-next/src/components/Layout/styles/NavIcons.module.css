@@ -1,0 +1,83 @@
+.iconContainer {
+    display: flex;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+@media (max-width: 768px) {
+    .iconContainer {
+        align-items: center;
+        justify-content: center;
+        justify-content: space-between;
+    }
+}
+
+.iconItem {
+    text-align: center;
+}
+
+@media (min-width: 768px) {
+    .iconItem {
+        margin-right: 10px;
+    }
+}
+
+.linkContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+}
+
+.icon {
+    width: 25px;
+    height: 24px;
+    fill: #fff;
+    transition: fill 0.3s ease, color 0.3s ease;
+}
+
+.text {
+    color: #fff;
+    font-size: 14px;
+    text-align: center;
+    transition: color 0.3s ease;
+}
+
+@media (min-width: 768px) {
+    .text {
+        display: none;
+    }
+}
+
+.linkContainer:hover .icon,
+.linkContainer:hover .text {
+    fill: #1e90ff;
+    color: #1e90ff;
+}
+
+.cartIconContainer {
+    position: relative;
+    display: inline-block;
+}
+
+.favoritesBadge,
+.cartBadge {
+    top: -5px;
+    right: -10px;
+    position: absolute;
+    background-color: red;
+    color: white;
+    border-radius: 50%;
+    padding: 5px;
+    font-size: 12px;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.iconItem a:hover {
+    text-decoration: none;
+}

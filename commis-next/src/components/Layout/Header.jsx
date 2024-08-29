@@ -1,9 +1,11 @@
 
+import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import SearchMenu from './SearchMenu';
+import NavIcons from './NavIcons';
+import useToggle from '@/hooks/useToggle';
 import styles from './styles/Header.module.css';
 import SearchIcon from '../../../public/img/Search.svg';
 import ProfileIcon from '../../../public/img/Profile.svg';
@@ -25,15 +27,10 @@ const AuthIcon = () => {
 };
 
 const Header = () => {
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const { isOpen, handleOpenClick, handleCloseClick } = useToggle();
 
-    const handleSearchClick = () => {
-        setIsMenuOpen(!isMenuOpen);
-    };
-
-    const handleCloseClick = () => {
-        setIsMenuOpen(false);
-    };
+    console.log('Header->isOpen', isOpen);
+    console.log('Header->handleOpenClick', handleOpenClick);
 
     return (
         <>
@@ -41,15 +38,18 @@ const Header = () => {
                 <div className={styles.headerContainer}>
                     <h1 className={styles.headerLogo}>Commis</h1>
                     <div className={styles.iconContainer}>
-                        <button className={styles.searchButton} onClick={handleSearchClick}>
+                        <button className={styles.searchButton} onClick={handleOpenClick}>
                             <SearchIcon className={styles.headerIcon} />
                         </button>
+                        <div className="desktop-only">
+                            <NavIcons />
+                        </div>
                         <AuthIcon />
                     </div>
                 </div>
             </header>
 
-            <SearchMenu isMenuOpen={isMenuOpen} handleCloseClick={handleCloseClick} />
+            <SearchMenu isOpen={isOpen} handleCloseClick={handleCloseClick} />
         </>
     );
 };

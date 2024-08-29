@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { addPhone } from '../../services/auth';
 import Modal from '../Modal/Modal';
 import useLoadingAndError from '../../hooks/useLoadingAndError';

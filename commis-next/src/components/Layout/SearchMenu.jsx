@@ -1,10 +1,10 @@
 
 import { useState } from 'react';
 import { searchProducts } from '@/services/products';
-import CloseIcon from '../../../public/img/close.svg';
+import Menu from '../Menu/Menu';
 import styles from './styles/Header.module.css';
 
-const SearchMenu = ({ isMenuOpen, handleCloseClick }) => {
+const SearchMenu = ({ isOpen, handleCloseClick }) => {
     const [searchQuery, setSearchQuery] = useState('');
     const [searchResults, setSearchResults] = useState([]);
 
@@ -33,10 +33,7 @@ const SearchMenu = ({ isMenuOpen, handleCloseClick }) => {
     };
 
     return (
-        <div className={`${styles.searchMenu} ${isMenuOpen ? styles.searchMenuOpen : ''}`}>
-            <button className={styles.closeButton} onClick={handleCloseClick}>
-                <CloseIcon />
-            </button>
+        <Menu isOpen={isOpen} handleCloseClick={handleCloseClick}>
             <input
                 type="text"
                 className={styles.searchInput}
@@ -56,8 +53,9 @@ const SearchMenu = ({ isMenuOpen, handleCloseClick }) => {
                     ))}
                 </ul>
             )}
-        </div>
+        </Menu>
     );
 };
 
 export default SearchMenu;
+

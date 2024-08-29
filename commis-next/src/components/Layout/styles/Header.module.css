@@ -16,6 +16,9 @@
     align-items: center;
     justify-content: space-between;
     width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px 10px;
 }
 
 .headerLogo {
@@ -58,22 +61,6 @@
     fill: green;
 }
 
-.searchMenu {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 5px 5px 5px;
-    background-color: #101828;
-    transform: translateY(-100%);
-    transition: transform 0.3s ease;
-    z-index: 1000;
-}
-
 .searchInput {
     padding: 10px;
     width: 80%;
@@ -89,28 +76,6 @@
 
 .searchInput::placeholder {
     color: #ddd;
-}
-
-.searchMenuOpen {
-    transform: translateY(0);
-}
-
-.closeButton,
-.closeButton:hover {
-    background: none;
-    border: none;
-    font-size: 20px;
-    padding: 15px;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: 0;
-    fill: #fff;
-    transition: fill 0.3s ease;
-}
-
-.closeButton:hover {
-    fill: #1e90ff;
 }
 
 .searchResults {
