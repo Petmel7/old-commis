@@ -1,8 +1,71 @@
 .footer {
     background-color: #1D2533;
     padding: 20px;
-    position: sticky;
     bottom: 0;
     width: 100%;
     z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        position: sticky;
+    }
+}
+
+.desktopFooter {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0px 10px;
+}
+
+.desctopContainer {
+    margin-bottom: 40px;
+}
+
+.desctopContainer,
+.policiesContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.contactInfo p {
+    color: #fff;
+}
+
+.socialMedia a:not(:last-child) {
+    margin-right: 10px;
+}
+
+.policies a:not(:last-child) {
+    margin-right: 10px;
+}
+
+.policies a,
+.rightsReserved p {
+    color: silver;
+    font-size: small;
+}
+
+.policies a:hover {
+    color: #1e90ff;
+}
+
+.facebook,
+.instagram,
+.viber {
+    fill: #fff;
+    transition: fill 0.3s ease;
+}
+
+.facebook:hover {
+    fill: #1e90ff;
+}
+
+.instagram:hover {
+    fill: #cc2366;
+}
+
+.viber:hover {
+    fill: #b81eff;
 }

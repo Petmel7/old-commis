@@ -62,7 +62,7 @@ button:hover {
 
 .desktop-only {
     display: none;
-    margin-right: 10px;
+    /* margin-right: 10px; */
 }
 
 .mobile-only {

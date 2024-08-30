@@ -6,6 +6,7 @@ import { useAuth } from '@/context/AuthContext';
 import SearchMenu from './SearchMenu';
 import NavIcons from './NavIcons';
 import useToggle from '@/hooks/useToggle';
+import Logo from './Logo/Logo';
 import styles from './styles/Header.module.css';
 import SearchIcon from '../../../public/img/Search.svg';
 import ProfileIcon from '../../../public/img/Profile.svg';
@@ -29,14 +30,11 @@ const AuthIcon = () => {
 const Header = () => {
     const { isOpen, handleOpenClick, handleCloseClick } = useToggle();
 
-    console.log('Header->isOpen', isOpen);
-    console.log('Header->handleOpenClick', handleOpenClick);
-
     return (
         <>
             <header className={styles.header}>
                 <div className={styles.headerContainer}>
-                    <h1 className={styles.headerLogo}>Commis</h1>
+                    <Logo />
                     <div className={styles.iconContainer}>
                         <button className={styles.searchButton} onClick={handleOpenClick}>
                             <SearchIcon className={styles.headerIcon} />
