@@ -1,3 +1,18 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 70vh;
+    text-align: center;
+}
+
+.noProductsText {
+    margin-bottom: 20px;
+}
+
+/* .addProductButton {} */
+
 .productList {
     display: flex;
     flex-wrap: wrap;
@@ -9,12 +24,8 @@
 
 .productItem {
     flex: 1 1 calc(33.333% - 10px);
-    /* Адаптивна ширина з відступом */
-    /* max-width: calc(33.333% - 10px); */
-    /* Максимальна ширина */
     box-sizing: border-box;
     min-width: 150px;
-    /* Мінімальна ширина елемента */
 }
 
 .productCard {
@@ -29,13 +40,11 @@
 .productCard:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transform: scale(1.02);
-    /* Легке збільшення при наведенні */
 }
 
 .imageContainer {
     width: 100%;
     padding-top: 75%;
-    /* Пропорції зображення 4:3 */
     position: relative;
 }
 

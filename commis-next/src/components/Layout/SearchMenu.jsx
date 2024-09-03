@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { searchProducts } from '@/services/products';
 import Menu from '../Menu/Menu';
-import styles from './styles/Header.module.css';
+import styles from './styles/SearchMenu.module.css';
 
 const SearchMenu = ({ isOpen, handleCloseClick }) => {
     const [searchQuery, setSearchQuery] = useState('');
@@ -34,25 +34,27 @@ const SearchMenu = ({ isOpen, handleCloseClick }) => {
 
     return (
         <Menu isOpen={isOpen} handleCloseClick={handleCloseClick}>
-            <input
-                type="text"
-                className={styles.searchInput}
-                placeholder="Пошук..."
-                value={searchQuery}
-                onChange={handleInputChange}
-            />
+            <div className={styles.searchContainer}>
+                <input
+                    type="text"
+                    className={styles.searchInput}
+                    placeholder="Пошук..."
+                    value={searchQuery}
+                    onChange={handleInputChange}
+                />
 
-            {Array.isArray(searchResults) && searchResults.length > 0 && (
-                <ul className={styles.searchResults}>
-                    {searchResults.map((product) => (
-                        <li key={product.id} className={styles.searchResultItem}>
-                            <a href={`/products/details/${product.id}`}>
-                                {product.name}
-                            </a>
-                        </li>
-                    ))}
-                </ul>
-            )}
+                {Array.isArray(searchResults) && searchResults.length > 0 && (
+                    <ul className={styles.searchResults}>
+                        {searchResults.map((product) => (
+                            <li key={product.id} className={styles.searchResultItem}>
+                                <a href={`/products/details/${product.id}`}>
+                                    {product.name}
+                                </a>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
         </Menu>
     );
 };

@@ -7,6 +7,7 @@ import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
 import useModal from '@/hooks/useModal';
 import Modal from '../Modal/Modal';
+import NoProducts from '../NoProducts/NoProducts';
 import styles from './styles/OrderList.module.css';
 
 const OrderList = () => {
@@ -39,10 +40,7 @@ const OrderList = () => {
 
     if (orders.length === 0) {
         return (
-            <>
-                <BackButton />
-                <p className={styles.noOrders}>Поки що не має замовлень</p>
-            </>
+            <NoProducts text='Поки що не має замовлень' />
         )
     }
 

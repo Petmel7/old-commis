@@ -1,25 +1,15 @@
 .footer {
     background-color: #1D2533;
-    padding: 20px;
+    padding: 20px 0px;
     bottom: 0;
     width: 100%;
     z-index: 1000;
-}
-
-@media (max-width: 768px) {
-    .footer {
-        position: sticky;
-    }
 }
 
 .desktopFooter {
     max-width: 1200px;
     margin: 0 auto;
     padding: 0px 10px;
-}
-
-.desctopContainer {
-    margin-bottom: 40px;
 }
 
 .desctopContainer,
@@ -68,4 +58,21 @@
 
 .viber:hover {
     fill: #b81eff;
+}
+
+.lightFooterSection {
+    background-color: #2A3445;
+    color: #fff;
+    padding: 10px 0;
+}
+
+@media (max-width: 768px) {
+    .footer {
+        position: sticky;
+        padding: 20px;
+    }
+
+    .lightFooterSection {
+        display: none;
+    }
 }

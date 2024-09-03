@@ -6,6 +6,7 @@ import { truncateText } from '@/utils/truncateText';
 import { baseUrl } from '../Url/baseUrl';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
+import NoProducts from '../NoProducts/NoProducts';
 import styles from './styles/UserProducts.module.css';
 
 const UserProducts = () => {
@@ -32,6 +33,16 @@ const UserProducts = () => {
     }, []);
 
     if (loadingErrorComponent) return loadingErrorComponent;
+
+    if (userProducts.length === 0) {
+        return (
+            <NoProducts
+                text='Поки що немає продуктів'
+                buttonLink='/'
+                buttonText='Додати продукт'
+            />
+        )
+    }
 
     return (
         <>

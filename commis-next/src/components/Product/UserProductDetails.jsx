@@ -30,10 +30,12 @@ const UserProductDetails = () => {
         slidesToScroll: 1
     };
 
+    const productsArray = Array.isArray(product) ? product : [product];
+
     return (
         <div className={styles.productDetails}>
             <BackButton />
-            {[product].map(product => (
+            {productsArray.map(product => (
                 <div key={product.id} className={styles.productCard}>
                     <Slider {...settings} className={styles.slider}>
                         {Array.isArray(product.images) && product.images.map((image, index) => (

@@ -13,10 +13,6 @@
     }
 }
 
-.iconItem {
-    text-align: center;
-}
-
 @media (min-width: 768px) {
     .iconItem {
         margin-right: 10px;
