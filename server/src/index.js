@@ -12,6 +12,7 @@ const userRoutes = require('./routes/userRoutes');
 const orderRoutes = require('./routes/orderRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const categoryRoutes = require('./routes/categoryRoutes');
 const errorHandler = require('./utils/errorHandler');
 const cron = require('node-cron');
 const { deleteOldRefreshTokens } = require('./controllers/userController');
@@ -44,6 +45,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/payments', paymentRoutes);
+app.use('/api', categoryRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to the eCommerce API');

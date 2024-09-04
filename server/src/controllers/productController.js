@@ -36,8 +36,7 @@ const getProductById = async (req, res) => {
 };
 
 const addProduct = async (req, res) => {
-    console.log('$$$$$$$req.user', req.user);
-    const { name, description, price, stock } = req.body;
+    const { name, description, price, stock, category } = req.body;
     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
 
     try {
@@ -47,10 +46,9 @@ const addProduct = async (req, res) => {
             description,
             price,
             stock,
-            images: images.length ? images : null
+            images: images.length ? images : null,
+            category
         });
-
-        // console.log('$$$$$$$$$req.user.role', req.user.role);
 
         // Оновлення ролі користувача з buyer на seller, якщо продукт успішно доданий
         if (req.user.role === 'buyer') {

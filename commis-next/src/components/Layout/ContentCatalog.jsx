@@ -1,55 +1,68 @@
-
 import Link from "next/link";
 import Menu from "../Menu/Menu";
 import styles from './styles/ContentCatalog.module.css';
+
+const catalogData = [
+    {
+        title: "Одяг",
+        subcategories: [
+            { name: "Чоловічий одяг", href: "/clothing/men" },
+            { name: "Жіночий одяг", href: "/clothing/women" },
+            { name: "Дитячий одяг", href: "/clothing/kids" },
+        ],
+    },
+    {
+        title: "Аксесуари",
+        subcategories: [
+            { name: "Годинники", href: "/accessories/watches" },
+            { name: "Прикраси", href: "/accessories/jewelry" },
+            { name: "Сумки", href: "/accessories/bags" },
+        ],
+    },
+    {
+        title: "Сувеніри",
+        subcategories: [
+            { name: "Магніти", href: "/souvenirs/magnets" },
+            { name: "Брелоки", href: "/souvenirs/keychains" },
+            { name: "Статуетки", href: "/souvenirs/figurines" },
+        ],
+    },
+    {
+        title: "Канцелярія",
+        subcategories: [
+            { name: "Ручки", href: "/stationery/pens" },
+            { name: "Блокноти", href: "/stationery/notebooks" },
+            { name: "Щоденники", href: "/stationery/diaries" },
+        ],
+    },
+    {
+        title: "Весь каталог",
+        subcategories: [
+            { name: "Усі товари", href: "/all-products" },
+        ],
+    },
+];
 
 const ContentCatalog = ({ isOpen, handleCloseClick }) => {
     return (
         <Menu isOpen={isOpen} handleCloseClick={handleCloseClick}>
             <h3 className={styles.catalogHeading}>Каталог</h3>
             <ul className={styles.catalogList}>
-                <li className={styles.catalogItem}>
-                    <p className={styles.categoryTitle}>Одяг</p>
-                    <ul className={styles.subCategoryList}>
-                        <li className={styles.subCategoryItem}><Link href="">Чоловічий одяг</Link></li>
-                        <li className={styles.subCategoryItem}><Link href="">Жіночий одяг</Link></li>
-                        <li className={styles.subCategoryItem}><Link href="">Дитячий одяг</Link></li>
-                    </ul>
-                </li>
-                <li className={styles.catalogItem}>
-                    <p className={styles.categoryTitle}>Аксесуари</p>
-                    <ul className={styles.subCategoryList}>
-                        <li className={styles.subCategoryItem}><Link href="">Годинники</Link></li>
-                        <li className={styles.subCategoryItem}><Link href="">Прикраси</Link></li>
-                        <li className={styles.subCategoryItem}><Link href="">Сумки</Link></li>
-                    </ul>
-                </li>
-                <li className={styles.catalogItem}>
-                    <p className={styles.categoryTitle}>Сувеніри</p>
-                    <ul className={styles.subCategoryList}>
-                        <li className={styles.subCategoryItem}><Link href="">Магніти</Link></li>
-                        <li className={styles.subCategoryItem}><Link href="">Брелоки</Link></li>
-                        <li className={styles.subCategoryItem}><Link href="">Статуетки</Link></li>
-                    </ul>
-                </li>
-                <li className={styles.catalogItem}>
-                    <p className={styles.categoryTitle}>Канцелярія</p>
-                    <ul className={styles.subCategoryList}>
-                        <li className={styles.subCategoryItem}><Link href="">Ручки</Link></li>
-                        <li className={styles.subCategoryItem}><Link href="">Блокноти</Link></li>
-                        <li className={styles.subCategoryItem}><Link href="">Щоденники</Link></li>
-                    </ul>
-                </li>
-                <li className={styles.catalogItem}>
-                    <p className={styles.categoryTitle}>Весь каталог</p>
-                    <ul className={styles.subCategoryList}>
-                        <li className={styles.subCategoryItem}><Link href="">Усі товари</Link></li>
-                    </ul>
-                </li>
+                {catalogData.map((category, index) => (
+                    <li key={index} className={styles.catalogItem}>
+                        <p className={styles.categoryTitle}>{category.title}</p>
+                        <ul className={styles.subCategoryList}>
+                            {category.subcategories.map((subcategory, subIndex) => (
+                                <li key={subIndex} className={styles.subCategoryItem}>
+                                    <Link href={subcategory.href}>{subcategory.name}</Link>
+                                </li>
+                            ))}
+                        </ul>
+                    </li>
+                ))}
             </ul>
         </Menu>
-    )
+    );
 }
 
 export default ContentCatalog;
-
