@@ -1,7 +1,6 @@
 
 import React from 'react';
 import ProductCard from './ProductCard';
-import styles from './styles/ProductCard.module.css';
 import { useFavorites } from '@/context/FavoritesContext';
 
 const ProductList = ({ products }) => {
@@ -13,17 +12,17 @@ const ProductList = ({ products }) => {
     };
 
     return (
-        <ul className={styles.productList}>
+        <ul className='product-list'>
             {products.map(product => {
                 const { isFavorite, favoriteId } = isProductFavorite(product.id);
                 return (
-                    <li className={styles.productChildren} key={product.id}>
-                        <ProductCard
-                            product={product}
-                            isFavorite={isFavorite}
-                            favoriteId={favoriteId}
-                        />
-                    </li>
+
+                    <ProductCard
+                        product={product}
+                        isFavorite={isFavorite}
+                        favoriteId={favoriteId}
+                    />
+
                 );
             })}
         </ul>
@@ -31,5 +30,3 @@ const ProductList = ({ products }) => {
 };
 
 export default ProductList;
-
-

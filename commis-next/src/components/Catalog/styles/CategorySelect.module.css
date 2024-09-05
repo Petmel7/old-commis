@@ -1,0 +1,20 @@
+.select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.categoryHeader {
+    font-weight: bold;
+    font-size: 18px;
+}
+
+/* option {
+    padding: 10px;
+}
+
+option:disabled {
+    color: #999;
+} */

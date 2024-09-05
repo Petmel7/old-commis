@@ -1,3 +1,4 @@
+
 import Link from "next/link";
 import Menu from "../Menu/Menu";
 import styles from './styles/ContentCatalog.module.css';
@@ -6,39 +7,39 @@ const catalogData = [
     {
         title: "Одяг",
         subcategories: [
-            { name: "Чоловічий одяг", href: "/clothing/men" },
-            { name: "Жіночий одяг", href: "/clothing/women" },
-            { name: "Дитячий одяг", href: "/clothing/kids" },
+            { name: "Чоловічий одяг", href: "/catalog?category=Чоловічий одяг" },
+            { name: "Жіночий одяг", href: "/catalog?category=Жіночий одяг" },
+            { name: "Дитячий одяг", href: "/catalog?category=Дитячий одяг" },
         ],
     },
     {
         title: "Аксесуари",
         subcategories: [
-            { name: "Годинники", href: "/accessories/watches" },
-            { name: "Прикраси", href: "/accessories/jewelry" },
-            { name: "Сумки", href: "/accessories/bags" },
+            { name: "Годинники", href: "/catalog?category=Годинники" },
+            { name: "Прикраси", href: "/catalog?category=Прикраси" },
+            { name: "Сумки", href: "/catalog?category=Сумки" },
         ],
     },
     {
         title: "Сувеніри",
         subcategories: [
-            { name: "Магніти", href: "/souvenirs/magnets" },
-            { name: "Брелоки", href: "/souvenirs/keychains" },
-            { name: "Статуетки", href: "/souvenirs/figurines" },
+            { name: "Магніти", href: "/catalog?category=Магніти" },
+            { name: "Брелоки", href: "/catalog?category=Брелоки" },
+            { name: "Статуетки", href: "/catalog?category=Статуетки" },
         ],
     },
     {
         title: "Канцелярія",
         subcategories: [
-            { name: "Ручки", href: "/stationery/pens" },
-            { name: "Блокноти", href: "/stationery/notebooks" },
-            { name: "Щоденники", href: "/stationery/diaries" },
+            { name: "Ручки", href: "/catalog?category=Ручки" },
+            { name: "Блокноти", href: "/catalog?category=Блокноти" },
+            { name: "Щоденники", href: "/catalog?category=Щоденники" },
         ],
     },
     {
         title: "Весь каталог",
         subcategories: [
-            { name: "Усі товари", href: "/all-products" },
+            { name: "Усі товари", href: "/catalog" },
         ],
     },
 ];
@@ -54,7 +55,9 @@ const ContentCatalog = ({ isOpen, handleCloseClick }) => {
                         <ul className={styles.subCategoryList}>
                             {category.subcategories.map((subcategory, subIndex) => (
                                 <li key={subIndex} className={styles.subCategoryItem}>
-                                    <Link href={subcategory.href}>{subcategory.name}</Link>
+                                    <Link href={subcategory.href}>
+                                        {subcategory.name}
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -66,3 +69,4 @@ const ContentCatalog = ({ isOpen, handleCloseClick }) => {
 }
 
 export default ContentCatalog;
+

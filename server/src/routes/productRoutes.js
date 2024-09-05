@@ -1,7 +1,7 @@
 
 // server/src/routes/productRoutes.js
 const express = require('express');
-const { getProducts, getProductById, getUserProducts, addProduct, updateProduct, deleteProduct, deleteImage, searchProducts } = require('../controllers/productController');
+const { getProducts, getProductById, getUserProducts, addProduct, updateProduct, deleteProduct, deleteImage, searchProducts, getProductsByCategory } = require('../controllers/productController');
 const { protect } = require('../middleware/authMiddleware');
 const upload = require('../config/multerConfig');
 const router = express.Router();

@@ -41,26 +41,28 @@ const ProductCard = ({ product, isFavorite = false, favoriteId = null }) => {
     const firstImage = product.images && product.images.length > 0 ? product.images[0] : '';
 
     return (
-        <div className={styles.productCard}>
-            <Link href={`/products/details/${product.id}`}>
-                <div className={styles.productCardImageContainer}>
-                    <img className={styles.productCardImage} src={`${baseUrl}${firstImage}`} alt={product.name} />
-                </div>
-            </Link>
-            <h2 className={styles.productCardName}>
-                {truncateText(product.name, 15)}
-            </h2>
-            <p className={styles.productCardPrice}>Ціна: {product.price} грн</p>
-            <div className={styles.buttonContainer}>
-                <BuyButton product={product} />
+        <li className={styles.productChildren} key={product.id} >
+            <div className={styles.productCard}>
+                <Link href={`/products/details/${product.id}`}>
+                    <div className={styles.productCardImageContainer}>
+                        <img className={styles.productCardImage} src={`${baseUrl}${firstImage}`} alt={product.name} />
+                    </div>
+                </Link>
+                <h2 className={styles.productCardName}>
+                    {truncateText(product.name, 15)}
+                </h2>
+                <p className={styles.productCardPrice}>Ціна: {product.price} грн</p>
+                <div className={styles.buttonContainer}>
+                    <BuyButton product={product} />
 
-                <HeartIcon
-                    className={`${styles.favoriteButton}
-                ${favoriteStatus ? styles.favorite : ''}`}
-                    onClick={handleFavoriteClick}
-                />
+                    <HeartIcon
+                        className={`${styles.favoriteButton}
+                        ${favoriteStatus ? styles.favorite : ''}`}
+                        onClick={handleFavoriteClick}
+                    />
+                </div>
             </div>
-        </div>
+        </li>
     );
 };
 
