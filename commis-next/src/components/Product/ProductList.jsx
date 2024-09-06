@@ -18,6 +18,7 @@ const ProductList = ({ products }) => {
                 return (
 
                     <ProductCard
+                        key={product.id}
                         product={product}
                         isFavorite={isFavorite}
                         favoriteId={favoriteId}

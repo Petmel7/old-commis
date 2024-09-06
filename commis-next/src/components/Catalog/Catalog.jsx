@@ -27,13 +27,14 @@ const Catalog = () => {
     }, [category]);
 
     return (
-        <ul className='product-list'>
+        <>
             <h1 className={styles.productCategory}>Категорія: {category || 'Всі продукти'}</h1>
-
-            {products.map(product => (
-                <ProductCard product={product} />
-            ))}
-        </ul>
+            <ul className='product-list'>
+                {products.map(product => (
+                    <ProductCard product={product} key={product.id} />
+                ))}
+            </ul>
+        </>
     );
 };
 

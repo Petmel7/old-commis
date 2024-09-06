@@ -16,4 +16,21 @@ const getProductsByCategory = async (req, res) => {
     }
 };
 
-module.exports = { getProductsByCategory }
+const getCategoryList = async (req, res) => {
+    try {
+        const categories = await Product.findAll({
+            attributes: ['category'],
+            group: ['category'],
+            order: [['category', 'ASC']]
+        });
+
+        res.status(200).json(categories.map(cat => cat.category));
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+module.exports = {
+    getProductsByCategory,
+    getCategoryList
+}

@@ -1,6 +1,6 @@
 // import { useState } from 'react';
 import styles from './styles/CategorySelect.module.css';
-import catalogData from './catalogData';
+import catalogDataSelect from './catalogDataSelect';
 
 const CategorySelect = ({ category, setCategory }) => {
     return (
@@ -14,7 +14,7 @@ const CategorySelect = ({ category, setCategory }) => {
                 Виберіть категорію
             </option>
 
-            {catalogData.map((categoryGroup, index) => (
+            {catalogDataSelect.map((categoryGroup, index) => (
                 <optgroup key={index} label={categoryGroup.title}>
                     {categoryGroup.subcategories.map((subcategory, subIndex) => (
                         <option key={subIndex} value={subcategory.value}>

@@ -1,4 +1,4 @@
-const catalogData = [
+const catalogDataSelect = [
     {
         title: "Одяг",
         subcategories: [
@@ -31,12 +31,6 @@ const catalogData = [
             { name: "Щоденники", value: "Щоденники" },
         ],
     },
-    {
-        title: "Весь каталог",
-        subcategories: [
-            { name: "Усі товари", value: "Усі товари" },
-        ],
-    },
 ];
 
-export default catalogData;
+export default catalogDataSelect;

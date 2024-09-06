@@ -62,5 +62,6 @@
 }
 
 .subCategoryItem a:hover {
-    text-decoration: underline;
+    /* text-decoration: underline; */
+    border-bottom: solid 2px #1e90ff;
 }

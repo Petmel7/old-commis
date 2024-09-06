@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoritesContext';
 import useToggle from '@/hooks/useToggle';
-import ContentCatalog from './ContentCatalog';
+import ContentCatalog from '../Catalog/ContentCatalog';
 import Home from '../../../public/img/Home.svg';
 import Heart from '../../../public/img/Heart.svg';
 import Bullets from '../../../public/img/Bullets.svg';
