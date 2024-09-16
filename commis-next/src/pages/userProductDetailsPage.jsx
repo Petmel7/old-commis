@@ -1,9 +1,9 @@
-// import UserProductDetails from '../components/Product/UserProductDetails';
+import UserProductDetails from '../components/Product/UserProductDetails';
 
-// function UserProductDetailsPage() {
-//     return (
-//         <UserProductDetails />
-//     )
-// }
+function UserProductDetailsPage() {
+    return (
+        <UserProductDetails />
+    )
+}
 
-// export default UserProductDetailsPage;
+export default UserProductDetailsPage;
