@@ -55,20 +55,15 @@ const PlacingAnOrder = () => {
             address: [address],
         };
 
-        console.log('PlacingAnOrder->orderDetails', orderDetails);
-
         try {
             // Створення замовлення
             const response = await createOrder(orderDetails);
-            console.log('OrderDetails->response', response);
 
             const orderId = response?.orderId;
 
             if (!orderId) {
                 throw new Error('Не вдалося створити замовлення: orderId не знайдено');
             }
-
-            console.log('handleOrder->response.message', response.message);
 
             if (paymentMethod === 'paypal') {
                 const dataPayment = {
@@ -80,7 +75,6 @@ const PlacingAnOrder = () => {
 
                 // Ініціалізація платежу через PayPal
                 const paymentResponse = await createPayment(dataPayment);
-                console.log('PaymentResponse->paymentResponse', paymentResponse);
 
                 if (paymentResponse && paymentResponse.links) {
                     const approvalUrl = paymentResponse.links.find(link => link.rel === 'approve')?.href;
@@ -117,7 +111,6 @@ const PlacingAnOrder = () => {
     };
 
     if (loadingErrorComponent) return loadingErrorComponent;
-    console.log('loadingErrorComponent', loadingErrorComponent);
 
     return (
         <div className={styles.container}>

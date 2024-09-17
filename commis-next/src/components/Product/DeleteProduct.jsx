@@ -9,7 +9,6 @@ const DeleteProduct = ({ productId }) => {
         e.preventDefault();
         try {
             await deleteProduct(productId);
-            console.log('DeleteProduct->productId', productId);
             router.push('/userProducts');
         } catch (error) {
             console.log('handleDeleteProduct->error', error);

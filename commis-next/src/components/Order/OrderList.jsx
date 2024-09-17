@@ -21,7 +21,6 @@ const OrderList = () => {
     const fetchOrders = async () => {
         try {
             const fetchedOrders = await getSellerOrders();
-            console.log('OrderList->fetchedOrders', fetchedOrders);
             setOrders(fetchedOrders);
             setLoading(false);
         } catch (error) {
@@ -35,8 +34,6 @@ const OrderList = () => {
     }, []);
 
     if (loadingErrorComponent) return loadingErrorComponent;
-
-    console.log('OrderList->orders', orders);
 
     if (orders.length === 0) {
         return (

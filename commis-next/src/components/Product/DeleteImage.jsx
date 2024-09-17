@@ -12,7 +12,6 @@ const DeleteImage = ({ productId, index, fetchProduct }) => {
         try {
             await deleteImage(productId, indices);
             fetchProduct();
-            console.log('DeleteImage->productId-indices', productId, indices);
         } catch (error) {
             console.log('handleDeleteImage->error', error);
         }

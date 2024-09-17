@@ -3,8 +3,6 @@ import api from './api';
 export const register = async (data) => {
     const response = await api.post('/users/register', data);
     localStorage.setItem('isRegistered', response.data.isRegistered);
-    console.log('register->isRegistered', response.data.isRegistered);
-    console.log('register->response', response);
     return response.data;
 };
 
@@ -12,8 +10,6 @@ export const login = async (data) => {
     const response = await api.post('/users/login', data);
     localStorage.setItem('accessToken', response.data.accessToken);
     localStorage.setItem('refreshToken', response.data.refreshToken);
-    console.log('login->accessToken', response.data.accessToken);
-    console.log('login->refreshToken', response.data.refreshToken);
     return response.data;
 };
 
@@ -23,8 +19,6 @@ export const googleAuth = async () => {
 };
 
 export const addPhone = async (data) => {
-    console.log('addPhone->api', api);
-    console.log('addPhone->data', data);
     const response = await api.post('/users/add-phone', data);
     return response.data;
 };
@@ -38,11 +32,6 @@ export const confirmPhone = async (data) => {
     const response = await api.post('/users/confirm-phone', data);
     return response.data;
 };
-
-// export const getUserProfile = async (data) => {
-//     const response = await api.get('/users/profile', data);
-//     return response.data;
-// };
 
 export const getUserProfile = async (accessToken) => {
     const response = await api.get('/users/profile', {

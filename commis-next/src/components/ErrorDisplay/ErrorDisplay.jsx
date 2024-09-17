@@ -1,4 +1,4 @@
-// components/ErrorDisplay/ErrorDisplay.js
+
 import React from 'react';
 
 const ErrorDisplay = ({ error }) => {

@@ -16,14 +16,12 @@ const AuthCallback = () => {
         const authenticate = async () => {
             try {
                 localStorage.setItem('refreshToken', refreshToken);
-                console.log('AuthCallback->refreshToken', refreshToken);
+
                 handleLogin();
 
                 const accessToken = localStorage.getItem('accessToken');
-                console.log('AuthCallback->accessToken', accessToken);
 
                 const userProfile = await getUserProfile(accessToken);
-                console.log('AuthCallback->userProfile', userProfile);
 
                 if (userProfile.googleRegistered) {
                     setGoogleRegisteredStatus(true);

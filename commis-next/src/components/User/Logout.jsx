@@ -16,7 +16,6 @@ const Logout = () => {
     const handleConfirmLogout = async () => {
         try {
             const refreshToken = localStorage.getItem('refreshToken');
-            console.log('handleLogout->refreshToken', refreshToken);
             if (!refreshToken) {
                 console.error('No refresh token found in local storage');
                 return;

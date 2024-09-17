@@ -1,4 +1,4 @@
-// import { useState } from 'react';
+
 import styles from './styles/CategorySelect.module.css';
 import catalogDataSelect from './catalogDataSelect';
 

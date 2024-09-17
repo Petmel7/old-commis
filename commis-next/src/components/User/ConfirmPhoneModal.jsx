@@ -23,7 +23,6 @@ const ConfirmPhoneModal = ({ show, onClose }) => {
             try {
                 const userProfile = await getUserProfile();
                 setUser(userProfile);
-                console.log('ConfirmPhoneModal->userProfile:', userProfile);
             } catch (err) {
                 setError('Не вдалося завантажити профіль користувача');
             }

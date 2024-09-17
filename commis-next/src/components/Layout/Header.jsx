@@ -7,6 +7,7 @@ import SearchMenu from './SearchMenu';
 import NavIcons from './NavIcons';
 import useToggle from '@/hooks/useToggle';
 import Logo from './Logo/Logo';
+import Tooltip from '../Tooltip/Tooltip';
 import styles from './styles/Header.module.css';
 import SearchIcon from '../../../public/img/Search.svg';
 import ProfileIcon from '../../../public/img/Profile.svg';
@@ -18,11 +19,13 @@ const AuthIcon = () => {
 
     return (
         <Link href={profileLink}>
-            {!isAuthenticated ? (
-                <ProfileIcon className={styles.headerIcon} />
-            ) : (
-                <Image className={styles.defaultIcon} src={DefaultIcon} alt="Default Icon" width={40} height={40} />
-            )}
+            <Tooltip text="Профіль" position="bottom">
+                {!isAuthenticated ? (
+                    <ProfileIcon className={styles.headerIcon} />
+                ) : (
+                    <Image className={styles.defaultIcon} src={DefaultIcon} alt="Default Icon" width={40} height={40} />
+                )}
+            </Tooltip>
         </Link>
     );
 };
@@ -36,9 +39,11 @@ const Header = () => {
                 <div className={styles.headerContainer}>
                     <Logo />
                     <div className={styles.iconContainer}>
-                        <button className={styles.searchButton} onClick={handleOpenClick}>
-                            <SearchIcon className={styles.headerIcon} />
-                        </button>
+                        <Tooltip text="Пошук" position="bottom">
+                            <button className={styles.searchButton} onClick={handleOpenClick}>
+                                <SearchIcon className={styles.headerIcon} />
+                            </button>
+                        </Tooltip>
                         <div className="desktop-only">
                             <NavIcons />
                         </div>

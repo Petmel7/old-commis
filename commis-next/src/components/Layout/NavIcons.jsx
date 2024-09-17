@@ -4,6 +4,7 @@ import { useCart } from '@/context/CartContext';
 import { useFavorites } from '@/context/FavoritesContext';
 import useToggle from '@/hooks/useToggle';
 import ContentCatalog from '../Catalog/ContentCatalog';
+import Tooltip from '../Tooltip/Tooltip';
 import Home from '../../../public/img/Home.svg';
 import Heart from '../../../public/img/Heart.svg';
 import Bullets from '../../../public/img/Bullets.svg';
@@ -23,14 +24,18 @@ const NavIcons = () => {
             <li className={styles.iconItem}>
                 <Link href="/">
                     <div className={styles.linkContainer}>
-                        <Home className={styles.icon} />
+                        <Tooltip text="Головна" position="bottom">
+                            <Home className={styles.icon} />
+                        </Tooltip>
                         <p className={styles.text}>Головна</p>
                     </div>
                 </Link>
             </li>
             <li className={styles.iconItem}>
                 <div className={styles.linkContainer} onClick={handleOpenClick}>
-                    <Bullets className={styles.icon} />
+                    <Tooltip text="Каталог" position="bottom">
+                        <Bullets className={styles.icon} />
+                    </Tooltip>
                     <p className={styles.text}>Каталог</p>
                 </div>
                 <ContentCatalog isOpen={isOpen} handleCloseClick={handleCloseClick} />
@@ -39,7 +44,9 @@ const NavIcons = () => {
                 <Link href="/getFavorites">
                     <div className={styles.linkContainer}>
                         <div className={styles.cartIconContainer}>
-                            <Heart className={styles.icon} />
+                            <Tooltip text="Вибране" position="bottom">
+                                <Heart className={styles.icon} />
+                            </Tooltip>
                             {favoritesCount > 0 && (
                                 <div className={styles.favoritesBadge}>{favoritesCount}</div>
                             )}
@@ -52,7 +59,9 @@ const NavIcons = () => {
                 <Link href="/cart">
                     <div className={styles.linkContainer}>
                         <div className={styles.cartIconContainer}>
-                            <CartIcon className={styles.icon} />
+                            <Tooltip text="Корзина" position="bottom">
+                                <CartIcon className={styles.icon} />
+                            </Tooltip>
                             {cartItemCount > 0 && (
                                 <div className={styles.cartBadge}>{cartItemCount}</div>
                             )}

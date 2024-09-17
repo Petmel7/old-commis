@@ -9,14 +9,12 @@ const Catalog = () => {
     const [products, setProducts] = useState([]);
     const router = useRouter();
     const { category } = router.query;
-    console.log('Catalog->category', category);
 
     useEffect(() => {
         const fetchProductsByCategory = async () => {
             try {
                 if (category) {
                     const data = await getProductsByCategory(category);
-                    console.log('Catalog->data', data);
                     setProducts(data);
                 }
             } catch (error) {

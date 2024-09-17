@@ -14,7 +14,6 @@ const AddOrUpdateProduct = () => {
     const fetchProduct = async () => {
         const productData = await getProductById(productId);
         setInitialData(productData);
-        console.log('fetchProduct->productData', productData);
     };
 
     useEffect(() => {
@@ -27,10 +26,8 @@ const AddOrUpdateProduct = () => {
     const handleSubmit = async (productData) => {
         if (productId) {
             await updateProduct(productId, productData);
-            console.log('updateProduct->productData', productData);
         } else {
             await addProduct(productData);
-            console.log('addProduct->productData', productData);
         }
         router.push('/userProducts');
     };

@@ -24,8 +24,6 @@ const ThanksForTheOrder = () => {
         }
     }, [cart, clearCart]);
 
-    console.log('ThanksForTheOrder->cart', cart);
-
     const calculateTotalPrice = (item) => {
         return item.price * item.quantity;
     };

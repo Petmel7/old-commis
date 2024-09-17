@@ -15,8 +15,6 @@ const UserProductDetails = () => {
 
     const { product, loading, error } = useProduct(productId);
 
-
-    console.log('UserProductDetails->product', product);
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     if (loadingErrorComponent) return loadingErrorComponent;

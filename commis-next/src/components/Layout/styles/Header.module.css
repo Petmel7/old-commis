@@ -3,7 +3,7 @@
     align-items: center;
     justify-content: space-between;
     background-color: #1D2533;
-    padding: 10px 20px;
+    padding: 15px 0px 15px 0px;
     width: 100%;
     margin-bottom: 20px;
     position: fixed;
@@ -49,8 +49,4 @@
     width: 24px;
     height: 24px;
     border-radius: 50px;
-}
-
-.profileIcon.authenticated {
-    fill: green;
 }

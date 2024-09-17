@@ -25,7 +25,6 @@ export const searchProducts = async (query) => {
 };
 
 export const addProduct = async (formData) => {
-    console.log('addProduct->formData', formData);
     const response = await api.post('/products', formData, {
         headers: {
             'Content-Type': 'multipart/form-data'
@@ -45,10 +44,8 @@ export const deleteProduct = async (productId) => {
 };
 
 export const deleteImage = async (productId, indices) => {
-    console.log('deleteImage->productId-indices', productId, indices);
     const response = await api.delete(`/products/${productId}/images`, {
         data: { indices }
     });
-    console.log('deleteImage->response', response);
     return response.data;
 };

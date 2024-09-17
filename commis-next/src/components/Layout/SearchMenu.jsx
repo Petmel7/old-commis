@@ -14,7 +14,6 @@ const SearchMenu = ({ isOpen, handleCloseClick }) => {
 
         if (query.length > 0) {
             const results = await fetchSearchResults(query);
-            console.log('handleInputChange->results', results);
             setSearchResults(results);
         } else {
             setSearchResults([]);
@@ -24,7 +23,6 @@ const SearchMenu = ({ isOpen, handleCloseClick }) => {
     const fetchSearchResults = async (query) => {
         try {
             const response = await searchProducts(query);
-            console.log('fetchSearchResults->response', response);
             return response.products || [];
         } catch (error) {
             console.error('Помилка при виконанні пошуку:', error);

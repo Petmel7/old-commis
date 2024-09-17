@@ -12,7 +12,6 @@ const Cart = () => {
     const { cart, increaseQuantity, decreaseQuantity } = useCart();
     const { isAuthenticated } = useAuth();
     const router = useRouter();
-    console.log('Cart->cart', cart);
 
     const handleOrderClick = async (e) => {
         e.preventDefault();

@@ -5,6 +5,7 @@ import ConfirmEmailModal from './ConfirmEmailModal';
 import AddPhoneNumber from './AddPhoneNumber';
 import ConfirmPhoneModal from './ConfirmPhoneModal';
 import useUserStatus from '../../hooks/useUserStatus';
+import Tooltip from '../Tooltip/Tooltip';
 import styles from './styles/Profile.module.css';
 
 const Profile = () => {
@@ -20,8 +21,6 @@ const Profile = () => {
         closeConfirmPhoneModal,
     } = useUserStatus();
 
-    console.log('Profile->user', user);
-
     if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
@@ -33,13 +32,25 @@ const Profile = () => {
                     </div>
                     <ul className={styles.profileLinks}>
                         <li>
-                            <Link href='/productAdd'>Додати продукт</Link>
+                            <Link href='/productAdd'>
+                                <Tooltip text="Тут ви можете додати продукт" position="bottom">
+                                    Додати продукт
+                                </Tooltip>
+                            </Link>
                         </li>
                         <li>
-                            <Link href='/userProducts'>Мої продукти</Link>
+                            <Link href='/userProducts'>
+                                <Tooltip text="Тут знаходяться всі додані ваші продукти" position="bottom">
+                                    Мої продукти
+                                </Tooltip>
+                            </Link>
                         </li>
                         <li>
-                            <Link href='/orderList'>Замовлення</Link>
+                            <Link href='/orderList'>
+                                <Tooltip text="Тут знаходяться замовлення ваших продуктів" position="bottom">
+                                    Замовлення
+                                </Tooltip>
+                            </Link>
                         </li>
                     </ul>
                 </div>

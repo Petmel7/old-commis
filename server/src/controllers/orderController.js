@@ -1,12 +1,9 @@
 const path = require('path');
 const { Product, User, Order, OrderItem } = require('../models');
-// const { sequelize } = require('../config/db');
 const transporter = require('../config/emailConfig');
 
 const createOrder = async (req, res) => {
     const { items, address } = req.body;
-    console.log('createOrder->items', items);
-    console.log('createOrder->address', address);
 
     try {
         let total = 0;
@@ -115,38 +112,6 @@ const deleteOrder = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
-
-// const deleteOrder = async (req, res) => {
-//     const { id } = req.params;
-
-//     const transaction = await sequelize.transaction(); // Початок транзакції
-
-//     try {
-//         const order = await Order.findByPk(id, { transaction });
-
-//         if (!order) {
-//             await transaction.rollback(); // Відміна транзакції у разі помилки
-//             return res.status(404).json({ message: 'Order not found' });
-//         }
-
-//         const orderItems = await OrderItem.findAll({ where: { order_id: id }, transaction });
-
-//         for (let item of orderItems) {
-//             const product = await Product.findByPk(item.product_id, { transaction });
-//             await product.update({ stock: product.stock + item.quantity }, { transaction });
-//         }
-
-//         await OrderItem.destroy({ where: { order_id: id }, transaction });
-//         await Order.destroy({ where: { id }, transaction });
-
-//         await transaction.commit(); // Підтвердження транзакції
-
-//         res.status(200).json({ message: 'Order deleted successfully' });
-//     } catch (error) {
-//         await transaction.rollback(); // Відміна транзакції у разі помилки
-//         res.status(500).json({ message: error.message });
-//     }
-// };
 
 const getOrder = async (req, res) => {
     const { id } = req.params;

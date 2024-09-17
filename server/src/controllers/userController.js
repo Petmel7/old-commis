@@ -53,12 +53,10 @@ const confirmEmail = async (req, res) => {
 const addPhoneNumber = async (req, res) => {
     const { phone } = req.body;
     try {
-        console.log('Request received:', req.body);
 
         const user = await User.findByPk(req.user.id);
 
         if (!user) {
-            console.log('User not found');
             return res.status(404).json({ message: 'User not found' });
         }
 
@@ -69,15 +67,11 @@ const addPhoneNumber = async (req, res) => {
         // Отримуємо email з об'єкта user
         const email = user.email;
 
-        console.log('Sending email to:', email);
-
         await transporter.sendMail({
             to: email,
             subject: 'Підтвердьте свій телефон електронною поштою',
             html: `<div>Код підтвердження вашого телефону ${confirmationcode}</div>`
         });
-
-        console.log('Email sent successfully');
 
         res.status(200).json({ message: 'Phone number added and confirmation email sent' });
     } catch (error) {
@@ -141,7 +135,6 @@ const loginUser = async (req, res) => {
 
 const logoutUser = async (req, res) => {
     const { token } = req.body;
-    console.log('Received token:', token);
 
     if (!token) {
         return res.status(400).json({ message: 'No token provided' });
@@ -150,10 +143,8 @@ const logoutUser = async (req, res) => {
     try {
         // Verify the token with the same secret used to sign it
         const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-        console.log('Decoded token:', decoded);
 
         const result = await RefreshToken.destroy({ where: { token } });
-        console.log('Delete result:', result);
 
         if (result === 0) {
             return res.status(400).json({ message: 'Token not found' });
