@@ -53,14 +53,14 @@
     border-color: #333 transparent transparent transparent;
 }
 
-.iconWrapper:hover .tooltip {
+/* .iconWrapper:hover .tooltip {
     visibility: visible;
     opacity: 1;
-}
+} */
 
-/* @media (min-width: 768px) {
+@media (min-width: 768px) {
     .iconWrapper:hover .tooltip {
         visibility: visible;
         opacity: 1;
     }
-} */
+}
