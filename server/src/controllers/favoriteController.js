@@ -71,6 +71,7 @@ module.exports = {
 
 
 
+
 // const { Favorite, Product } = require('../models');
 // const { createResponse } = require('../utils/response');
 // const { addFavoriteSchema } = require('../validators/validators');
@@ -78,7 +79,12 @@ module.exports = {
 // // Додати до улюблених
 // const addFavorite = async (req, res, next) => {
 //     const { productId } = req.body;
-//     const userId = req.user.id;
+//     const userId = req.user ? req.user.id : null;
+
+//     // Перевіряємо, чи є користувач авторизованим
+//     if (!userId) {
+//         return createResponse(res, 401, {}, 'Not authorized', 'auth_error');
+//     }
 
 //     // Валідація даних за допомогою Joi
 //     const { error } = addFavoriteSchema.validate({ productId });
@@ -92,28 +98,36 @@ module.exports = {
 //         });
 
 //         if (!created) {
-//             return createResponse(res, 409, {}, 'The product has already been added to your favorites');
+//             return createResponse(res, 409, {}, 'The product has already been added to your favorites', 'conflict');
 //         }
 
-//         createResponse(res, 201, { favorite }, 'Product added to favorites');
+//         createResponse(res, 201, { favorite }, 'Product added to favorites', 'success');
+//         console.log('@@@addFavorite', favorite);
 //     } catch (error) {
-//         next(error);
+//         next(error); // Обробка базової помилки через middleware
 //     }
 // };
 
 // // Видалити з улюблених
 // const deleteFavorite = async (req, res, next) => {
 //     const { id } = req.params;
+//     const userId = req.user ? req.user.id : null;
+
+//     // Перевірка авторизації
+//     if (!userId) {
+//         return createResponse(res, 401, {}, 'Not authorized', 'auth_error');
+//     }
+
 //     try {
 //         const favorite = await Favorite.findByPk(id);
 //         if (!favorite) {
-//             return createResponse(res, 404, {}, 'Product not found');
+//             return createResponse(res, 404, {}, 'Product not found', 'not_found');
 //         }
-//         if (favorite.user_id !== req.user.id) {
-//             return createResponse(res, 403, {}, 'Not authorized to delete this product');
+//         if (favorite.user_id !== userId) {
+//             return createResponse(res, 403, {}, 'Not authorized to delete this product', 'auth_error');
 //         }
 //         await favorite.destroy();
-//         createResponse(res, 200, {}, 'Product deleted successfully');
+//         createResponse(res, 200, {}, 'Product deleted successfully', 'success');
 //     } catch (error) {
 //         next(error);
 //     }
@@ -121,26 +135,37 @@ module.exports = {
 
 // // Отримати улюблені продукти
 // const getFavorites = async (req, res, next) => {
+//     const userId = req.user ? req.user.id : null;
+
+//     // Перевірка авторизації
+//     if (!userId) {
+//         return createResponse(res, 401, {}, 'Not authorized', 'auth_error');
+//     }
+
 //     try {
 //         const favorites = await Favorite.findAll({
-//             where: { user_id: req.user.id },
+//             where: { user_id: userId },
 //             include: [
 //                 {
 //                     model: Product,
 //                     as: 'Product',
-//                     attributes: ['id', 'name', 'description', 'price', 'stock', 'images', 'user_id']
-//                 }
-//             ]
+//                     attributes: ['id', 'name', 'description', 'price', 'stock', 'images', 'user_id'],
+//                 },
+//             ],
 //         });
+
+//         // Якщо у користувача немає улюблених продуктів
+//         if (favorites.length === 0) {
+//             return createResponse(res, 404, {}, 'No favorites found', 'not_found');
+//         }
 
 //         const response = favorites.map(favorite => ({
 //             id: favorite.id,
 //             product_id: favorite.product_id,
-//             product: favorite.Product
+//             product: favorite.Product,
 //         }));
 
-//         createResponse(res, 200, response);
-//         console.log('@@@@@RESPONSE', response);
+//         createResponse(res, 200, response, 'Favorites retrieved successfully', 'success');
 //     } catch (error) {
 //         next(error);
 //     }
@@ -149,5 +174,5 @@ module.exports = {
 // module.exports = {
 //     addFavorite,
 //     deleteFavorite,
-//     getFavorites
+//     getFavorites,
 // };

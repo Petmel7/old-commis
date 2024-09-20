@@ -1,5 +1,4 @@
 
-// server/src/index.js
 const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
@@ -14,18 +13,11 @@ const favoriteRoutes = require('./routes/favoriteRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const catalogRoutes = require('./routes/catalogRoutes');
 
-// const errorHandler = require('./middleware/errorHandler');
-const { errorHandler } = require('./utils/utils');
 const cron = require('node-cron');
+const { errorHandler } = require('./middleware/errorHandler');
 const { deleteOldRefreshTokens } = require('./controllers/userController');
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
-
-// console.log('DB_HOST:', process.env.DB_HOST);
-// console.log('DB_USER:', process.env.DB_USER);
-// console.log('DB_PASSWORD:', process.env.DB_PASSWORD ? '******' : '(none)');
-// console.log('DB_NAME:', process.env.DB_NAME);
-// console.log('JWT_SECRET:', process.env.JWT_SECRET);
 
 const app = express();
 
@@ -70,3 +62,15 @@ sequelize.sync().then(() => {
 }).catch(err => {
     console.error('Unable to connect to the database:', err);
 });
+
+
+
+
+
+
+
+// console.log('DB_HOST:', process.env.DB_HOST);
+// console.log('DB_USER:', process.env.DB_USER);
+// console.log('DB_PASSWORD:', process.env.DB_PASSWORD ? '******' : '(none)');
+// console.log('DB_NAME:', process.env.DB_NAME);
+// console.log('JWT_SECRET:', process.env.JWT_SECRET);

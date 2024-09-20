@@ -5,7 +5,7 @@ import styles from './styles/NoProducts.module.css';
 
 const NoProducts = ({ text, buttonLink, buttonText }) => {
     return (
-        <>
+        <div>
             <BackButton />
             <div className={styles.container}>
                 <img className={styles.image} src={Rabbit.src} alt="Hемає вибраних продуктів" />
@@ -16,7 +16,7 @@ const NoProducts = ({ text, buttonLink, buttonText }) => {
                     </Link>
                 )}
             </div>
-        </>
+        </div>
     )
 }
 export default NoProducts;

@@ -22,4 +22,4 @@ const errorHandler = (err, req, res, next) => {
     createResponse(res, 500, {}, 'An unexpected error occurred', 'server_error');
 };
 
-module.exports = errorHandler;
+module.exports = { errorHandler };
