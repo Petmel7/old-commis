@@ -3,6 +3,14 @@ const { Product } = require('../models');
 const { createResponse } = require('../utils/response');
 const { productSchema } = require('../validators/validators');
 
+const validateProduct = (product) => {
+    const { error, value } = productSchema.validate(product.dataValues || product);
+    if (error) {
+        throw new Error(`Validation error: ${error.details[0].message}`);
+    }
+    return value;
+}
+
 const getProductsByCategory = async (req, res, next) => {
     const { category } = req.query;
 
@@ -11,22 +19,14 @@ const getProductsByCategory = async (req, res, next) => {
             where: { category },
         });
 
-        // Валідація кожного продукту перед відправкою
-        const validatedProducts = products.map(product => {
-            const { error, value } = productSchema.validate(product.dataValues || product);
-            if (error) {
-                throw new Error(`Validation error: ${error.details[0].message}`);
-            }
-            return value;
-        });
+        const validatedProducts = products.map(validateProduct);
 
-        createResponse(res, 200, validatedProducts); // Надсилаємо тільки валідовані дані
+        createResponse(res, 200, validatedProducts);
     } catch (error) {
-        createResponse(res, 500, {}, error.message, 'server_error');
+        next(error);
     }
 };
 
-// Отримання списку категорій
 const getCategoryList = async (req, res, next) => {
     try {
         const categories = await Product.findAll({
@@ -36,7 +36,7 @@ const getCategoryList = async (req, res, next) => {
         });
         createResponse(res, 200, categories.map(cat => cat.category));
     } catch (error) {
-        next(error); // передати помилку в middleware для обробки
+        next(error);
     }
 };
 

@@ -15,8 +15,10 @@ const NavIcons = () => {
     const { cart } = useCart();
     const { favorites } = useFavorites();
     const { isOpen, handleOpenClick, handleCloseClick } = useToggle();
+    console.log('&&&favorites', favorites);
 
     const favoritesCount = favorites.length;
+
     const cartItemCount = cart.reduce((count, item) => count + item.quantity, 0);
 
     return (

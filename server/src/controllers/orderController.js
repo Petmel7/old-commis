@@ -1,33 +1,275 @@
-const path = require('path');
-const { Product, User, Order, OrderItem } = require('../models');
-const transporter = require('../config/emailConfig');
+// const path = require('path');
+// const { Product, User, Order, OrderItem } = require('../models');
+// const transporter = require('../config/emailConfig');
 
-const createOrder = async (req, res) => {
+// const createOrder = async (req, res) => {
+//     const { items, address } = req.body;
+
+//     try {
+//         let total = 0;
+//         let orderDetails = '';
+//         let sellers = new Set();
+//         const baseURL = 'http://localhost:5000/uploads';
+
+//         for (let item of items) {
+//             const product = await Product.findByPk(item.product_id);
+
+//             if (!product) {
+//                 return res.status(404).json({ message: `Product with id ${item.product_id} not found` });
+//             }
+//             if (product.stock < item.quantity) {
+//                 return res.status(400).json({ message: `Insufficient stock for product ${product.name}. Only ${product.stock} items left.` });
+//             }
+
+//             total += product.price * item.quantity;
+//             const productImageURL = `${baseURL}/${path.basename(product.images[0])}`;
+
+//             const seller = await User.findByPk(product.user_id, { attributes: ['name', 'lastname', 'email'] });
+//             if (seller) {
+//                 sellers.add(seller.email);
+//             }
+
+//             orderDetails +=
+//                 `<tr>
+//                     <td><img src="${productImageURL}" alt="${product.name}" width="50"/></td>
+//                     <td>${product.name}</td>
+//                     <td>${item.quantity}</td>
+//                     <td>${product.price}</td>
+//                     <td>${seller.name} ${seller.lastname}</td>
+//                 </tr>`;
+//         }
+
+//         if (sellers.size === 0) {
+//             return res.status(404).json({ message: 'No sellers found for the provided products' });
+//         }
+
+//         const order = await Order.create({
+//             user_id: req.user.id,
+//             total,
+//             region: address[0].region,
+//             city: address[0].city,
+//             postoffice: address[0].postoffice
+//         });
+
+//         for (let item of items) {
+//             const product = await Product.findByPk(item.product_id);
+//             await OrderItem.create({
+//                 order_id: order.id,
+//                 product_id: item.product_id,
+//                 quantity: item.quantity,
+//                 price: product.price * item.quantity
+//             });
+//             await product.update({ stock: product.stock - item.quantity });
+//         }
+
+//         const sellerEmailsArray = Array.from(sellers);
+//         await transporter.sendMail({
+//             to: req.user.email,
+//             subject: `Ваше замовлення ${order.id} отримано продавцями`,
+//             html: `
+//                 <h1>Деталі замовлення</h1>
+//                 <table>
+//                     <tr>
+//                         <th>Фото</th>
+//                         <th>Назва товару</th>
+//                         <th>Кількість</th>
+//                         <th>Ціна</th>
+//                         <th>Продавець</th>
+//                     </tr>
+//                     ${orderDetails}
+//                 </table>
+//                 <p>Загальна сума: ${total}</p>
+//             `
+//         });
+
+//         res.status(201).json({ message: 'Order created successfully', orderId: order.id });
+//     } catch (error) {
+//         console.error('Error in createOrder:', error);
+//         res.status(500).json({ message: `Server error: ${error.message}` });
+//     }
+// };
+
+// const deleteOrder = async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const order = await Order.findByPk(id);
+//         if (!order) {
+//             return res.status(404).json({ message: 'Order not found' });
+//         }
+
+//         const orderItems = await OrderItem.findAll({ where: { order_id: id } });
+
+//         for (let item of orderItems) {
+//             const product = await Product.findByPk(item.product_id);
+//             await product.update({ stock: product.stock + item.quantity });
+//         }
+
+//         await OrderItem.destroy({ where: { order_id: id } });
+//         await Order.destroy({ where: { id } });
+
+//         res.status(200).json({ message: 'Order deleted successfully' });
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+// const getOrder = async (req, res) => {
+//     const { id } = req.params;
+//     try {
+//         const order = await Order.findByPk(id, {
+//             include: [
+//                 {
+//                     model: OrderItem,
+//                     include: [Product]
+//                 }
+//             ]
+//         });
+//         if (!order) {
+//             return res.status(404).json({ message: 'Order not found' });
+//         }
+
+//         res.json(order);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+// const getUserOrders = async (req, res) => {
+//     try {
+//         const orders = await Order.findAll({
+//             where: { user_id: req.user.id },
+//             include: [
+//                 {
+//                     model: OrderItem,
+//                     include: [Product]
+//                 }
+//             ]
+//         });
+//         res.json(orders);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+// const getSellerOrders = async (req, res) => {
+//     try {
+//         const sellerOrders = await Order.findAll({
+//             include: [
+//                 {
+//                     model: OrderItem,
+//                     required: true,  // Це забезпечить, що ми отримаємо тільки ті замовлення, які мають OrderItems
+//                     include: [
+//                         {
+//                             model: Product,
+//                             required: true,  // Це забезпечить, що ми отримаємо тільки ті OrderItems, які мають Products
+//                             where: { user_id: req.user.id },
+//                             include: [{ model: User, as: 'seller', attributes: ['name', 'email', 'phone'] }]
+//                         }
+//                     ]
+//                 },
+//                 {
+//                     model: User,
+//                     as: 'buyer',
+//                     attributes: ['name', 'email', 'phone']
+//                 }
+//             ]
+//         });
+
+//         if (sellerOrders.length === 0) {
+//             return res.json([]);
+//         }
+
+//         const ordersWithBuyerInfo = sellerOrders.map(order => ({
+//             order_id: order.id,
+//             buyer_name: order.buyer.name,
+//             buyer_email: order.buyer.email,
+//             buyer_phone: order.buyer.phone,
+//             shipping_address: {
+//                 region: order.region,
+//                 city: order.city,
+//                 postoffice: order.postoffice
+//             },
+//             products: order.OrderItems.map(item => ({
+//                 product_name: item.Product.name,
+//                 product_price: item.Product.price,
+//                 product_images: item.Product.images,
+//                 quantity: item.quantity
+//             }))
+//         }));
+
+//         res.json(ordersWithBuyerInfo);
+//     } catch (error) {
+//         res.status(500).json({ message: error.message });
+//     }
+// };
+
+// module.exports = {
+//     createOrder,
+//     deleteOrder,
+//     getOrder,
+//     getUserOrders,
+//     getSellerOrders
+// };
+
+
+
+
+
+const { Product, User, Order, OrderItem } = require('../models');
+const { createResponse } = require('../utils/response');
+const transporter = require('../config/emailConfig');
+const path = require('path');
+
+// Функція для перевірки наявності продукту та доступності на складі
+const getProductAndValidateStock = async (productId, quantity) => {
+    const product = await Product.findByPk(productId);
+    if (!product) {
+        throw new Error(`Product with id ${productId} not found`);
+    }
+    if (product.stock < quantity) {
+        throw new Error(`Insufficient stock for product ${product.name}. Only ${product.stock} items left.`);
+    }
+    return product;
+};
+
+// Функція для надсилання електронної пошти
+const sendOrderEmail = async (userEmail, orderId, orderDetails, total) => {
+    const baseURL = 'http://localhost:5000/uploads';
+    await transporter.sendMail({
+        to: userEmail,
+        subject: `Ваше замовлення ${orderId} отримано продавцями`,
+        html: `
+            <h1>Деталі замовлення</h1>
+            <table>
+                <tr>
+                    <th>Фото</th>
+                    <th>Назва товару</th>
+                    <th>Кількість</th>
+                    <th>Ціна</th>
+                    <th>Продавець</th>
+                </tr>
+                ${orderDetails}
+            </table>
+            <p>Загальна сума: ${total}</p>
+        `
+    });
+};
+
+const createOrder = async (req, res, next) => {
     const { items, address } = req.body;
 
     try {
         let total = 0;
         let orderDetails = '';
         let sellers = new Set();
-        const baseURL = 'http://localhost:5000/uploads';
 
         for (let item of items) {
-            const product = await Product.findByPk(item.product_id);
-
-            if (!product) {
-                return res.status(404).json({ message: `Product with id ${item.product_id} not found` });
-            }
-            if (product.stock < item.quantity) {
-                return res.status(400).json({ message: `Insufficient stock for product ${product.name}. Only ${product.stock} items left.` });
-            }
-
+            const product = await getProductAndValidateStock(item.product_id, item.quantity);
             total += product.price * item.quantity;
-            const productImageURL = `${baseURL}/${path.basename(product.images[0])}`;
 
+            const productImageURL = `http://localhost:5000/uploads/${path.basename(product.images[0])}`;
             const seller = await User.findByPk(product.user_id, { attributes: ['name', 'lastname', 'email'] });
-            if (seller) {
-                sellers.add(seller.email);
-            }
+            if (seller) sellers.add(seller.email);
 
             orderDetails +=
                 `<tr>
@@ -52,7 +294,7 @@ const createOrder = async (req, res) => {
         });
 
         for (let item of items) {
-            const product = await Product.findByPk(item.product_id);
+            const product = await getProductAndValidateStock(item.product_id, item.quantity);
             await OrderItem.create({
                 order_id: order.id,
                 product_id: item.product_id,
@@ -62,39 +304,21 @@ const createOrder = async (req, res) => {
             await product.update({ stock: product.stock - item.quantity });
         }
 
-        const sellerEmailsArray = Array.from(sellers);
-        await transporter.sendMail({
-            to: req.user.email,
-            subject: `Ваше замовлення ${order.id} отримано продавцями`,
-            html: `
-                <h1>Деталі замовлення</h1>
-                <table>
-                    <tr>
-                        <th>Фото</th>
-                        <th>Назва товару</th>
-                        <th>Кількість</th>
-                        <th>Ціна</th>
-                        <th>Продавець</th>
-                    </tr>
-                    ${orderDetails}
-                </table>
-                <p>Загальна сума: ${total}</p>
-            `
-        });
-
+        await sendOrderEmail(req.user.email, order.id, orderDetails, total);
         res.status(201).json({ message: 'Order created successfully', orderId: order.id });
     } catch (error) {
-        console.error('Error in createOrder:', error);
-        res.status(500).json({ message: `Server error: ${error.message}` });
+        next(error);
     }
 };
 
-const deleteOrder = async (req, res) => {
+const deleteOrder = async (req, res, next) => {
     const { id } = req.params;
+
     try {
         const order = await Order.findByPk(id);
         if (!order) {
-            return res.status(404).json({ message: 'Order not found' });
+            // return res.status(404).json({ message: 'Order not found' });
+            createResponse(res, 404, 'Order not found');
         }
 
         const orderItems = await OrderItem.findAll({ where: { order_id: id } });
@@ -107,14 +331,16 @@ const deleteOrder = async (req, res) => {
         await OrderItem.destroy({ where: { order_id: id } });
         await Order.destroy({ where: { id } });
 
-        res.status(200).json({ message: 'Order deleted successfully' });
+        // res.status(200).json({ message: 'Order deleted successfully' });
+        createResponse(res, 200, 'Order deleted successfully');
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const getOrder = async (req, res) => {
+const getOrder = async (req, res, next) => {
     const { id } = req.params;
+
     try {
         const order = await Order.findByPk(id, {
             include: [
@@ -124,17 +350,19 @@ const getOrder = async (req, res) => {
                 }
             ]
         });
+
         if (!order) {
-            return res.status(404).json({ message: 'Order not found' });
+            // return res.status(404).json({ message: 'Order not found' });
+            createResponse(res, 404, 'Order not found');
         }
 
         res.json(order);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const getUserOrders = async (req, res) => {
+const getUserOrders = async (req, res, next) => {
     try {
         const orders = await Order.findAll({
             where: { user_id: req.user.id },
@@ -147,21 +375,21 @@ const getUserOrders = async (req, res) => {
         });
         res.json(orders);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const getSellerOrders = async (req, res) => {
+const getSellerOrders = async (req, res, next) => {
     try {
         const sellerOrders = await Order.findAll({
             include: [
                 {
                     model: OrderItem,
-                    required: true,  // Це забезпечить, що ми отримаємо тільки ті замовлення, які мають OrderItems
+                    required: true,
                     include: [
                         {
                             model: Product,
-                            required: true,  // Це забезпечить, що ми отримаємо тільки ті OrderItems, які мають Products
+                            required: true,
                             where: { user_id: req.user.id },
                             include: [{ model: User, as: 'seller', attributes: ['name', 'email', 'phone'] }]
                         }
@@ -174,10 +402,6 @@ const getSellerOrders = async (req, res) => {
                 }
             ]
         });
-
-        if (sellerOrders.length === 0) {
-            return res.json([]);
-        }
 
         const ordersWithBuyerInfo = sellerOrders.map(order => ({
             order_id: order.id,
@@ -199,7 +423,7 @@ const getSellerOrders = async (req, res) => {
 
         res.json(ordersWithBuyerInfo);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 

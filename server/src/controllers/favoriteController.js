@@ -1,52 +1,75 @@
-// server / src / controllers / favoriteController.js
 
 const { Favorite, Product } = require('../models');
+const { createResponse } = require('../utils/response');
+const { addFavoriteSchema } = require('../validators/validators');
 
-const addFavorite = async (req, res) => {
-    const { productId } = req.body;
-    const userId = req.user.id;
+const checkAuthorization = (req) => {
+    const userId = req.user ? req.user.id : null;
+    if (!userId) {
+        throw { status: 401, message: 'Not authorized', type: 'auth_error' };
+    }
+    return userId;
+};
 
+const validateFavoriteData = (productId) => {
+    const { error } = addFavoriteSchema.validate({ productId });
+    if (error) {
+        throw { status: 400, message: error.details[0].message, type: 'validation_error' };
+    }
+};
+
+const addFavorite = async (req, res, next) => {
     try {
-        const created = await Favorite.findOrCreate({
+        const userId = checkAuthorization(req);
+        const { productId } = req.body;
+
+        validateFavoriteData(productId);
+
+        const [favorite, created] = await Favorite.findOrCreate({
             where: { user_id: userId, product_id: productId },
         });
 
         if (!created) {
-            return res.status(409).json({ message: 'The product has already been added to your favorites' });
+            return createResponse(res, 409, 'The product has already been added to your favorites', 'conflict');
         }
 
-        res.status(201).json({ message: 'Product added to favorites' });
+        createResponse(res, 201, 'Product added to favorites', 'success');
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const deleteFavorite = async (req, res) => {
-    const { id } = req.params;
+const deleteFavorite = async (req, res, next) => {
     try {
-        const result = await Favorite.findByPk(id);
-        if (!result) {
-            return res.status(404).json({ message: 'Product not found' });
+        const userId = checkAuthorization(req);
+        const { id } = req.params;
+
+        const favorite = await Favorite.findByPk(id);
+        if (!favorite) {
+            return createResponse(res, 404, 'Product not found', 'not_found');
         }
-        if (result.user_id !== req.user.id) {
-            return res.status(403).json({ message: 'Not authorized to delete this product' });
+        if (favorite.user_id !== userId) {
+            return createResponse(res, 403, 'Not authorized to delete this product', 'auth_error');
         }
-        await result.destroy();
-        res.json({ message: 'Product deleted successfully' });
+
+        await favorite.destroy();
+        createResponse(res, 200, 'Product deleted successfully', 'success');
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const getFavorites = async (req, res) => {
+const getFavorites = async (req, res, next) => {
     try {
+        const userId = checkAuthorization(req);
+
         const favorites = await Favorite.findAll({
-            where: { user_id: req.user.id },
+            where: { user_id: userId },
             include: [
                 {
                     model: Product,
                     as: 'Product',
-                    attributes: ['id', 'name', 'description', 'price', 'stock', 'images', 'user_id'] // Вкажіть поля, які хочете повернути
+                    attributes: ['id', 'name', 'description', 'price', 'stock', 'images', 'user_id']
                 }
             ]
         });
@@ -59,7 +82,7 @@ const getFavorites = async (req, res) => {
 
         res.json(response);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
@@ -68,111 +91,3 @@ module.exports = {
     deleteFavorite,
     getFavorites
 }
-
-
-
-
-// const { Favorite, Product } = require('../models');
-// const { createResponse } = require('../utils/response');
-// const { addFavoriteSchema } = require('../validators/validators');
-
-// // Додати до улюблених
-// const addFavorite = async (req, res, next) => {
-//     const { productId } = req.body;
-//     const userId = req.user ? req.user.id : null;
-
-//     // Перевіряємо, чи є користувач авторизованим
-//     if (!userId) {
-//         return createResponse(res, 401, {}, 'Not authorized', 'auth_error');
-//     }
-
-//     // Валідація даних за допомогою Joi
-//     const { error } = addFavoriteSchema.validate({ productId });
-//     if (error) {
-//         return createResponse(res, 400, {}, error.details[0].message, 'validation_error');
-//     }
-
-//     try {
-//         const [favorite, created] = await Favorite.findOrCreate({
-//             where: { user_id: userId, product_id: productId },
-//         });
-
-//         if (!created) {
-//             return createResponse(res, 409, {}, 'The product has already been added to your favorites', 'conflict');
-//         }
-
-//         createResponse(res, 201, { favorite }, 'Product added to favorites', 'success');
-//         console.log('@@@addFavorite', favorite);
-//     } catch (error) {
-//         next(error); // Обробка базової помилки через middleware
-//     }
-// };
-
-// // Видалити з улюблених
-// const deleteFavorite = async (req, res, next) => {
-//     const { id } = req.params;
-//     const userId = req.user ? req.user.id : null;
-
-//     // Перевірка авторизації
-//     if (!userId) {
-//         return createResponse(res, 401, {}, 'Not authorized', 'auth_error');
-//     }
-
-//     try {
-//         const favorite = await Favorite.findByPk(id);
-//         if (!favorite) {
-//             return createResponse(res, 404, {}, 'Product not found', 'not_found');
-//         }
-//         if (favorite.user_id !== userId) {
-//             return createResponse(res, 403, {}, 'Not authorized to delete this product', 'auth_error');
-//         }
-//         await favorite.destroy();
-//         createResponse(res, 200, {}, 'Product deleted successfully', 'success');
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
-// // Отримати улюблені продукти
-// const getFavorites = async (req, res, next) => {
-//     const userId = req.user ? req.user.id : null;
-
-//     // Перевірка авторизації
-//     if (!userId) {
-//         return createResponse(res, 401, {}, 'Not authorized', 'auth_error');
-//     }
-
-//     try {
-//         const favorites = await Favorite.findAll({
-//             where: { user_id: userId },
-//             include: [
-//                 {
-//                     model: Product,
-//                     as: 'Product',
-//                     attributes: ['id', 'name', 'description', 'price', 'stock', 'images', 'user_id'],
-//                 },
-//             ],
-//         });
-
-//         // Якщо у користувача немає улюблених продуктів
-//         if (favorites.length === 0) {
-//             return createResponse(res, 404, {}, 'No favorites found', 'not_found');
-//         }
-
-//         const response = favorites.map(favorite => ({
-//             id: favorite.id,
-//             product_id: favorite.product_id,
-//             product: favorite.Product,
-//         }));
-
-//         createResponse(res, 200, response, 'Favorites retrieved successfully', 'success');
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
-// module.exports = {
-//     addFavorite,
-//     deleteFavorite,
-//     getFavorites,
-// };
