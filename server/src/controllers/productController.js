@@ -4,25 +4,28 @@ const fs = require('fs');
 const { Op } = require('sequelize');
 const { Product, User } = require('../models');
 
-const getProducts = async (req, res) => {
+// Отримати всі продукти
+const getProducts = async (req, res, next) => {
     try {
         const products = await Product.findAll();
         res.json(products);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error); // Передача в централізований обробник помилок
     }
 };
 
-const getUserProducts = async (req, res) => {
+// Отримати продукти поточного користувача
+const getUserProducts = async (req, res, next) => {
     try {
         const products = await Product.findAll({ where: { user_id: req.user.id } });
         res.json(products);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const getProductById = async (req, res) => {
+// Отримати продукт за ID
+const getProductById = async (req, res, next) => {
     const { id } = req.params;
     try {
         const product = await Product.findByPk(id);
@@ -31,11 +34,12 @@ const getProductById = async (req, res) => {
         }
         res.json(product);
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const addProduct = async (req, res) => {
+// Додати новий продукт
+const addProduct = async (req, res, next) => {
     const { name, description, price, stock, category } = req.body;
     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
 
@@ -50,22 +54,20 @@ const addProduct = async (req, res) => {
             category
         });
 
-        // Оновлення ролі користувача з buyer на seller, якщо продукт успішно доданий
+        // Оновлення ролі користувача з 'buyer' на 'seller'
         if (req.user.role === 'buyer') {
-            await User.update(
-                { role: 'seller' }, // Зміна ролі на seller
-                { where: { id: req.user.id } } // Умова для оновлення
-            );
-            req.user.role = 'seller'; // Оновлюємо роль в поточній сесії, якщо це необхідно
+            await User.update({ role: 'seller' }, { where: { id: req.user.id } });
+            req.user.role = 'seller'; // Оновлюємо роль у сесії
         }
 
         res.status(201).json({ message: 'Product added successfully', product });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const updateProduct = async (req, res) => {
+// Оновити продукт
+const updateProduct = async (req, res, next) => {
     const { id } = req.params;
     const { name, description, price, stock } = req.body;
     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : null;
@@ -82,7 +84,6 @@ const updateProduct = async (req, res) => {
         }
 
         const updateData = { name, description, price, stock };
-
         if (images) {
             updateData.images = images;
         }
@@ -90,11 +91,12 @@ const updateProduct = async (req, res) => {
         await product.update(updateData);
         res.json({ message: 'Product updated successfully', product });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const deleteProduct = async (req, res) => {
+// Видалити продукт
+const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
     try {
         const product = await Product.findByPk(id);
@@ -107,25 +109,24 @@ const deleteProduct = async (req, res) => {
         await product.destroy();
         res.json({ message: 'Product deleted successfully' });
     } catch (error) {
-        res.status(500).json({ message: error.message });
+        next(error);
     }
 };
 
-const deleteImage = async (req, res) => {
+// Видалити зображення з продукту
+const deleteImage = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { indices } = req.body;
 
         const product = await Product.findByPk(id);
-
         if (!product) {
             return res.status(404).send('Product not found');
         }
 
-        // Знаходження файлів для видалення за індексами
+        // Видалення файлів за індексами
         const filesToDelete = indices.map(index => product.images[index]).filter(Boolean);
 
-        // Видалення файлів
         filesToDelete.forEach(imagePath => {
             const fullPath = path.join(__dirname, '..', '..', imagePath);
             if (fs.existsSync(fullPath)) {
@@ -133,34 +134,33 @@ const deleteImage = async (req, res) => {
             }
         });
 
-        // Оновлення масиву images продукту
+        // Оновлення масиву images
         product.images = product.images.filter((image, index) => !indices.includes(index));
         await product.save();
 
         res.send('Images deleted successfully');
     } catch (error) {
-        console.error(error);
-        res.status(500).send('Server error');
+        next(error);
     }
 };
 
-const searchProducts = async (req, res) => {
+// Пошук продуктів за назвою
+const searchProducts = async (req, res, next) => {
     try {
         const { query } = req.query;
 
-        // Виконання пошуку за назвою та описом продукту
+        // Пошук за назвою продукту
         const products = await Product.findAll({
             where: {
                 name: {
-                    [Op.iLike]: `%${query}%` // Пошук за частковим співпадінням
+                    [Op.iLike]: `%${query}%`
                 }
             }
         });
 
         res.json({ products });
     } catch (error) {
-        console.error('Помилка при пошуку продуктів:', error);
-        res.status(500).json({ message: 'Помилка при пошуку продуктів' });
+        next(error);
     }
 };
 

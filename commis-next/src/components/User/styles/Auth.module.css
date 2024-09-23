@@ -35,14 +35,24 @@
     font-size: 16px;
 }
 
-.authButton {
-    border-radius: 50px;
-    margin-bottom: 20px;
-    width: 150px;
+.authButtonConteaner {
+    position: fixed;
+    bottom: 526px;
+    right: 80px;
+    z-index: 1;
 }
 
 .authText {
     margin-right: 10px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 50px;
+}
+
+.authButton {
+    border-radius: 50px;
+    margin-bottom: 20px;
+    width: 150px;
 }
 
 .logoutButton,
@@ -80,12 +90,6 @@
 
 .showLogin {
     display: none;
-}
-
-.authButtonConteaner {
-    position: fixed;
-    bottom: 526px;
-    right: 25px;
 }
 
 .icon {

@@ -34,8 +34,6 @@ const GetFavorites = () => {
         return <NoSelectedProducts />;
     }
 
-    console.log('777favorites', favorites);
-
     return (
         <>
             <BackButton />
