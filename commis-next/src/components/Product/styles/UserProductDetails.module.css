@@ -59,3 +59,24 @@
 .userProductsContainer>:first-child {
     margin-right: 20px;
 }
+
+.modalButtonOpen {
+    background-color: brown;
+}
+
+.modalButtonOpen:hover {
+    background-color: rgb(142, 37, 37);
+}
+
+.modalContainer {
+    padding: 10px;
+}
+
+.modalText {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+/* .modalButtonClose {
+    margin-right: 10px;
+} */

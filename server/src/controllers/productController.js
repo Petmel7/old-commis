@@ -98,6 +98,7 @@ const updateProduct = async (req, res, next) => {
 // Видалити продукт
 const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
+    console.log('@@@deleteProduct->id', id);
     try {
         const product = await Product.findByPk(id);
         if (!product) {

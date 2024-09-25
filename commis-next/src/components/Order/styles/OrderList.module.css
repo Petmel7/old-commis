@@ -72,3 +72,30 @@
     background: none;
     padding: 0;
 }
+
+.buttonContainer {
+    text-align: center;
+}
+
+.modalButtonOpen {
+    background-color: brown;
+}
+
+.modalButtonOpen:hover {
+    background-color: rgb(142, 37, 37);
+}
+
+.modalContainer {
+    padding: 10px;
+    margin: 0 auto;
+}
+
+.modalText {
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.modalButtonContainer {
+    display: flex;
+    justify-content: center;
+}

@@ -1,3 +1,8 @@
 .deleteProduct {
-    margin-bottom: 10px;
+    background-color: brown;
+    margin-right: 10px;
+}
+
+.deleteProduct:hover {
+    background-color: rgb(142, 37, 37);
 }

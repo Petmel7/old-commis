@@ -1,3 +1,12 @@
 .deleteOrderConteaner {
     text-align: center;
 }
+
+.deleteOrderList {
+    background-color: brown;
+    margin-right: 10px;
+}
+
+.deleteOrderList:hover {
+    background-color: rgb(142, 37, 37);
+}
