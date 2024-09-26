@@ -1,4 +1,3 @@
-
 // server/src/models/Product.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
@@ -38,8 +37,13 @@ const Product = sequelize.define('Product', {
         type: DataTypes.ARRAY(DataTypes.TEXT),
         allowNull: true
     },
-    category: {
-        type: DataTypes.STRING,
+    // Поля category/subcategory видалені, оскільки вони більше не потрібні
+    subcategory_id: {
+        type: DataTypes.INTEGER,
+        references: {
+            model: 'subcategories', // Назва таблиці підкатегорій
+            key: 'id'
+        },
         allowNull: false
     }
 }, {
@@ -48,4 +52,3 @@ const Product = sequelize.define('Product', {
 });
 
 module.exports = Product;
-

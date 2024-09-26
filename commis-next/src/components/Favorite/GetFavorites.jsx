@@ -4,7 +4,7 @@ import { useFavorites } from '@/context/FavoritesContext';
 import ProductCard from '../Product/ProductCard';
 import BackButton from '../BackButton/BackButton';
 import NoSelectedProducts from '../NoSelectedProducts/NoSelectedProducts';
-import styles from '../Product/styles/ProductCard.module.css';
+import styles from '../Product/styles/UserProducts.module.css';
 import useLoadingAndError from '@/hooks/useLoadingAndError';
 
 const GetFavorites = () => {

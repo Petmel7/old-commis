@@ -38,9 +38,37 @@ const getProductById = async (req, res, next) => {
     }
 };
 
+// // Додати новий продукт
+// const addProduct = async (req, res, next) => {
+//     const { name, description, price, stock, category } = req.body;
+//     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
+
+//     try {
+//         const product = await Product.create({
+//             user_id: req.user.id,
+//             name,
+//             description,
+//             price,
+//             stock,
+//             images: images.length ? images : null,
+//             category
+//         });
+
+//         // Оновлення ролі користувача з 'buyer' на 'seller'
+//         if (req.user.role === 'buyer') {
+//             await User.update({ role: 'seller' }, { where: { id: req.user.id } });
+//             req.user.role = 'seller'; // Оновлюємо роль у сесії
+//         }
+
+//         res.status(201).json({ message: 'Product added successfully', product });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
 // Додати новий продукт
 const addProduct = async (req, res, next) => {
-    const { name, description, price, stock, category } = req.body;
+    const { name, description, price, stock, category, subcategory } = req.body;
     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
 
     try {
@@ -51,7 +79,8 @@ const addProduct = async (req, res, next) => {
             price,
             stock,
             images: images.length ? images : null,
-            category
+            category, // основна категорія
+            subcategory // нове поле для підкатегорії
         });
 
         // Оновлення ролі користувача з 'buyer' на 'seller'
