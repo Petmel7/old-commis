@@ -2,7 +2,8 @@
 const path = require('path');
 const fs = require('fs');
 const { Op } = require('sequelize');
-const { Product, User } = require('../models');
+const { Product, User, Category } = require('../models');
+const Subcategory = require('../models/Subcategory');
 
 // Отримати всі продукти
 const getProducts = async (req, res, next) => {
@@ -38,40 +39,25 @@ const getProductById = async (req, res, next) => {
     }
 };
 
-// // Додати новий продукт
-// const addProduct = async (req, res, next) => {
-//     const { name, description, price, stock, category } = req.body;
-//     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
-
-//     try {
-//         const product = await Product.create({
-//             user_id: req.user.id,
-//             name,
-//             description,
-//             price,
-//             stock,
-//             images: images.length ? images : null,
-//             category
-//         });
-
-//         // Оновлення ролі користувача з 'buyer' на 'seller'
-//         if (req.user.role === 'buyer') {
-//             await User.update({ role: 'seller' }, { where: { id: req.user.id } });
-//             req.user.role = 'seller'; // Оновлюємо роль у сесії
-//         }
-
-//         res.status(201).json({ message: 'Product added successfully', product });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
 // Додати новий продукт
 const addProduct = async (req, res, next) => {
     const { name, description, price, stock, category, subcategory } = req.body;
     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
 
     try {
+        // Знайдемо або створимо категорію за її назвою
+        let categoryRecord = await Category.findOne({ where: { name: category } });
+        if (!categoryRecord) {
+            categoryRecord = await Category.create({ name: category });
+        }
+
+        // Знайдемо або створимо підкатегорію за її назвою та зв'язком з категорією
+        let subcategoryRecord = await Subcategory.findOne({ where: { name: subcategory, category_id: categoryRecord.id } });
+        if (!subcategoryRecord) {
+            subcategoryRecord = await Subcategory.create({ name: subcategory, category_id: categoryRecord.id });
+        }
+
+        // Створюємо новий продукт із посиланням на підкатегорію
         const product = await Product.create({
             user_id: req.user.id,
             name,
@@ -79,11 +65,10 @@ const addProduct = async (req, res, next) => {
             price,
             stock,
             images: images.length ? images : null,
-            category, // основна категорія
-            subcategory // нове поле для підкатегорії
+            subcategory_id: subcategoryRecord.id // Використовуємо ID підкатегорії
         });
 
-        // Оновлення ролі користувача з 'buyer' на 'seller'
+        // Оновлення ролі користувача з 'buyer' на 'seller', якщо необхідно
         if (req.user.role === 'buyer') {
             await User.update({ role: 'seller' }, { where: { id: req.user.id } });
             req.user.role = 'seller'; // Оновлюємо роль у сесії
