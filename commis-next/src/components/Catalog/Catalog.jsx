@@ -74,6 +74,7 @@ const Catalog = () => {
     const [error, setError] = useState(null);
     const router = useRouter();
     const { category } = router.query;
+    console.log('Catalog->category', category);
 
     useEffect(() => {
         const fetchProductsByCategory = async () => {

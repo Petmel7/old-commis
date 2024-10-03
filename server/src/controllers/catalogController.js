@@ -1,8 +1,7 @@
 
 const { Product } = require('../models');
-const Category = require('../models/Category');
 const Subcategory = require('../models/Subcategory');
-const { createResponse } = require('../utils/response');
+// const { createResponse } = require('../utils/response');
 const { productSchema } = require('../validators/validators');
 
 const validateProduct = (product) => {
@@ -13,59 +12,30 @@ const validateProduct = (product) => {
     return value;
 }
 
-// const getProductsByCategory = async (req, res, next) => {
-//     const { category } = req.query;
-
-//     try {
-//         const products = await Product.findAll({
-//             where: { category },
-//         });
-
-//         const validatedProducts = products.map(validateProduct);
-
-//         createResponse(res, 200, validatedProducts);
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
 const getProductsByCategory = async (req, res, next) => {
     const { category } = req.query;
 
     try {
-        // Знайдемо категорію по її назві
-        const categoryRecord = await Category.findOne({ where: { name: category } });
+        // Знайдемо підкатегорію по її назві
+        const subcategoryRecord = await Subcategory.findOne({ where: { name: category } });
 
-        if (!categoryRecord) {
-            return res.status(404).json({ message: 'Category not found' });
+        if (!subcategoryRecord) {
+            return res.status(404).json({ message: 'Subcategory not found' });
         }
 
-        // Знайдемо всі підкатегорії, пов'язані з цією категорією
-        const subcategories = await Subcategory.findAll({ where: { category_id: categoryRecord.id } });
-        const subcategoryIds = subcategories.map(subcat => subcat.id);
-
-        // Знайдемо всі продукти, які прив'язані до цих підкатегорій
+        // Знайдемо всі продукти, які прив'язані до цієї підкатегорії
         const products = await Product.findAll({
-            where: { subcategory_id: subcategoryIds },
+            where: { subcategory_id: subcategoryRecord.id },
         });
+
+        if (products.length === 0) {
+            return res.status(404).json({ message: 'No products found for this subcategory' });
+        }
 
         // Валідація продуктів (опціонально)
         const validatedProducts = products.map(validateProduct);
 
-        createResponse(res, 200, validatedProducts);
-    } catch (error) {
-        next(error);
-    }
-};
-
-const getCategoryList = async (req, res, next) => {
-    try {
-        const categories = await Product.findAll({
-            attributes: ['category'],
-            group: ['category'],
-            order: [['category', 'ASC']]
-        });
-        createResponse(res, 200, categories.map(cat => cat.category));
+        res.status(200).json({ status: 'success', data: validatedProducts });
     } catch (error) {
         next(error);
     }
@@ -73,5 +43,4 @@ const getCategoryList = async (req, res, next) => {
 
 module.exports = {
     getProductsByCategory,
-    getCategoryList,
 };

@@ -128,6 +128,43 @@ const deleteProduct = async (req, res, next) => {
     }
 };
 
+// const deleteProduct = async (req, res, next) => {
+//     const { id } = req.params;
+//     console.log('@@@deleteProduct->id', id);
+//     try {
+//         // Знайдемо продукт по його ID
+//         const product = await Product.findByPk(id);
+//         if (!product) {
+//             return res.status(404).json({ message: 'Product not found' });
+//         }
+
+//         // Перевіримо, чи має користувач права видалити цей продукт
+//         if (product.user_id !== req.user.id) {
+//             return res.status(403).json({ message: 'Not authorized to delete this product' });
+//         }
+
+//         // Отримуємо ID підкатегорії, до якої прив'язаний продукт
+//         const subcategoryId = product.subcategory_id;
+
+//         // Видаляємо продукт
+//         await product.destroy();
+
+//         // Перевіряємо, чи залишилися інші продукти, що використовують цю підкатегорію
+//         const remainingProducts = await Product.findAll({
+//             where: { subcategory_id: subcategoryId }
+//         });
+
+//         // Якщо немає інших продуктів, видаляємо підкатегорію
+//         if (remainingProducts.length === 0) {
+//             await Subcategory.destroy({ where: { id: subcategoryId } });
+//         }
+
+//         res.json({ message: 'Product and associated subcategory deleted successfully' });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
 // Видалити зображення з продукту
 const deleteImage = async (req, res, next) => {
     try {

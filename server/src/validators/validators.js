@@ -9,7 +9,7 @@ const productSchema = Joi.object({
     price: Joi.number().required(),
     stock: Joi.number().integer().required(),
     images: Joi.array().items(Joi.string()).required(),
-    category: Joi.string().required()
+    subcategory_id: Joi.number().integer().required() // Заміна category на subcategory_id
 });
 
 // Схема для валідації додавання до улюблених
