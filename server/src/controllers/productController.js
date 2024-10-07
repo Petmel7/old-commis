@@ -2,8 +2,8 @@
 const path = require('path');
 const fs = require('fs');
 const { Op } = require('sequelize');
-const { Product, User, Category } = require('../models');
-const Subcategory = require('../models/Subcategory');
+const { Product, User, Category, Subcategory, Size } = require('../models');
+// const Subcategory = require('../models/Subcategory');
 
 // Отримати всі продукти
 const getProducts = async (req, res, next) => {
@@ -39,19 +39,59 @@ const getProductById = async (req, res, next) => {
     }
 };
 
-// Додати новий продукт
+// // Додати новий продукт
+// const addProduct = async (req, res, next) => {
+//     const { name, description, price, stock, category, subcategory } = req.body;
+//     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
+
+//     try {
+//         // Знайдемо або створимо категорію за її назвою
+//         let categoryRecord = await Category.findOne({ where: { name: category } });
+//         if (!categoryRecord) {
+//             categoryRecord = await Category.create({ name: category });
+//         }
+
+//         // Знайдемо або створимо підкатегорію за її назвою та зв'язком з категорією
+//         let subcategoryRecord = await Subcategory.findOne({ where: { name: subcategory, category_id: categoryRecord.id } });
+//         if (!subcategoryRecord) {
+//             subcategoryRecord = await Subcategory.create({ name: subcategory, category_id: categoryRecord.id });
+//         }
+
+//         // Створюємо новий продукт із посиланням на підкатегорію
+//         const product = await Product.create({
+//             user_id: req.user.id,
+//             name,
+//             description,
+//             price,
+//             stock,
+//             images: images.length ? images : null,
+//             subcategory_id: subcategoryRecord.id // Використовуємо ID підкатегорії
+//         });
+
+//         // Оновлення ролі користувача з 'buyer' на 'seller', якщо необхідно
+//         if (req.user.role === 'buyer') {
+//             await User.update({ role: 'seller' }, { where: { id: req.user.id } });
+//             req.user.role = 'seller'; // Оновлюємо роль у сесії
+//         }
+
+//         res.status(201).json({ message: 'Product added successfully', product });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
 const addProduct = async (req, res, next) => {
-    const { name, description, price, stock, category, subcategory } = req.body;
+    const { name, description, price, stock, category, subcategory, sizes } = req.body;
     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
 
     try {
-        // Знайдемо або створимо категорію за її назвою
+        // Знайдемо або створимо категорію
         let categoryRecord = await Category.findOne({ where: { name: category } });
         if (!categoryRecord) {
             categoryRecord = await Category.create({ name: category });
         }
 
-        // Знайдемо або створимо підкатегорію за її назвою та зв'язком з категорією
+        // Знайдемо або створимо підкатегорію
         let subcategoryRecord = await Subcategory.findOne({ where: { name: subcategory, category_id: categoryRecord.id } });
         if (!subcategoryRecord) {
             subcategoryRecord = await Subcategory.create({ name: subcategory, category_id: categoryRecord.id });
@@ -65,13 +105,24 @@ const addProduct = async (req, res, next) => {
             price,
             stock,
             images: images.length ? images : null,
-            subcategory_id: subcategoryRecord.id // Використовуємо ID підкатегорії
+            subcategory_id: subcategoryRecord.id
         });
 
-        // Оновлення ролі користувача з 'buyer' на 'seller', якщо необхідно
+        // Додавання розмірів для продукту
+        if (sizes && sizes.length > 0) {
+            for (const size of sizes) {
+                let sizeRecord = await Size.findOne({ where: { size } });
+                if (!sizeRecord) {
+                    sizeRecord = await Size.create({ size });
+                }
+                await product.addSize(sizeRecord); // Додаємо розмір до продукту
+            }
+        }
+
+        // Оновлення ролі користувача на 'seller'
         if (req.user.role === 'buyer') {
             await User.update({ role: 'seller' }, { where: { id: req.user.id } });
-            req.user.role = 'seller'; // Оновлюємо роль у сесії
+            req.user.role = 'seller';
         }
 
         res.status(201).json({ message: 'Product added successfully', product });
@@ -109,61 +160,42 @@ const updateProduct = async (req, res, next) => {
     }
 };
 
-// Видалити продукт
 const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
     console.log('@@@deleteProduct->id', id);
     try {
+        // Знайдемо продукт по його ID
         const product = await Product.findByPk(id);
         if (!product) {
             return res.status(404).json({ message: 'Product not found' });
         }
+
+        // Перевіримо, чи має користувач права видалити цей продукт
         if (product.user_id !== req.user.id) {
             return res.status(403).json({ message: 'Not authorized to delete this product' });
         }
+
+        // Отримуємо ID підкатегорії, до якої прив'язаний продукт
+        const subcategoryId = product.subcategory_id;
+
+        // Видаляємо продукт
         await product.destroy();
-        res.json({ message: 'Product deleted successfully' });
+
+        // Перевіряємо, чи залишилися інші продукти, що використовують цю підкатегорію
+        const remainingProducts = await Product.count({
+            where: { subcategory_id: subcategoryId }
+        });
+
+        // Якщо немає інших продуктів, видаляємо підкатегорію
+        if (remainingProducts === 0) {
+            await Subcategory.destroy({ where: { id: subcategoryId } });
+        }
+
+        res.json({ message: 'Product and associated subcategory deleted successfully' });
     } catch (error) {
         next(error);
     }
 };
-
-// const deleteProduct = async (req, res, next) => {
-//     const { id } = req.params;
-//     console.log('@@@deleteProduct->id', id);
-//     try {
-//         // Знайдемо продукт по його ID
-//         const product = await Product.findByPk(id);
-//         if (!product) {
-//             return res.status(404).json({ message: 'Product not found' });
-//         }
-
-//         // Перевіримо, чи має користувач права видалити цей продукт
-//         if (product.user_id !== req.user.id) {
-//             return res.status(403).json({ message: 'Not authorized to delete this product' });
-//         }
-
-//         // Отримуємо ID підкатегорії, до якої прив'язаний продукт
-//         const subcategoryId = product.subcategory_id;
-
-//         // Видаляємо продукт
-//         await product.destroy();
-
-//         // Перевіряємо, чи залишилися інші продукти, що використовують цю підкатегорію
-//         const remainingProducts = await Product.findAll({
-//             where: { subcategory_id: subcategoryId }
-//         });
-
-//         // Якщо немає інших продуктів, видаляємо підкатегорію
-//         if (remainingProducts.length === 0) {
-//             await Subcategory.destroy({ where: { id: subcategoryId } });
-//         }
-
-//         res.json({ message: 'Product and associated subcategory deleted successfully' });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
 
 // Видалити зображення з продукту
 const deleteImage = async (req, res, next) => {
