@@ -13,6 +13,8 @@ const favoriteRoutes = require('./routes/favoriteRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const catalogRoutes = require('./routes/catalogRoutes');
 
+const sizeRoutes = require('./routes/sizeRoutes');
+
 const cron = require('node-cron');
 const { errorHandler } = require('./middleware/errorHandler');
 const { deleteOldRefreshTokens } = require('./controllers/userController');
@@ -35,6 +37,7 @@ app.use(passport.session());
 app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api/products', productRoutes);
+app.use('/api/products', sizeRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/favorites', favoriteRoutes);
