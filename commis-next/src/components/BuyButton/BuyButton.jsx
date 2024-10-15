@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useCart } from "@/context/CartContext";
 import styles from '../Product/styles/ProductCard.module.css';
 
-const BuyButton = ({ product }) => {
+const BuyButton = ({ product, selectedSize }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { addToCart } = useCart();

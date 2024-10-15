@@ -24,12 +24,14 @@ const AddOrUpdateProduct = () => {
     }, [productId]);
 
     const handleSubmit = async (productData) => {
+        let response;
         if (productId) {
-            await updateProduct(productId, productData);
+            response = await updateProduct(productId, productData);
         } else {
-            await addProduct(productData);
+            response = await addProduct(productData); // Повертаємо результат запиту
         }
         router.push('/userProducts');
+        return response;
     };
 
     return (

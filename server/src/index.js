@@ -12,7 +12,6 @@ const orderRoutes = require('./routes/orderRoutes');
 const favoriteRoutes = require('./routes/favoriteRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const catalogRoutes = require('./routes/catalogRoutes');
-
 const sizeRoutes = require('./routes/sizeRoutes');
 
 const cron = require('node-cron');

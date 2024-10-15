@@ -39,57 +39,6 @@ const getProductById = async (req, res, next) => {
     }
 };
 
-// const addProduct = async (req, res, next) => {
-//     const { name, description, price, stock, category, subcategory, sizes } = req.body;
-//     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
-
-//     try {
-//         // Знайдемо або створимо категорію
-//         let categoryRecord = await Category.findOne({ where: { name: category } });
-//         if (!categoryRecord) {
-//             categoryRecord = await Category.create({ name: category });
-//         }
-
-//         // Знайдемо або створимо підкатегорію
-//         let subcategoryRecord = await Subcategory.findOne({ where: { name: subcategory, category_id: categoryRecord.id } });
-//         if (!subcategoryRecord) {
-//             subcategoryRecord = await Subcategory.create({ name: subcategory, category_id: categoryRecord.id });
-//         }
-
-//         // Створюємо новий продукт із посиланням на підкатегорію
-//         const product = await Product.create({
-//             user_id: req.user.id,
-//             name,
-//             description,
-//             price,
-//             stock,
-//             images: images.length ? images : null,
-//             subcategory_id: subcategoryRecord.id
-//         });
-
-//         // Додавання розмірів для продукту
-//         if (sizes && sizes.length > 0) {
-//             for (const size of sizes) {
-//                 let sizeRecord = await Size.findOne({ where: { size } });
-//                 if (!sizeRecord) {
-//                     sizeRecord = await Size.create({ size });
-//                 }
-//                 await product.addSize(sizeRecord); // Додаємо розмір до продукту
-//             }
-//         }
-
-//         // Оновлення ролі користувача на 'seller'
-//         if (req.user.role === 'buyer') {
-//             await User.update({ role: 'seller' }, { where: { id: req.user.id } });
-//             req.user.role = 'seller';
-//         }
-
-//         res.status(201).json({ message: 'Product added successfully', product });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
 const addProduct = async (req, res, next) => {
     const { name, description, price, stock, category, subcategory } = req.body;
     const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];

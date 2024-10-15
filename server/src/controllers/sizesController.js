@@ -23,33 +23,6 @@ const getSizesByProductId = async (req, res, next) => {
     }
 };
 
-// // Додати новий розмір для продукту
-// const addSizeToProduct = async (req, res, next) => {
-//     const { productId } = req.params;
-//     const { size } = req.body;
-
-//     try {
-//         const product = await Product.findByPk(productId);
-
-//         if (!product) {
-//             return res.status(404).json({ message: 'Product not found' });
-//         }
-
-//         // Знайдемо або створимо розмір
-//         let sizeRecord = await Size.findOne({ where: { size } });
-//         if (!sizeRecord) {
-//             sizeRecord = await Size.create({ size });
-//         }
-
-//         // Додаємо розмір до продукту
-//         await product.addSize(sizeRecord);
-
-//         res.status(201).json({ message: 'Size added successfully', size: sizeRecord });
-//     } catch (error) {
-//         next(error);
-//     }
-// };
-
 const addSizeToProduct = async (req, res, next) => {
     const { productId } = req.params;
     const { sizes } = req.body; // Приймаємо масив розмірів
