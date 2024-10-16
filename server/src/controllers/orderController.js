@@ -39,6 +39,62 @@ const sendOrderEmail = async (userEmail, orderId, orderDetails, total) => {
     });
 };
 
+// const createOrder = async (req, res, next) => {
+//     const { items, address } = req.body;
+
+//     try {
+//         let total = 0;
+//         let orderDetails = '';
+//         let sellers = new Set();
+
+//         for (let item of items) {
+//             const product = await getProductAndValidateStock(item.product_id, item.quantity);
+//             total += product.price * item.quantity;
+
+//             const productImageURL = `http://localhost:5000/uploads/${path.basename(product.images[0])}`;
+//             const seller = await User.findByPk(product.user_id, { attributes: ['name', 'lastname', 'email'] });
+//             if (seller) sellers.add(seller.email);
+
+//             orderDetails +=
+//                 `<tr>
+//                     <td><img src="${productImageURL}" alt="${product.name}" width="50"/></td>
+//                     <td>${product.name}</td>
+//                     <td>${item.quantity}</td>
+//                     <td>${product.price}</td>
+//                     <td>${seller.name} ${seller.lastname}</td>
+//                 </tr>`;
+//         }
+
+//         if (sellers.size === 0) {
+//             return res.status(404).json({ message: 'No sellers found for the provided products' });
+//         }
+
+//         const order = await Order.create({
+//             user_id: req.user.id,
+//             total,
+//             region: address[0].region,
+//             city: address[0].city,
+//             postoffice: address[0].postoffice
+//         });
+
+//         for (let item of items) {
+//             const product = await getProductAndValidateStock(item.product_id, item.quantity);
+//             await OrderItem.create({
+//                 order_id: order.id,
+//                 product_id: item.product_id,
+//                 quantity: item.quantity,
+//                 price: product.price * item.quantity
+//             });
+//             await product.update({ stock: product.stock - item.quantity });
+//         }
+
+//         await sendOrderEmail(req.user.email, order.id, orderDetails, total);
+//         res.status(201).json({ message: 'Order created successfully', orderId: order.id });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
 const createOrder = async (req, res, next) => {
     const { items, address } = req.body;
 
@@ -65,10 +121,6 @@ const createOrder = async (req, res, next) => {
                 </tr>`;
         }
 
-        if (sellers.size === 0) {
-            return res.status(404).json({ message: 'No sellers found for the provided products' });
-        }
-
         const order = await Order.create({
             user_id: req.user.id,
             total,
@@ -83,8 +135,10 @@ const createOrder = async (req, res, next) => {
                 order_id: order.id,
                 product_id: item.product_id,
                 quantity: item.quantity,
-                price: product.price * item.quantity
+                price: product.price * item.quantity,
+                size: item.size // Зберігаємо розмір продукту
             });
+
             await product.update({ stock: product.stock - item.quantity });
         }
 

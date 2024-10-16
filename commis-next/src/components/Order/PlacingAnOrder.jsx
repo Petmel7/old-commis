@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { createOrder } from '../../services/order';
 import { baseUrl } from '../Url/baseUrl';
@@ -47,8 +47,11 @@ const PlacingAnOrder = () => {
 
         const items = cart.map(item => ({
             product_id: item.id,
-            quantity: item.quantity
+            quantity: item.quantity,
+            size: item.size
         }));
+
+        console.log('PlacingAnOrder->items', items);
 
         const orderDetails = {
             items,
@@ -56,9 +59,7 @@ const PlacingAnOrder = () => {
         };
 
         try {
-            // Створення замовлення
             const response = await createOrder(orderDetails);
-
             const orderId = response?.orderId;
 
             if (!orderId) {
@@ -66,30 +67,8 @@ const PlacingAnOrder = () => {
             }
 
             if (paymentMethod === 'paypal') {
-                const dataPayment = {
-                    orderId: orderId,
-                    amount: calculateTotalCartPrice(cart).toFixed(2),
-                    currency: 'USD',
-                    userId: user?.id,
-                };
-
-                // Ініціалізація платежу через PayPal
-                const paymentResponse = await createPayment(dataPayment);
-
-                if (paymentResponse && paymentResponse.links) {
-                    const approvalUrl = paymentResponse.links.find(link => link.rel === 'approve')?.href;
-
-                    if (approvalUrl) {
-                        // Перенаправлення користувача на PayPal
-                        window.location.href = approvalUrl;
-                    } else {
-                        throw new Error('Не вдалося знайти посилання на підтвердження PayPal');
-                    }
-                } else {
-                    throw new Error('Не вдалося отримати відповідь від PayPal');
-                }
+                // Логіка для PayPal
             } else if (paymentMethod === 'cod') {
-                // Якщо обрано "Оплата при отриманні"
                 router.push('/thanksForTheOrder');
             } else {
                 alert('Будь ласка, виберіть метод оплати');
@@ -101,6 +80,73 @@ const PlacingAnOrder = () => {
             alert('Щось пішло не так. Спробуйте ще раз.');
         }
     };
+
+    // const handleOrder = async (e) => {
+    //     e.preventDefault();
+
+    //     if (!address) {
+    //         alert('Будь ласка, виберіть адресу для доставки');
+    //         return;
+    //     }
+
+    //     setLoading(true);
+
+    //     const items = cart.map(item => ({
+    //         product_id: item.id,
+    //         quantity: item.quantity
+    //     }));
+
+    //     const orderDetails = {
+    //         items,
+    //         address: [address],
+    //     };
+
+    //     try {
+    //         // Створення замовлення
+    //         const response = await createOrder(orderDetails);
+
+    //         const orderId = response?.orderId;
+
+    //         if (!orderId) {
+    //             throw new Error('Не вдалося створити замовлення: orderId не знайдено');
+    //         }
+
+    //         if (paymentMethod === 'paypal') {
+    //             const dataPayment = {
+    //                 orderId: orderId,
+    //                 amount: calculateTotalCartPrice(cart).toFixed(2),
+    //                 currency: 'USD',
+    //                 userId: user?.id,
+    //             };
+
+    //             // Ініціалізація платежу через PayPal
+    //             const paymentResponse = await createPayment(dataPayment);
+
+    //             if (paymentResponse && paymentResponse.links) {
+    //                 const approvalUrl = paymentResponse.links.find(link => link.rel === 'approve')?.href;
+
+    //                 if (approvalUrl) {
+    //                     // Перенаправлення користувача на PayPal
+    //                     window.location.href = approvalUrl;
+    //                 } else {
+    //                     throw new Error('Не вдалося знайти посилання на підтвердження PayPal');
+    //                 }
+    //             } else {
+    //                 throw new Error('Не вдалося отримати відповідь від PayPal');
+    //             }
+    //         } else if (paymentMethod === 'cod') {
+    //             // Якщо обрано "Оплата при отриманні"
+    //             router.push('/thanksForTheOrder');
+    //         } else {
+    //             alert('Будь ласка, виберіть метод оплати');
+    //         }
+    //         setLoading(false);
+    //     } catch (error) {
+    //         setError(error);
+    //         console.error('OrderDetails->error', error.message || error);
+    //         alert('Щось пішло не так. Спробуйте ще раз.');
+    //     }
+    // };
 
     const calculateTotalPrice = (item) => {
         return item.price * item.quantity;
@@ -136,6 +182,7 @@ const PlacingAnOrder = () => {
                             </div>
                             <div className={styles.cartPriceContainer}>
                                 <p className={styles.itemName}>{item.name}</p>
+                                <p className={styles.itemName}>Pозмір: ({item.size})</p>
                                 <span className={styles.cartPrice}>Ціна за одиницю: {item.price}</span>
                                 <span className={styles.totalPrice}>Загальна ціна: {calculateTotalPrice(item)}</span>
                             </div>

@@ -4,6 +4,7 @@ import { useCart } from "@/context/CartContext";
 import styles from '../Product/styles/ProductCard.module.css';
 
 const BuyButton = ({ product, selectedSize }) => {
+    console.log('BuyButton->selectedSize', selectedSize);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const { addToCart } = useCart();
@@ -14,7 +15,7 @@ const BuyButton = ({ product, selectedSize }) => {
         setError(null);
 
         try {
-            addToCart(product);
+            addToCart(product, selectedSize);
             router.push('/cart');
         } catch (error) {
             setError(error.message);

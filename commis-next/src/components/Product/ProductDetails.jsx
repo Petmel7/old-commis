@@ -18,6 +18,8 @@ const ProductDetails = () => {
 
     const [selectedSize, setSelectedSize] = useState(''); // Додаємо стан для вибору розміру
 
+    console.log('ProductDetails->selectedSize', selectedSize);
+
     if (loadingErrorComponent) return loadingErrorComponent;
 
     if (!product) return <p>Продукт не знайдено</p>;
@@ -49,7 +51,6 @@ const ProductDetails = () => {
                 <p className={styles.productDescription}>{product.description}</p>
                 <p className={styles.productPrice}>Ціна: {product.price} грн</p>
 
-                {/* Вибір розміру */}
                 {sizes && sizes.length > 0 && (
                     <div className={styles.sizeSelector}>
                         <label htmlFor="size">Виберіть розмір:</label>
