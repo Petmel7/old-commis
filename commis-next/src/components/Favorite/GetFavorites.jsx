@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useFavorites } from '@/context/FavoritesContext';
 import ProductCard from '../Product/ProductCard';
 import BackButton from '../BackButton/BackButton';

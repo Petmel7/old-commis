@@ -1,21 +1,24 @@
-// import useProduct from "@/hooks/useProduct";
 
-// const ProductSize = () => {
-//     const { sizes } = useProduct(productId);
+import useProduct from "@/hooks/useProduct";
+import styles from './styles/ProductSize.module.css';
 
-//     return (
-//         { sizes && sizes.length > 0 && (
-//             <div className={styles.sizeSelector}>
-//                 <label htmlFor="size">Виберіть розмір:</label>
-//                 <select id="size" value={selectedSize} onChange={handleSizeChange} required>
-//                     <option value="" disabled>Оберіть розмір</option>
-//                     {sizes.map((size, index) => (
-//                         <option key={index} value={size.size}>{size.size}</option> // Виводимо доступні розміри
-//                     ))}
-//                 </select>
-//             </div>
-//         )}
-//     )
-// }
+const ProductSize = ({ productId, selectedSize, handleSizeChange }) => {
+    const { sizes } = useProduct(productId);
 
-// export default ProductSize;
+    return (
+        <>
+            {sizes && sizes.length > 0 && (
+                <div className={styles.sizeSelector}>
+                    <select id="size" value={selectedSize} onChange={handleSizeChange} required>
+                        <option value="" disabled>Оберіть розмір</option>
+                        {sizes.map((size, index) => (
+                            <option key={index} value={size.size}>{size.size}</option> // Виводимо доступні розміри
+                        ))}
+                    </select>
+                </div>
+            )}
+        </>
+    )
+}
+
+export default ProductSize;

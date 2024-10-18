@@ -31,8 +31,13 @@
     font-size: 1.2rem;
 }
 
+.priceContainer {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
 .productPrice {
     font-size: 1.5rem;
     font-weight: bold;
-    margin-bottom: 20px;
 }
