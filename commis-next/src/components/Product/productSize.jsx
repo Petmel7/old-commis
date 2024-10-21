@@ -12,7 +12,7 @@ const ProductSize = ({ productId, selectedSize, handleSizeChange }) => {
                     <select id="size" value={selectedSize} onChange={handleSizeChange} required>
                         <option value="" disabled>Оберіть розмір</option>
                         {sizes.map((size, index) => (
-                            <option key={index} value={size.size}>{size.size}</option> // Виводимо доступні розміри
+                            <option key={index} value={size.size}>{size.size}</option>
                         ))}
                     </select>
                 </div>

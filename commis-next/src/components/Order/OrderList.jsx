@@ -109,6 +109,9 @@ const OrderList = () => {
                                     <p className={styles.orderReplica}>Ціна:
                                         <span className={styles.productPrice}>{product.product_price}</span>
                                     </p>
+                                    <p className={styles.orderReplica}>Розмір:
+                                        <span className={styles.productSize}>{product.product_size}</span>
+                                    </p>
                                     <p className={styles.orderReplica}>Кількість:
                                         <span className={styles.productQuantity}>{product.quantity}</span>
                                     </p>

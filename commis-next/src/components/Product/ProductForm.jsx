@@ -14,10 +14,15 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [stock, setStock] = useState(initialData.stock || '');
     const [category, setCategory] = useState(initialData.category || '');
     const [subcategory, setSubcategory] = useState(initialData.subcategory || '');
-    const [sizes, setSizes] = useState(initialData.sizes || []); // Додаємо стан для розмірів
+    const [internationalSizes, setInternationalSizes] = useState([]);
+    const [ukrainianSizes, setUkrainianSizes] = useState([]);
+    const [shoeSizes, setShoeSizes] = useState([]);
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState(initialData.images ? initialData.images.map(image => `${baseUrl}${image}`) : []);
     const [errors, setErrors] = useState('');
+
+    // Підкатегорії, які відповідають взуттю
+    const shoeSubcategories = ['Чоловіче взуття', 'Жіноче взуття', 'Дитяче взуття'];
 
     useEffect(() => {
         setName(initialData.name || '');
@@ -26,13 +31,34 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
         setStock(initialData.stock || '');
         setCategory(initialData.category || '');
         setSubcategory(initialData.subcategory || '');
-        setSizes(initialData.sizes || []); // Ініціалізація стану для розмірів
+        setInternationalSizes([]);
+        setUkrainianSizes([]);
+        setShoeSizes([]);
         setImagePreviews(initialData.images ? initialData.images.map(image => `${baseUrl}${image}`) : []);
     }, [initialData]);
 
-    const handleSizeChange = (e) => {
+    // Оновлюємо міжнародні розміри і очищаємо українські та розміри взуття
+    const handleInternationalSizeChange = (e) => {
         const selectedSizes = Array.from(e.target.selectedOptions, option => option.value);
-        setSizes(selectedSizes); // Оновлюємо стан розмірів
+        setInternationalSizes(selectedSizes);
+        setUkrainianSizes([]);
+        setShoeSizes([]);
+    };
+
+    // Оновлюємо українські розміри і очищаємо міжнародні та розміри взуття
+    const handleUkrainianSizeChange = (e) => {
+        const selectedSizes = Array.from(e.target.selectedOptions, option => option.value);
+        setUkrainianSizes(selectedSizes);
+        setInternationalSizes([]);
+        setShoeSizes([]);
+    };
+
+    // Оновлюємо розміри взуття і очищаємо інші розміри
+    const handleShoeSizeChange = (e) => {
+        const selectedSizes = Array.from(e.target.selectedOptions, option => option.value);
+        setShoeSizes(selectedSizes);
+        setInternationalSizes([]);
+        setUkrainianSizes([]);
     };
 
     const handleSubmit = async (e) => {
@@ -51,17 +77,29 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             productData.append('images', image);
         });
 
+        // Вибір, які розміри будуть додані
+        let selectedSizes = [];
+        if (shoeSubcategories.includes(subcategory)) {
+            selectedSizes = shoeSizes;
+        } else {
+            selectedSizes = internationalSizes.length > 0 ? internationalSizes : ukrainianSizes;
+        }
+
+        if (selectedSizes.length === 0) {
+            alert('Будь ласка, виберіть розміри.');
+            return;
+        }
+
         try {
-            // Спочатку додаємо продукт
-            const response = await onSubmit(productData); // Переконайся, що onSubmit повертає дані
-            console.log('Product added:', response); // Перевіряємо, що повертається
+            const response = await onSubmit(productData);
+            console.log('Product added:', response);
 
             if (response && response.product) {
-                // Після додавання продукту додаємо розміри
-                await addSizeToProduct(response.product.id, sizes);
+                // Додаємо обрані розміри до продукту
+                await addSizeToProduct(response.product.id, selectedSizes);
             }
         } catch (error) {
-            console.error('Error in handleSubmit:', error); // Лог помилки
+            console.error('Error in handleSubmit:', error);
         }
     };
 
@@ -129,23 +167,70 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
                 />
             </div>
 
-            {/* Поле для вибору розмірів */}
-            <div className={styles.formGroup}>
-                <label>Виберіть розміри:</label>
-                <select
-                    className={styles.select}
-                    multiple
-                    value={sizes}
-                    onChange={handleSizeChange}
-                    required
-                >
-                    <option value="S">S</option>
-                    <option value="M">M</option>
-                    <option value="L">L</option>
-                    <option value="XL">XL</option>
-                    <option value="XXL">XXL</option>
-                </select>
-            </div>
+            {/* Якщо підкатегорія — взуття, показуємо розміри для взуття */}
+            {shoeSubcategories.includes(subcategory) ? (
+                <div className={styles.formGroup}>
+                    <label>Розміри взуття:</label>
+                    <select
+                        className={styles.select}
+                        multiple
+                        value={shoeSizes}
+                        onChange={handleShoeSizeChange}
+                        required
+                    >
+                        <option value="38">38</option>
+                        <option value="39">39</option>
+                        <option value="40">40</option>
+                        <option value="41">41</option>
+                        <option value="42">42</option>
+                        <option value="43">43</option>
+                        <option value="44">44</option>
+                        <option value="45">45</option>
+                    </select>
+                </div>
+            ) : (
+                <>
+                    {/* Якщо підкатегорія не взуття, показуємо розміри для одягу */}
+                    <div className={styles.formGroup}>
+                        <label>Міжнародний розмір:</label>
+                        <select
+                            className={styles.select}
+                            multiple
+                            value={internationalSizes}
+                            onChange={handleInternationalSizeChange}
+                            disabled={ukrainianSizes.length > 0} // Блокуємо, якщо вибрано українські розміри
+                        >
+                            <option value="XXS">XXS</option>
+                            <option value="XS">XS</option>
+                            <option value="S">S</option>
+                            <option value="M">M</option>
+                            <option value="L">L</option>
+                            <option value="XL">XL</option>
+                            <option value="XXL">XXL</option>
+                        </select>
+                    </div>
+
+                    <div className={styles.formGroup}>
+                        <label>Український розмір:</label>
+                        <select
+                            className={styles.select}
+                            multiple
+                            value={ukrainianSizes}
+                            onChange={handleUkrainianSizeChange}
+                            disabled={internationalSizes.length > 0} // Блокуємо, якщо вибрано міжнародні розміри
+                        >
+                            <option value="40">40</option>
+                            <option value="42">42</option>
+                            <option value="44">44</option>
+                            <option value="46">46</option>
+                            <option value="48">48</option>
+                            <option value="50">50</option>
+                            <option value="52">52</option>
+                            <option value="54">54</option>
+                        </select>
+                    </div>
+                </>
+            )}
 
             <div className={styles.formGroup}>
                 <input
