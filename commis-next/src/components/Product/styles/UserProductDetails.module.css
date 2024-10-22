@@ -38,14 +38,12 @@
 
 .productName {
     font-size: 1.25em;
-    margin: 16px 0;
     text-align: center;
 }
 
 .productDescription {
     font-size: 1em;
     color: #666;
-    margin-bottom: 16px;
     text-align: center;
 }
 
@@ -53,7 +51,7 @@
     font-size: 1.2em;
     font-weight: bold;
     color: #333;
-    margin-bottom: 16px;
+    margin-bottom: 10px;
 }
 
 .userProductsContainer>:first-child {

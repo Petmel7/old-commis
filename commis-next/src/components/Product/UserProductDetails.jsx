@@ -46,11 +46,12 @@ const UserProductDetails = () => {
                             </div>
                         ))}
                     </Slider>
+
                     <h2 className={styles.productName}>{product.name}</h2>
                     <p className={styles.productDescription}>{product.description}</p>
                     <p className={styles.productPrice}>Ціна: {product.price} грн</p>
-                    <div className={styles.userProductsContainer}>
 
+                    <div className={styles.userProductsContainer}>
                         <button className={styles.modalButtonOpen} onClick={openModal}>Видалити</button>
                         <Modal show={isModalOpen} onClose={closeModal} >
                             <div className={styles.modalContainer}>

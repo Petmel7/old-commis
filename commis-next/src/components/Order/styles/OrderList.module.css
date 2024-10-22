@@ -28,21 +28,11 @@
 .orderReplica {
     font-size: 1rem;
     color: #555;
-    margin: 10px 0;
 }
 
 .orderReplica span {
     font-weight: bold;
     color: #000;
-}
-
-.orderName,
-.orderEmail,
-.orderPhone,
-.orderShipping,
-.productName,
-.productPrice,
-.productQuantity {
     margin-left: 5px;
 }
 

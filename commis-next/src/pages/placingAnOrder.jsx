@@ -1,12 +1,8 @@
-import React from 'react';
+
 import PlacingAnOrder from '../components/Order/PlacingAnOrder';
 
-function PlacingAnOrderPage() {
-    return (
-        <div>
-            <PlacingAnOrder />
-        </div>
-    )
-}
+const PlacingAnOrderPage = () => (
+    <PlacingAnOrder />
+)
 
 export default PlacingAnOrderPage;

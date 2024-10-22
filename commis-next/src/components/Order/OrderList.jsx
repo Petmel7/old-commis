@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { getSellerOrders } from '../../services/order';
 import { baseUrl } from '../Url/baseUrl';
 import DeleteOrderList from './DeleteOrderList';
@@ -104,16 +104,16 @@ const OrderList = () => {
                                         ></div>
                                     </Modal>
                                     <p className={styles.orderReplica}>Назва:
-                                        <span className={styles.productName}>{product.product_name}</span>
+                                        <span>{product.product_name}</span>
                                     </p>
                                     <p className={styles.orderReplica}>Ціна:
-                                        <span className={styles.productPrice}>{product.product_price}</span>
+                                        <span>{product.product_price}</span>
                                     </p>
                                     <p className={styles.orderReplica}>Розмір:
-                                        <span className={styles.productSize}>{product.product_size}</span>
+                                        <span>{product.product_size}</span>
                                     </p>
                                     <p className={styles.orderReplica}>Кількість:
-                                        <span className={styles.productQuantity}>{product.quantity}</span>
+                                        <span>{product.quantity}</span>
                                     </p>
                                 </li>
                             ))}

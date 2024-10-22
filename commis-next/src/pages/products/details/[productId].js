@@ -1,9 +1,7 @@
 import ProductDetails from "@/components/Product/ProductDetails";
 
-function ProductDetailsPage() {
-    return (
-        <ProductDetails />
-    )
-}
+const ProductDetailsPage = () => (
+    <ProductDetails />
+)
 
 export default ProductDetailsPage;

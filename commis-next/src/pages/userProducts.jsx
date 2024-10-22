@@ -1,11 +1,8 @@
+
 import UserProducts from '../components/Product/UserProducts';
 
-function MyProductsPage() {
-    return (
-        <div>
-            <UserProducts />
-        </div>
-    )
-}
+const MyProductsPage = () => (
+    <UserProducts />
+)
 
 export default MyProductsPage;

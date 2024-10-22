@@ -1,9 +1,7 @@
 import ThanksForTheOrder from '../components/Order/ThanksForTheOrder';
 
-function ThanksForTheOrderPage() {
-    return (
-        <ThanksForTheOrder />
-    )
-}
+const ThanksForTheOrderPage = () => (
+    <ThanksForTheOrder />
+)
 
 export default ThanksForTheOrderPage;

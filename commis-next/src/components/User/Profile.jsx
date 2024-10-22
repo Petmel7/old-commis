@@ -21,6 +21,8 @@ const Profile = () => {
         closeConfirmPhoneModal,
     } = useUserStatus();
 
+    console.log('Profile->user', user);
+
     if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
@@ -52,6 +54,15 @@ const Profile = () => {
                                 </Tooltip>
                             </Link>
                         </li>
+                        {user.role === 'superadmin' && (
+                            <li>
+                                <Link href='/adminOffice'>
+                                    <Tooltip text="Кабінет адміністратора" position="bottom">
+                                        Кабінет адміністратора
+                                    </Tooltip>
+                                </Link>
+                            </li>
+                        )}
                     </ul>
                 </div>
             )}
