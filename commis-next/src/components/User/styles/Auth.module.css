@@ -55,12 +55,13 @@
     width: 150px;
 }
 
-.logoutButton,
-.logoutButton:hover {
-    background: none;
-    border: none;
+.logout {
+    color: #fff;
     cursor: pointer;
-    padding: 0;
+}
+
+.logout:hover {
+    color: #ddd;
 }
 
 .modalContainer {

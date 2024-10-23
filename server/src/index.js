@@ -13,6 +13,7 @@ const favoriteRoutes = require('./routes/favoriteRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
 const catalogRoutes = require('./routes/catalogRoutes');
 const sizeRoutes = require('./routes/sizeRoutes');
+const adminRoutes = require('./routes/adminRoutes');
 
 const cron = require('node-cron');
 const { errorHandler } = require('./middleware/errorHandler');
@@ -42,6 +43,7 @@ app.use('/api/orders', orderRoutes);
 app.use('/api/favorites', favoriteRoutes);
 app.use('/api/payments', paymentRoutes);
 app.use('/api/catalog', catalogRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.get('/', (req, res) => {
     res.send('Welcome to the eCommerce API');

@@ -1,7 +1,4 @@
 .header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
     background-color: #1D2533;
     padding: 15px 0px 15px 0px;
     width: 100%;
@@ -31,12 +28,12 @@
     background: none;
     border: none;
     padding: 0;
+    margin-right: 20px;
 }
 
 .headerIcon {
     width: 24px;
     height: 24px;
-    margin-right: 20px;
     fill: #fff;
     transition: fill 0.3s ease;
 }
@@ -49,4 +46,31 @@
     width: 24px;
     height: 24px;
     border-radius: 50px;
+    cursor: pointer;
+}
+
+.authIconContainer {
+    position: relative;
+}
+
+.dropdownMenu {
+    position: absolute;
+    right: 0;
+    top: 100%;
+    background-color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    list-style: none;
+    margin: 0;
+    padding: 20px;
+    border-radius: 4px;
+}
+
+.dropdownMenu li a {
+    cursor: pointer;
+    text-decoration: none;
+    color: #fff;
+}
+
+.dropdownMenu li a:hover {
+    color: #ddd;
 }
