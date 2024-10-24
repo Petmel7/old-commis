@@ -1,5 +1,5 @@
 
-const { Product, User, Order, OrderItem, Size } = require('../models');
+const { Product, User, Order, OrderItem } = require('../models');
 const { createResponse } = require('../utils/response');
 const transporter = require('../config/emailConfig');
 const path = require('path');

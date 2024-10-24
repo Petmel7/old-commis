@@ -1,0 +1,52 @@
+/* Стиль для контейнера Адмін-кабінету */
+.adminOfficeContainer {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Заголовок */
+.adminOfficeTitle {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Стиль для списку */
+.adminDataList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+/* Стиль для кожного елемента списку */
+.adminDataList li {
+    margin-bottom: 12px;
+}
+
+/* Стиль для посилань */
+.adminDataList a {
+    text-decoration: none;
+    font-size: 18px;
+    color: #0070f3;
+    padding: 10px 15px;
+    display: block;
+    border-radius: 4px;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+/* Посилання при наведенні */
+.adminDataList a:hover {
+    background-color: #0070f3;
+    color: white;
+}
+
+/* Останній елемент списку не повинен мати нижнього відступу */
+.adminDataList li:last-child {
+    margin-bottom: 0;
+}

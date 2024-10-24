@@ -2,7 +2,7 @@
 const path = require('path');
 const fs = require('fs');
 const { Op } = require('sequelize');
-const { Product, User, Category, Subcategory, Size } = require('../models');
+const { Product, Category, Subcategory, } = require('../models');
 // const Subcategory = require('../models/Subcategory');
 
 // Отримати всі продукти
