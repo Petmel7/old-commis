@@ -25,3 +25,10 @@ export const getUsersByRole = async (role) => {
     return response.data
 }
 
+export const getUserById = async (userId) => {
+    const response = await api.get(`admin/users/${userId}`);
+    return response.data
+}
+
+
+

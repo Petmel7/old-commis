@@ -1,11 +1,28 @@
 
-const { User, Order, Product } = require('../models');
+const { User, Order, Product, OrderItem, RefreshToken } = require('../models');
 const sequelize = require('../config/db');
 
 const getUsersForAdmin = async (req, res, next) => {
     try {
         const users = await User.findAll();
         res.json(users);
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getUserById = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        const user = await User.findByPk(id);
+
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+            // createResponse(res, 404, 'Order not found');
+        }
+
+        res.json(user);
     } catch (error) {
         next(error);
     }
@@ -97,7 +114,7 @@ const getUsersByRole = async (req, res, next) => {
         // Пошук користувачів з вказаною роллю
         const users = await User.findAll({
             where: { role }, // Умова для пошуку за полем role
-            attributes: ['id', 'name', 'email', 'phone', 'role'] // Поля, які хочемо отримати
+            attributes: ['id', 'name', 'email', 'phone', 'role', 'createdat'] // Поля, які хочемо отримати
         });
 
         if (users.length === 0) {
@@ -110,10 +127,41 @@ const getUsersByRole = async (req, res, next) => {
     }
 };
 
+const deleteUserForAdmin = async (req, res, next) => {
+    const { userId } = req.params;
+
+    if (!userId) {
+        return res.status(400).json({ status: 'error', message: 'userId не переданий у запиті' });
+    }
+
+    try {
+        // Отримуємо всі замовлення користувача
+        const orders = await Order.findAll({ where: { user_id: userId } });
+
+        // Видаляємо всі записи в order_items, пов'язані з кожним замовленням
+        const orderIds = orders.map(order => order.id);
+        await OrderItem.destroy({ where: { order_id: orderIds } });
+
+        // Видаляємо замовлення користувача
+        await Order.destroy({ where: { user_id: userId } });
+
+        await RefreshToken.destroy({ where: { user_id: userId } });
+
+        // Видаляємо користувача
+        await User.destroy({ where: { id: userId } });
+
+        res.status(200).json({ message: 'Користувач та його дані успішно видалені.' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getUsersForAdmin,
+    getUserById,
     getOrdersForAdmin,
     getProductsForAdmin,
     getUserRoleCounts,
-    getUsersByRole
+    getUsersByRole,
+    deleteUserForAdmin
 };

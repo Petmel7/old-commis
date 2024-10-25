@@ -6,8 +6,7 @@ const router = express.Router();
 
 router.post('/', protect, createOrder);
 router.delete('/:id', protect, deleteOrder);
-router.get('/seller', protect, getSellerOrders); // Маршрут для отримання замовлень продавця повинен бути перед маршрутом /:id
-router.get('/:id', protect, getOrder);
+router.get('/seller', protect, getSellerOrders);
 router.get('/', protect, getUserOrders);
 
 module.exports = router;

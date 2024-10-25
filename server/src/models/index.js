@@ -10,6 +10,11 @@ const Category = require('./Category');
 const Subcategory = require('./Subcategory');
 const Size = require('./Size');
 
+// models/User.js та Product.js (або де налаштовуються зв'язки)
+User.hasMany(Product, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+User.hasMany(Order, { foreignKey: 'user_id', onDelete: 'CASCADE' });
+Order.belongsTo(User, { foreignKey: 'user_id' });
+
 // Зв'язок між User і Product
 User.hasMany(Product, { foreignKey: 'user_id' });
 Product.belongsTo(User, { foreignKey: 'user_id', as: 'seller' });

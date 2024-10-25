@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { getUsersForAdmin, getOrdersForAdmin, getProductsForAdmin, getUserRoleCounts } from "@/services/admin";
 import useLoadingAndError from "@/hooks/useLoadingAndError";
-import styles from './styles/Dashboard.module.css'; // Підключення стилів
+import styles from './styles/Dashboard.module.css';
 
 const Dashboard = () => {
     const [users, setUsers] = useState([]);
