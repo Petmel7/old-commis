@@ -29,8 +29,6 @@ const UsersByRole = () => {
     if (loading) return <p>Завантаження...</p>;
     if (error) return <p>Помилка: {error}</p>;
 
-    console.log('&&&&UsersByRole->users', users);
-
     return (
         <div>
             <h3>{role === 'buyer' ? 'Покупці' : role === 'seller' ? 'Продавці' : 'Користувачі'}</h3>
