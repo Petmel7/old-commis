@@ -72,9 +72,9 @@ const ConfirmPhoneModal = ({ show, onClose }) => {
     if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
-        <Modal show={show} onClose={onClose}>
+        <Modal show={show} onClose={onClose} text='Підтвердіть номер телефону'>
             <div className={styles.modalContainer}>
-                <h3>Підтвердіть номер телефону</h3>
+                {/* <h3>Підтвердіть номер телефону</h3> */}
                 <div className={styles.confirmPhoneContent}>
                     <p className={styles.modalText}>Ми надіслали код підтвердження на номер: {user?.phone}</p>
                     <p>На даний час ця функція не працює тому код підтвердження прийде вам на пошту</p>

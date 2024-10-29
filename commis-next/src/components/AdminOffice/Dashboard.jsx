@@ -38,7 +38,6 @@ const Dashboard = () => {
 
     return (
         <div className={styles.dashboardContainer}>
-            <h3 className={styles.dashboardTitle}>Dashboard</h3>
             <ul className={styles.dashboardStats}>
                 <li>Загальна кількість користувачів: {users.length}</li>
                 <li>Загальна кількість замовлень: {orders.length}</li>

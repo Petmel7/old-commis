@@ -37,9 +37,6 @@ const UsersByRole = () => {
                     <Link href={`/admin/user-details/${user.id}`}>
                         <li key={user.id}>
                             <p>{user.name}</p>
-                            <p>{user.email}</p>
-                            <p>{user.role}</p>
-                            <p>{user.createdat}</p>
                         </li>
                     </Link>
                 ))}

@@ -12,9 +12,9 @@ const ConfirmEmailModal = ({ show, onClose, email }) => {
     const googleMailUrl = `https://mail.google.com/mail/?authuser=${email}`;
 
     return (
-        <Modal show={show} onClose={onClose}>
+        <Modal show={show} onClose={onClose} text='Підтвердіть електронну пошту'>
             <div className={styles.modalContainer}>
-                <h3>Підтвердіть електронну пошту</h3>
+                {/* <h3>Підтвердіть електронну пошту</h3> */}
                 {loadingErrorComponent || (
                     <div className={styles.confirmEmailContent}>
                         <p>Ми надіслали посилання для підтвердження на електронну пошту: {email}</p>

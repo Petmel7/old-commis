@@ -10,7 +10,6 @@ const AdminOffice = () => {
             <ul className={styles.adminDataList}>
                 {adminDataList.map((item, index) => (
                     <li key={index}>
-                        {console.log('$$$$AdminOffice', item.slug)}
                         <Link href={`/admin/slug/${item.slug}`}>
                             <p className={styles.link}>{item.title}</p>
                         </Link>

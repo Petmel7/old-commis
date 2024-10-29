@@ -36,4 +36,9 @@ export const deleteUser = async (userId) => {
     return response.data
 }
 
+export const updateUser = async (userId, formData) => {
+    const response = await api.patch(`/products/${userId}`, formData);
+    return response.data;
+};
+
 

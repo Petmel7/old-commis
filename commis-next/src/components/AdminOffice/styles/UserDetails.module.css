@@ -1,0 +1,38 @@
+.buttonContainer {
+    display: flex;
+    justify-content: space-around;
+}
+
+.buttonContainer button {
+    padding: 8px;
+    border: none;
+    cursor: pointer;
+    width: 100px;
+}
+
+.deleteUserButton {
+    background-color: #d9534f;
+}
+
+.deleteUserButton:hover {
+    background-color: #c44d49;
+}
+
+/* styles/UserDetails.module.css */
+
+.editForm {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.editForm label {
+    font-weight: bold;
+}
+
+.editForm input,
+.editForm select {
+    padding: 6px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}

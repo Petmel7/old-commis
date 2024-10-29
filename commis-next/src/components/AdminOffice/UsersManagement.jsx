@@ -16,7 +16,6 @@ const UsersManagement = () => {
 
     return (
         <>
-            <h3>Користувачі</h3>
             <ul>
                 {users.map((user, index) => (
                     <li key={index}>

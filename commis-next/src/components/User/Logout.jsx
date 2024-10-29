@@ -37,9 +37,9 @@ const Logout = ({ onLogout }) => {
         <>
             <p className={styles.logout} onClick={openModal}>Вийти</p>
 
-            <Modal show={isModalOpen} onClose={closeModal}>
+            <Modal show={isModalOpen} onClose={closeModal} text='Ви справді хочете вийти?'>
                 <div className={styles.modalContainer}>
-                    <h3>Ви справді хочете вийти?</h3>
+                    {/* <h3>Ви справді хочете вийти?</h3> */}
                     <div className={styles.modalButtons}>
                         <button onClick={handleConfirmLogout}>Так</button>
                         <button onClick={closeModal}>Ні</button>

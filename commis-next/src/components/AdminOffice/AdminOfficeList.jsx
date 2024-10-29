@@ -6,7 +6,6 @@ import adminDataList from './adminDatalList';
 const componentMap = {
     'dashboard': dynamic(() => import('./Dashboard')),
     'users': dynamic(() => import('./UsersManagement')),
-    // Додайте інші компоненти динамічно
 };
 
 const AdminOfficeList = () => {

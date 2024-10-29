@@ -1,10 +1,9 @@
 
 import { deleteUser } from "@/services/admin";
+import styles from './styles/UserDetails.module.css';
 
 const DeleteUser = ({ userId, onDelete }) => {
     const handleDeleteUser = async () => {
-        const isConfirmed = confirm("Ви впевнені, що хочете видалити цього користувача?");
-        if (!isConfirmed) return;
 
         try {
             const response = await deleteUser(userId);
@@ -16,7 +15,7 @@ const DeleteUser = ({ userId, onDelete }) => {
         }
     };
 
-    return <button onClick={handleDeleteUser}>Видалити</button>;
+    return <button className={styles.deleteUserButton} onClick={handleDeleteUser}>Видалити</button>;
 };
 
 export default DeleteUser;

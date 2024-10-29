@@ -1,6 +1,5 @@
 
 const { User, Order, Product, OrderItem, RefreshToken } = require('../models');
-const sequelize = require('../config/db');
 
 const getUsersForAdmin = async (req, res, next) => {
     try {
@@ -155,6 +154,14 @@ const deleteUserForAdmin = async (req, res, next) => {
         next(error);
     }
 };
+
+// const editUser = async (req, res, next) => {
+//     const { id } = req.params;
+//     const { formData } = req.body;
+
+//     await User.findByPk(id);
+//     await User.update({});
+// }
 
 module.exports = {
     getUsersForAdmin,
