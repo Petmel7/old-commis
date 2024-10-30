@@ -147,7 +147,7 @@ const logoutUser = async (req, res, next) => {
 const getUserProfile = async (req, res, next) => {
     try {
         const user = await User.findByPk(req.user.id, {
-            attributes: ['id', 'name', 'lastname', 'email', 'emailconfirmed', 'phone', 'phoneconfirmed', 'confirmationcode', 'googleid', 'role']
+            attributes: ['id', 'name', 'lastname', 'email', 'emailconfirmed', 'phone', 'phoneconfirmed', 'confirmationcode', 'googleid', 'role', 'is_blocked']
         });
 
         if (!user) {

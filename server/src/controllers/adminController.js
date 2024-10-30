@@ -155,13 +155,65 @@ const deleteUserForAdmin = async (req, res, next) => {
     }
 };
 
-// const editUser = async (req, res, next) => {
-//     const { id } = req.params;
-//     const { formData } = req.body;
+// Контролер для оновлення профілю користувача
+const updateUser = async (req, res, next) => {
+    try {
+        const userId = req.params.id; // Отримуємо userId з параметрів запиту
+        const { name, email, phone, role } = req.body; // Отримуємо дані з тіла запиту
 
-//     await User.findByPk(id);
-//     await User.update({});
-// }
+        // Знаходимо користувача в базі даних
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Користувача не знайдено' });
+        }
+
+        // Оновлюємо дані користувача
+        user.name = name || user.name;
+        user.email = email || user.email;
+        user.phone = phone || user.phone;
+        user.role = role || user.role;
+
+        // Зберігаємо зміни
+        await user.save();
+
+        // Відправляємо успішну відповідь із оновленими даними користувача
+        res.status(200).json({
+            message: 'Профіль користувача успішно оновлено',
+            user: {
+                id: user.id,
+                name: user.name,
+                email: user.email,
+                phone: user.phone,
+                role: user.role,
+            },
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const blockUser = async (req, res) => {
+    const userId = req.params.userId;
+    const { is_blocked } = req.body; // Отримуємо значення блокування
+
+    try {
+        const user = await User.findByPk(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'Користувача не знайдено' });
+        }
+
+        // Оновлюємо статус блокування
+        await user.update({ is_blocked });
+
+        return res.status(200).json({
+            message: `Статус блокування користувача успішно оновлено на ${is_blocked}`,
+            user
+        });
+    } catch (error) {
+        console.error('updateUserBlockStatus->error:', error);
+        return res.status(500).json({ message: 'Помилка при оновленні статусу користувача' });
+    }
+};
 
 module.exports = {
     getUsersForAdmin,
@@ -170,5 +222,7 @@ module.exports = {
     getProductsForAdmin,
     getUserRoleCounts,
     getUsersByRole,
-    deleteUserForAdmin
+    deleteUserForAdmin,
+    updateUser,
+    blockUser,
 };

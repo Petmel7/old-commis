@@ -48,6 +48,11 @@ const User = sequelize.define('User', {
         allowNull: false,
         defaultValue: 'buyer'
     },
+    is_blocked: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+    },
     createdat: {
         type: DataTypes.DATE,
         allowNull: false,

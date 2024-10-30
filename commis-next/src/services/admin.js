@@ -37,8 +37,16 @@ export const deleteUser = async (userId) => {
 }
 
 export const updateUser = async (userId, formData) => {
-    const response = await api.patch(`/products/${userId}`, formData);
+    const response = await api.patch(`admin/users/update/${userId}`, formData);
     return response.data;
 };
+
+export const blockUser = async (userId, isBlocked) => {
+    console.log('44444blockUser->isBlocked', isBlocked);
+    const response = await api.put(`admin/users/block/${userId}`, {
+        is_blocked: !isBlocked,
+    });
+    return response.data;
+}
 
 
