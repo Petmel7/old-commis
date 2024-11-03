@@ -10,6 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
     const [isRegistered, setIsRegistered] = useState(false);
     const [isGoogleRegistered, setIsGoogleRegistered] = useState(false);
+    const [isBlocked, setIsBlocked] = useState(false);
     const [user, setUser] = useState(null); // Стан для зберігання даних користувача
     const [loading, setLoading] = useState(true);
 
@@ -39,8 +40,12 @@ export const AuthProvider = ({ children }) => {
             const userProfile = await getUserProfile();
             setUser(userProfile);
         } catch (error) {
-            console.error('Помилка при завантаженні профілю користувача:', error);
-            setUser(null);
+            if (error.response && error.response.status === 403) {
+                setIsBlocked(true);
+            } else {
+                console.error('Помилка при завантаженні профілю користувача:', error);
+                setUser(null);
+            }
         }
     };
 
@@ -66,11 +71,14 @@ export const AuthProvider = ({ children }) => {
         localStorage.setItem('isGoogleRegistered', value.toString());
     };
 
+    console.log('000000000user', user);
+
     return (
         <AuthContext.Provider value={{
             isAuthenticated,
             isRegistered,
             isGoogleRegistered,
+            isBlocked,
             user,
             loading,
             handleLogin,

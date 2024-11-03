@@ -6,6 +6,7 @@ import DeleteUser from "./DeleteUser";
 import Modal from "../Modal/Modal";
 import BlockUserButton from "./BlockUserButton";
 import useModal from "@/hooks/useModal";
+import useLoadingAndError from "@/hooks/useLoadingAndError";
 import styles from './styles/UserDetails.module.css';
 
 const UserDetails = () => {
@@ -15,6 +16,8 @@ const UserDetails = () => {
     const [userById, setUserById] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
     const [editData, setEditData] = useState({ name: "", email: "", phone: "", role: "" });
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     const roleTranslations = {
         buyer: 'Покупець',
@@ -22,17 +25,25 @@ const UserDetails = () => {
         superadmin: 'Адміністратор'
     };
 
+    const loadingErrorComponent = useLoadingAndError(loading, error);
+
     useEffect(() => {
         const fetchUserById = async () => {
-            if (userId) {
-                const userData = await getUserById(userId);
-                setUserById(userData);
-                setEditData({ // Заповнення форми поточними даними користувача
-                    name: userData.name || "",
-                    email: userData.email || "",
-                    phone: userData.phone || "",
-                    role: userData.role || ""
-                });
+            try {
+                if (userId) {
+                    const userData = await getUserById(userId);
+                    setUserById(userData);
+                    setEditData({
+                        name: userData.name || "",
+                        email: userData.email || "",
+                        phone: userData.phone || "",
+                        role: userData.role || ""
+                    });
+                }
+                setLoading(false);
+            } catch (error) {
+                setError(error.message);
+                setLoading(false);
             }
         };
         fetchUserById();
@@ -52,39 +63,41 @@ const UserDetails = () => {
     };
 
     const handleEditSubmit = async (e) => {
-        e.preventDefault(); // Запобігає перезавантаженню сторінки
+        e.preventDefault();
         try {
             await updateUser(userId, editData);
-            setUserById({ ...userById, ...editData }); // Оновлюємо дані користувача в стані
-            setIsEditMode(false); // Вихід з режиму редагування
+            setUserById({ ...userById, ...editData });
+            setIsEditMode(false);
         } catch (error) {
             console.log('handleEditSubmit->error', error);
         }
     }
 
-    if (!userById) return <p>Завантаження...</p>;
+    if (loadingErrorComponent) return loadingErrorComponent;
     const date = new Date(userById.createdat).toLocaleDateString("uk-UA");
+    const userStatus = userById.is_blocked ? 'заблокований' : 'активний';
 
-    console.log('*******userById', userById)
+    console.log('%%%%%%%%%%userById', userById);
 
     return (
-        <div>
+        <div className={styles.userDetailsContainer}>
             <h3>Деталі користувача</h3>
             {!isEditMode ? (
                 <>
-                    <p>Ім'я: {userById.name}</p>
-                    <p>Email: {userById.email}</p>
-                    <p>Номер: {userById.phone}</p>
-                    <p>Роль: {roleTranslations[userById.role] || userById.role}</p>
-                    <p>Дата створення: {date}</p>
-
-                    <button onClick={handleEditClick}>Редагувати</button>
-                    <button onClick={openModal}>Видалити</button>
-                    <BlockUserButton userId={userId} isBlocked={userById.is_blocked} onStatusChange={setUserById} />
-
-                    <Modal show={isModalOpen} onClose={closeModal}
-                        text='Ви справді хочете видалити цього користувача? Ця дія видалить користувача разом з його продуктами!'
-                    >
+                    <div className={styles.userInfo}>
+                        <p>Ім'я: {userById.name}</p>
+                        <p>Email: {userById.email}</p>
+                        <p>Номер: {userById.phone}</p>
+                        <p>Роль: {roleTranslations[userById.role] || userById.role}</p>
+                        <p>Дата створення: {date}</p>
+                        <p>Статус: Користувач {userById.name} {userStatus} </p>
+                    </div>
+                    <div className={styles.userActions}>
+                        <button onClick={handleEditClick} className={styles.editButton}>Редагувати</button>
+                        <button onClick={openModal} className={styles.deleteButton}>Видалити</button>
+                        <BlockUserButton userId={userId} isBlocked={userById.is_blocked} onStatusChange={setUserById} className={styles.blockButton} />
+                    </div>
+                    <Modal show={isModalOpen} onClose={closeModal} text='Ви справді хочете видалити цього користувача? Ця дія видалить користувача разом з його продуктами!'>
                         <div className={styles.buttonContainer}>
                             <DeleteUser userId={userId} onDelete={handleDeleteUser} />
                             <button onClick={closeModal}>Відміна</button>
@@ -108,7 +121,7 @@ const UserDetails = () => {
                         <option value="seller">Продавець</option>
                         <option value="superadmin">Адміністратор</option>
                     </select>
-                    <button type="submit">Зберегти</button> {/* Зміна на "Зберегти" */}
+                    <button type="submit">Зберегти</button>
                 </form>
             )}
         </div>

@@ -18,21 +18,98 @@
     background-color: #c44d49;
 }
 
-/* styles/UserDetails.module.css */
+.userDetailsContainer {
+    padding: 1.5rem;
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.userInfo {
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    color: #333;
+}
+
+.userInfo p {
+    margin: 0.5rem 0;
+}
+
+.userActions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1.5rem;
+}
+
+.userActions button {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.editButton {
+    background-color: #0070f3;
+    color: #fff;
+    border: none;
+}
+
+.editButton:hover {
+    background-color: #005bb5;
+}
+
+.deleteButton {
+    background-color: #e63946;
+    color: #fff;
+    border: none;
+}
+
+.deleteButton:hover {
+    background-color: #d62828;
+}
+
+.blockButton {
+    background-color: #f4a261;
+    color: #fff;
+    border: none;
+}
+
+.blockButton:hover {
+    background-color: #e76f51;
+}
+
+.buttonContainer {
+    display: flex;
+    gap: 0.5rem;
+}
 
 .editForm {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 1rem;
+    margin-top: 1.5rem;
+    background-color: #f1f1f1;
+    padding: 1rem;
+    border-radius: 8px;
 }
 
 .editForm label {
-    font-weight: bold;
+    font-weight: 600;
+    margin-bottom: 0.2rem;
 }
 
 .editForm input,
 .editForm select {
-    padding: 6px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    font-size: 1rem;
+    width: 100%;
+}
+
+.editForm button {
+    padding: 0.6rem 1.2rem;
+    font-size: 1rem;
+    color: #fff;
+    border: none;
+    cursor: pointer;
 }
