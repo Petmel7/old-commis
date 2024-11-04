@@ -17,7 +17,6 @@ const CategorySelect = ({ category, setCategory, subcategory, setSubcategory }) 
 
     return (
         <div>
-            {/* Селектор для категорії */}
             <select
                 className={styles.select}
                 value={category}
@@ -32,7 +31,6 @@ const CategorySelect = ({ category, setCategory, subcategory, setSubcategory }) 
                 ))}
             </select>
 
-            {/* Селектор для підкатегорії */}
             {subcategories.length > 0 && (
                 <select
                     className={styles.select}

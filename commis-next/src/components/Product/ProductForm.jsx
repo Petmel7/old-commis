@@ -92,7 +92,6 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
 
         try {
             const response = await onSubmit(productData);
-            console.log('Product added:', response);
 
             if (response && response.product) {
                 // Додаємо обрані розміри до продукту

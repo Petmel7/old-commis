@@ -5,8 +5,6 @@ import styles from './styles/Auth.module.css';
 
 const SellerButton = () => {
     const { isRegistered, isGoogleRegistered } = useAuth();
-    console.log('====isRegistered', isRegistered);
-    console.log('====isGoogleRegistered', isGoogleRegistered);
 
     return (
         <div>

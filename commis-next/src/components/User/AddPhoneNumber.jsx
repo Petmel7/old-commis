@@ -56,7 +56,6 @@ const AddPhoneNumber = ({ show, onClose, onPhoneAdded }) => {
     return (
         <Modal show={show} onClose={onClose} phone={phone} text='Додайте номер телефону'>
             <div className={styles.modalContainer}>
-                {/* <h3>Додайте номер телефону</h3> */}
                 <form className={styles.authForm} onSubmit={handlePhoneSubmit}>
                     <input
                         className={`${styles.authInput} ${errors.phone ? styles.errorInput : ''}`}

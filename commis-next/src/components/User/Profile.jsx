@@ -7,6 +7,7 @@ import AddPhoneNumber from './AddPhoneNumber';
 import ConfirmPhoneModal from './ConfirmPhoneModal';
 import useUserStatus from '../../hooks/useUserStatus';
 import Tooltip from '../Tooltip/Tooltip';
+import UserStatusText from '../UserStatusText/UserStatusText';
 import styles from './styles/Profile.module.css';
 
 const Profile = () => {
@@ -22,7 +23,7 @@ const Profile = () => {
         closeConfirmPhoneModal,
     } = useUserStatus();
 
-    if (isBlocked) return <p>Ви заблоковані адміністратором цього магазину!</p>
+    if (isBlocked) return <UserStatusText />;
 
     if (loadingErrorComponent) return loadingErrorComponent;
 

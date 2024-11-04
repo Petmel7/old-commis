@@ -15,14 +15,11 @@ const BuyButton = ({ product, selectedSize }) => {
 
         try {
             if (!selectedSize) {
-                // Якщо розмір не вибраний, показуємо помилку
                 throw new Error('Будь ласка, виберіть розмір перед додаванням в кошик.');
             }
 
-            // Додаємо продукт з вибраним розміром у кошик
             addToCart(product, selectedSize);
 
-            // Перенаправлення на сторінку кошика
             router.push('/cart');
         } catch (error) {
             setError(error.message);

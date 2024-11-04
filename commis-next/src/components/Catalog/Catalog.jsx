@@ -11,7 +11,6 @@ const Catalog = () => {
     const [error, setError] = useState(null);
     const router = useRouter();
     const { category } = router.query;
-    console.log('Catalog->category', category);
 
     useEffect(() => {
         const fetchProductsByCategory = async () => {
@@ -20,18 +19,16 @@ const Catalog = () => {
                     const response = await getProductsByCategory(category);
                     const { data } = response;
 
-                    // Перевіряємо чи data існує та є масивом
                     if (Array.isArray(data)) {
                         setProducts(data);
-                        setError(null); // Скидаємо помилку, якщо отримані дані коректні
+                        setError(null);
                     } else {
                         throw new Error('Очікувався масив, але отримано некоректну структуру.');
                     }
                 }
             } catch (error) {
-                setError(error.message); // Зберігаємо повідомлення про помилку
-                setProducts([]); // Очищаємо продукти у випадку помилки
-                console.log('Catalog->error', error);
+                setError(error.message);
+                setProducts([]);
             }
         };
         fetchProductsByCategory();

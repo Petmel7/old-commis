@@ -27,7 +27,6 @@ export const getUsersByRole = async (role) => {
 
 export const getUserById = async (userId) => {
     const response = await api.get(`admin/users/${userId}`);
-    console.log('&&^%^&api.getUserById->userId', userId);
     return response.data
 }
 
@@ -42,7 +41,6 @@ export const updateUser = async (userId, formData) => {
 };
 
 export const blockUser = async (userId, isBlocked) => {
-    console.log('44444blockUser->isBlocked', isBlocked);
     const response = await api.put(`admin/users/block/${userId}`, {
         is_blocked: !isBlocked,
     });

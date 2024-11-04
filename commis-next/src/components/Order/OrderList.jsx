@@ -14,10 +14,9 @@ const OrderList = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    // Стан для зберігання, чи відкрито модальне вікно для перегляду зображення або видалення
     const [modalState, setModalState] = useState({
-        viewImage: null,  // Для зображення продукту
-        deleteOrder: null // Для видалення замовлення
+        viewImage: null,
+        deleteOrder: null
     });
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
@@ -37,17 +36,14 @@ const OrderList = () => {
         fetchOrders();
     }, []);
 
-    // Функція для відкриття модального вікна з зображенням
     const openImageModal = (orderId) => {
         setModalState({ ...modalState, viewImage: orderId });
     };
 
-    // Функція для відкриття модального вікна для видалення
     const openDeleteModal = (orderId) => {
         setModalState({ ...modalState, deleteOrder: orderId });
     };
 
-    // Функція для закриття будь-якого модального вікна
     const closeModal = () => {
         setModalState({ viewImage: null, deleteOrder: null });
     };
@@ -57,8 +53,6 @@ const OrderList = () => {
     if (orders.length === 0) {
         return <NoProducts text="Поки що не має замовлень" />;
     }
-
-    console.log('OrderList->orders', orders);
 
     return (
         <>

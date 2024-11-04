@@ -11,7 +11,6 @@ const GetFavorites = () => {
     const { favorites, loadFavorites } = useFavorites();
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {

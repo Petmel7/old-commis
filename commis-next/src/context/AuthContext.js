@@ -1,6 +1,6 @@
 
 import { createContext, useState, useContext, useEffect } from 'react';
-import { getUserProfile } from '../services/auth'; // Імпортуємо функцію отримання профілю
+import { getUserProfile } from '../services/auth';
 
 const AuthContext = createContext();
 
@@ -11,7 +11,7 @@ export const AuthProvider = ({ children }) => {
     const [isRegistered, setIsRegistered] = useState(false);
     const [isGoogleRegistered, setIsGoogleRegistered] = useState(false);
     const [isBlocked, setIsBlocked] = useState(false);
-    const [user, setUser] = useState(null); // Стан для зберігання даних користувача
+    const [user, setUser] = useState(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }) => {
             const accessToken = localStorage.getItem('accessToken');
             if (accessToken) {
                 setIsAuthenticated(true);
-                await fetchUserProfile(); // Завантажуємо профіль, якщо є токен
+                await fetchUserProfile();
             }
             const registered = localStorage.getItem('isRegistered') === 'true';
             if (registered) {
@@ -29,7 +29,7 @@ export const AuthProvider = ({ children }) => {
             if (googleRegistered) {
                 setIsGoogleRegistered(true);
             }
-            setLoading(false); // Встановлюємо завантаження в false після ініціалізації
+            setLoading(false);
         };
 
         initializeAuth();
@@ -56,22 +56,20 @@ export const AuthProvider = ({ children }) => {
 
     const handleLogin = async () => {
         setIsAuthenticated(true);
-        await fetchUserProfile(); // Завантажуємо дані користувача після авторизації
+        await fetchUserProfile();
     };
 
     const handleLogout = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('refreshToken');
         setIsAuthenticated(false);
-        setUser(null); // Очищаємо дані користувача
+        setUser(null);
     };
 
     const setGoogleRegisteredStatus = (value) => {
         setIsGoogleRegistered(value);
         localStorage.setItem('isGoogleRegistered', value.toString());
     };
-
-    console.log('000000000user', user);
 
     return (
         <AuthContext.Provider value={{

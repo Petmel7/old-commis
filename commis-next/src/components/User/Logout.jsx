@@ -39,7 +39,6 @@ const Logout = ({ onLogout }) => {
 
             <Modal show={isModalOpen} onClose={closeModal} text='Ви справді хочете вийти?'>
                 <div className={styles.modalContainer}>
-                    {/* <h3>Ви справді хочете вийти?</h3> */}
                     <div className={styles.modalButtons}>
                         <button onClick={handleConfirmLogout}>Так</button>
                         <button onClick={closeModal}>Ні</button>

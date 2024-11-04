@@ -71,13 +71,13 @@ const UserDetails = () => {
         } catch (error) {
             console.log('handleEditSubmit->error', error);
         }
-    }
+    };
 
     if (loadingErrorComponent) return loadingErrorComponent;
-    const date = new Date(userById.createdat).toLocaleDateString("uk-UA");
-    const userStatus = userById.is_blocked ? 'заблокований' : 'активний';
+    if (!userById) return <p>Завантаження...</p>;
 
-    console.log('%%%%%%%%%%userById', userById);
+    const date = userById ? new Date(userById.createdat).toLocaleDateString("uk-UA") : "Невідомо";
+    const userStatus = userById.is_blocked ? 'заблокований' : 'активний';
 
     return (
         <div className={styles.userDetailsContainer}>
@@ -129,3 +129,4 @@ const UserDetails = () => {
 };
 
 export default UserDetails;
+

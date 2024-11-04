@@ -1,4 +1,4 @@
-// server/src/routes/favoriteRoutes.js
+
 const express = require('express');
 const { addFavorite, deleteFavorite, getFavorites } = require('../controllers/favoriteController');
 const { protect } = require('../middleware/authMiddleware');

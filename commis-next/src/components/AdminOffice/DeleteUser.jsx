@@ -7,9 +7,7 @@ const DeleteUser = ({ userId, onDelete }) => {
 
         try {
             const response = await deleteUser(userId);
-
-            console.log("Користувача успішно видалено");
-            if (onDelete) onDelete(); // Викликаємо callback для повернення на список користувачів
+            if (onDelete) onDelete();
         } catch (error) {
             console.error("handleDeleteUser->error", error);
         }

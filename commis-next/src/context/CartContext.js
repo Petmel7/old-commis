@@ -10,7 +10,6 @@ export const useCart = () => {
 export const CartProvider = ({ children }) => {
     const [cart, setCart] = useState([]);
 
-    // Завантаження стану корзини з localStorage при початковому завантаженні
     useEffect(() => {
         const savedCart = localStorage.getItem('cart');
         if (savedCart) {
@@ -18,15 +17,12 @@ export const CartProvider = ({ children }) => {
         }
     }, []);
 
-    // Збереження стану корзини в localStorage при кожній зміні корзини
     useEffect(() => {
         localStorage.setItem('cart', JSON.stringify(cart));
     }, [cart]);
 
-    // Додавання продукту разом із розміром
     const addToCart = (product, selectedSize) => {
         setCart(prevCart => [...prevCart, { ...product, size: selectedSize, quantity: 1 }]);
-        console.log('useCart->size: selectedSize', selectedSize);
     };
 
     const increaseQuantity = (productId) => {

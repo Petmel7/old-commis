@@ -4,7 +4,6 @@ import { useCart } from '@/context/CartContext';
 import { createOrder } from '../../services/order';
 import { baseUrl } from '../Url/baseUrl';
 import { useRouter } from 'next/router';
-import { createPayment } from '@/services/payment';
 import useUserStatus from '../../hooks/useUserStatus';
 import ConfirmEmailModal from '../User/ConfirmEmailModal';
 import AddPhoneNumber from '../User/AddPhoneNumber';
@@ -51,8 +50,6 @@ const PlacingAnOrder = () => {
             size: item.size
         }));
 
-        console.log('PlacingAnOrder->items', items);
-
         const orderDetails = {
             items,
             address: [address],
@@ -67,7 +64,6 @@ const PlacingAnOrder = () => {
             }
 
             if (paymentMethod === 'paypal') {
-                // Логіка для PayPal
             } else if (paymentMethod === 'cod') {
                 router.push('/thanksForTheOrder');
             } else {
@@ -81,80 +77,13 @@ const PlacingAnOrder = () => {
         }
     };
 
-    // const handleOrder = async (e) => {
-    //     e.preventDefault();
-
-    //     if (!address) {
-    //         alert('Будь ласка, виберіть адресу для доставки');
-    //         return;
-    //     }
-
-    //     setLoading(true);
-
-    //     const items = cart.map(item => ({
-    //         product_id: item.id,
-    //         quantity: item.quantity
-    //     }));
-
-    //     const orderDetails = {
-    //         items,
-    //         address: [address],
-    //     };
-
-    //     try {
-    //         // Створення замовлення
-    //         const response = await createOrder(orderDetails);
-
-    //         const orderId = response?.orderId;
-
-    //         if (!orderId) {
-    //             throw new Error('Не вдалося створити замовлення: orderId не знайдено');
-    //         }
-
-    //         if (paymentMethod === 'paypal') {
-    //             const dataPayment = {
-    //                 orderId: orderId,
-    //                 amount: calculateTotalCartPrice(cart).toFixed(2),
-    //                 currency: 'USD',
-    //                 userId: user?.id,
-    //             };
-
-    //             // Ініціалізація платежу через PayPal
-    //             const paymentResponse = await createPayment(dataPayment);
-
-    //             if (paymentResponse && paymentResponse.links) {
-    //                 const approvalUrl = paymentResponse.links.find(link => link.rel === 'approve')?.href;
-
-    //                 if (approvalUrl) {
-    //                     // Перенаправлення користувача на PayPal
-    //                     window.location.href = approvalUrl;
-    //                 } else {
-    //                     throw new Error('Не вдалося знайти посилання на підтвердження PayPal');
-    //                 }
-    //             } else {
-    //                 throw new Error('Не вдалося отримати відповідь від PayPal');
-    //             }
-    //         } else if (paymentMethod === 'cod') {
-    //             // Якщо обрано "Оплата при отриманні"
-    //             router.push('/thanksForTheOrder');
-    //         } else {
-    //             alert('Будь ласка, виберіть метод оплати');
-    //         }
-    //         setLoading(false);
-    //     } catch (error) {
-    //         setError(error);
-    //         console.error('OrderDetails->error', error.message || error);
-    //         alert('Щось пішло не так. Спробуйте ще раз.');
-    //     }
-    // };
-
     const calculateTotalPrice = (item) => {
         return item.price * item.quantity;
     };
 
-    const calculateTotalCartPrice = (cart) => {
-        return cart.reduce((total, item) => total + calculateTotalPrice(item), 0);
-    };
+    // const calculateTotalCartPrice = (cart) => {
+    //     return cart.reduce((total, item) => total + calculateTotalPrice(item), 0);
+    // };
 
     if (loadingErrorComponent) return loadingErrorComponent;
 

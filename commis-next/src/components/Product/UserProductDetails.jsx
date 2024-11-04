@@ -15,7 +15,6 @@ const UserProductDetails = () => {
     const { isModalOpen, openModal, closeModal } = useModal();
     const router = useRouter();
     const { productId } = router.query;
-    console.log('UserProductDetails->productId', productId);
 
     const { product, loading, error } = useProduct(productId);
 
