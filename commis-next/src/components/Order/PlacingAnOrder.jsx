@@ -11,6 +11,7 @@ import ConfirmPhoneModal from '../User/ConfirmPhoneModal';
 import useLoadingAndError from '@/hooks/useLoadingAndError';
 import DeleteOrder from './DeleteOrderCart';
 import AddressForm from './AddressForm';
+import EmptyCart from './EmptyСart';
 import styles from './styles/Cart.module.css';
 
 const PlacingAnOrder = () => {
@@ -89,7 +90,7 @@ const PlacingAnOrder = () => {
 
     return (
         <div className={styles.container}>
-            {user && (
+            {user && cart.length !== 0 ? (
                 <div>
                     <h3 className={styles.cartTitle}>Оформлення замовлення</h3>
                     {cart.map(item => (
@@ -149,6 +150,8 @@ const PlacingAnOrder = () => {
                         <button className={styles.cartButton} onClick={handleOrder}>Підтвердити замовлення</button>
                     </div>
                 </div>
+            ) : (
+                <EmptyCart />
             )}
             {isEmailModalOpen && <ConfirmEmailModal show={isEmailModalOpen} onClose={closeEmailModal} email={user?.email} />}
             {isAddPhoneModalOpen && <AddPhoneNumber show={isAddPhoneModalOpen} onClose={closeAddPhoneModal} onPhoneAdded={openConfirmPhoneModal} />}

@@ -15,7 +15,8 @@ const BuyButton = ({ product, selectedSize }) => {
 
         try {
             if (!selectedSize) {
-                throw new Error('Будь ласка, виберіть розмір перед додаванням в кошик.');
+                alert('Будь ласка, виберіть розмір перед додаванням в кошик.');
+                return;
             }
 
             addToCart(product, selectedSize);

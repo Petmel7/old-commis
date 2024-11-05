@@ -47,14 +47,11 @@ const CustomNextArrow = (props) => {
 const ProductDetails = () => {
     const router = useRouter();
     const { productId } = router.query;
-
     const { product, loading, error } = useProduct(productId);
     const loadingErrorComponent = useLoadingAndError(loading, error);
-
     const { favorites } = useFavorites();
     const [isFavorite, setIsFavorite] = useState(false);
     const [favoriteId, setFavoriteId] = useState(null);
-
     const [selectedSize, setSelectedSize] = useState('');
 
     useEffect(() => {

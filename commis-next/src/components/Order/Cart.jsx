@@ -5,8 +5,8 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '@/context/AuthContext';
 import { baseUrl } from '../Url/baseUrl';
 import DeleteOrderCart from './DeleteOrderCart';
+import EmptyCart from './EmptyСart';
 import styles from './styles/Cart.module.css';
-import cartImg from '../../../public/png/unnamed.png';
 
 const Cart = () => {
     const { cart, increaseQuantity, decreaseQuantity } = useCart();
@@ -74,13 +74,7 @@ const Cart = () => {
                         <button className={styles.actionButton} onClick={handleOrderClick}>Oформити замовлення</button>
                     </div>
                 ) : (
-                    <div className={styles.emptyCartMessage}>
-                        <p>Корзина порожня. Продовжуйте покупки!</p>
-                        <img className={styles.cartImg} src={cartImg.src} alt="Кошик" />
-                        <Link href="/" >
-                            <button className={`${styles.actionButton} ${styles.continueShoppingButton}`}>Продовжити покупки</button>
-                        </Link>
-                    </div>
+                    <EmptyCart />
                 )}
             </div>
             {cart.length !== 0 && (

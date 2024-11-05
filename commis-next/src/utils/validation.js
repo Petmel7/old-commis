@@ -25,3 +25,11 @@ export const validatePassword = (password) => {
     }
     return errors;
 };
+
+export const validateSize = (size) => {
+    const errors = {};
+    if (!size.trim()) {
+        errors.size = "Додайте розмір будь-ласка.";
+    }
+    return errors;
+};
