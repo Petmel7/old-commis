@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { createOrder } from '../../services/order';
+import { createPayment } from '@/services/payment';
 import { baseUrl } from '../Url/baseUrl';
 import { useRouter } from 'next/router';
 import useUserStatus from '../../hooks/useUserStatus';
@@ -65,11 +66,27 @@ const PlacingAnOrder = () => {
             }
 
             if (paymentMethod === 'paypal') {
+                // Викликаємо createPayment для PayPal
+                const dataPayment = {
+                    amount: cart.reduce((total, item) => total + item.price * item.quantity, 0),
+                    currency: 'USD',
+                    orderId,
+                    userId: user.id,
+                };
+                const paymentResponse = await createPayment(dataPayment);
+                const approvalUrl = paymentResponse.links.find(link => link.rel === 'approve')?.href;
+
+                if (approvalUrl) {
+                    window.location.href = approvalUrl; // Перенаправлення на PayPal
+                } else {
+                    throw new Error('Не вдалося отримати URL для підтвердження оплати.');
+                }
             } else if (paymentMethod === 'cod') {
                 router.push('/thanksForTheOrder');
             } else {
                 alert('Будь ласка, виберіть метод оплати');
             }
+
             setLoading(false);
         } catch (error) {
             setError(error);
@@ -81,10 +98,6 @@ const PlacingAnOrder = () => {
     const calculateTotalPrice = (item) => {
         return item.price * item.quantity;
     };
-
-    // const calculateTotalCartPrice = (cart) => {
-    //     return cart.reduce((total, item) => total + calculateTotalPrice(item), 0);
-    // };
 
     if (loadingErrorComponent) return loadingErrorComponent;
 
@@ -112,7 +125,7 @@ const PlacingAnOrder = () => {
                             </div>
                             <div className={styles.cartPriceContainer}>
                                 <p className={styles.itemName}>{item.name}</p>
-                                <p className={styles.itemName}>Pозмір: ({item.size})</p>
+                                <p className={styles.itemName}>Розмір: ({item.size})</p>
                                 <span className={styles.cartPrice}>Ціна за одиницю: {item.price}</span>
                                 <span className={styles.totalPrice}>Загальна ціна: {calculateTotalPrice(item)}</span>
                             </div>
@@ -161,4 +174,5 @@ const PlacingAnOrder = () => {
 };
 
 export default PlacingAnOrder;
+
 

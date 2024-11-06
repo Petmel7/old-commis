@@ -10,42 +10,35 @@ const calculateCommission = (amount, rate = 0.1) => {
     return { commission, sellerAmount };
 };
 
-const createPayPalOrderRequest = (amount, sellerAmount, commission, orderId, currency = 'USD') => {
+const createPayPalOrderRequest = (amount, totalAmount, orderId, currency = 'USD') => {
     const request = new paypal.orders.OrdersCreateRequest();
     request.prefer("return=representation");
 
-    // Переконайтеся, що загальна сума дорівнює item_total + інші складові
     request.requestBody({
         intent: 'CAPTURE',
         purchase_units: [{
             reference_id: `order_${orderId}`,
             amount: {
                 currency_code: currency,
-                value: amount,  // Загальна сума, яка включає item_total та інші складові
+                value: totalAmount,  // Загальна сума, яка включає item_total
                 breakdown: {
-                    item_total: { currency_code: currency, value: sellerAmount },  // Сума товарів
-                    tax_total: { currency_code: currency, value: "0.00" },         // Податки
-                    shipping: { currency_code: currency, value: "0.00" },          // Доставка
-                    handling: { currency_code: currency, value: "0.00" },          // Обробка
-                    insurance: { currency_code: currency, value: "0.00" },         // Страховка
-                    shipping_discount: { currency_code: currency, value: "0.00" }, // Знижка на доставку
-                    discount: { currency_code: currency, value: "0.00" },          // Знижка
-                    fee: { currency_code: currency, value: commission },           // Комісія
+                    item_total: { currency_code: currency, value: totalAmount },  // Вся сума включає комісію
                 },
             },
             payee: {
-                merchant_id: process.env.PAYPAL_MERCHANT_ID,  // Ваш ID PayPal продавця
+                merchant_id: process.env.PAYPAL_MERCHANT_ID,
             }
         }],
         application_context: {
-            return_url: 'https://example.com/your-return-url',  // URL для успішного платежу
-            cancel_url: 'https://example.com/your-cancel-url',  // URL для скасованого платежу
+            return_url: 'https://example.com/your-return-url',
+            cancel_url: 'https://example.com/your-cancel-url',
         }
     });
 
     return request;
 };
 
+// Додайте комісію до sellerAmount для створення повної суми
 const createPayment = async (req, res, next) => {
     const { amount, currency, orderId, userId } = req.body;
 
@@ -54,17 +47,16 @@ const createPayment = async (req, res, next) => {
 
         // Обчислення комісії та суми для продавця
         const { commission, sellerAmount } = calculateCommission(amount);
+        const totalAmount = parseFloat(sellerAmount) + parseFloat(commission);
 
-        console.log('Commission:', commission, 'Seller Amount:', sellerAmount);
+        console.log('Commission:', commission, 'Total Amount:', totalAmount);
 
-        // Створюємо запит до PayPal API
-        const request = createPayPalOrderRequest(amount, sellerAmount, commission, orderId, currency);
+        const request = createPayPalOrderRequest(amount, totalAmount, orderId, currency);
 
         const order = await client().execute(request);
 
-        console.log('PayPal Order Created:', order);
+        console.log('PayPal Order Created:', JSON.stringify(order, null, 2));
 
-        // Створюємо запис про платіж у базі даних
         const payment = await Payment.create({
             order_id: orderId,
             user_id: userId,
@@ -82,7 +74,7 @@ const createPayment = async (req, res, next) => {
         });
     } catch (error) {
         console.error('Error creating PayPal payment:', error);
-        next(error);  // Передаємо помилку в централізований обробник
+        next(error);
     }
 };
 
