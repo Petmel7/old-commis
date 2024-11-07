@@ -19,6 +19,7 @@ const UsersManagement = () => {
         <ul className={styles.usersList}>
             {users.map((user, index) => (
                 <li key={index} className={styles.userItem}>
+                    {console.log('!!!!!!user.slug', user.slug)}
                     <Link href={`/admin/${user.slug}`} className={styles.userLink}>
                         <p>{user.title}</p>
                     </Link>

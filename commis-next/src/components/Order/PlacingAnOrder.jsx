@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import { createOrder } from '../../services/order';
 import { createPayment } from '@/services/payment';
@@ -21,6 +21,7 @@ const PlacingAnOrder = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState('');
+    const [isLoadingCart, setIsLoadingCart] = useState(true); // Додаємо стан завантаження
     const router = useRouter();
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
@@ -35,6 +36,12 @@ const PlacingAnOrder = () => {
         isConfirmPhoneModalOpen,
         closeConfirmPhoneModal,
     } = useUserStatus();
+
+    useEffect(() => {
+        if (cart && user) {
+            setIsLoadingCart(false);
+        }
+    }, [cart, user]);
 
     const handleOrder = async (e) => {
         e.preventDefault();
@@ -66,7 +73,6 @@ const PlacingAnOrder = () => {
             }
 
             if (paymentMethod === 'paypal') {
-                // Викликаємо createPayment для PayPal
                 const dataPayment = {
                     amount: cart.reduce((total, item) => total + item.price * item.quantity, 0),
                     currency: 'USD',
@@ -77,7 +83,7 @@ const PlacingAnOrder = () => {
                 const approvalUrl = paymentResponse.links.find(link => link.rel === 'approve')?.href;
 
                 if (approvalUrl) {
-                    window.location.href = approvalUrl; // Перенаправлення на PayPal
+                    window.location.href = approvalUrl;
                 } else {
                     throw new Error('Не вдалося отримати URL для підтвердження оплати.');
                 }
@@ -100,6 +106,8 @@ const PlacingAnOrder = () => {
     };
 
     if (loadingErrorComponent) return loadingErrorComponent;
+
+    if (isLoadingCart) return <p>Завантаження кошика...</p>; // Показуємо повідомлення про завантаження
 
     return (
         <div className={styles.container}>
@@ -174,5 +182,3 @@ const PlacingAnOrder = () => {
 };
 
 export default PlacingAnOrder;
-
-
