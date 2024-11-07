@@ -1,19 +1,12 @@
 
-import { useState, useEffect } from "react";
 import Link from "next/link";
-import { getUserRoleCounts } from "@/services/admin";
+import useFetchUsers from "@/hooks/useFetchUsers";
 import styles from "./styles/UsersManagement.module.css";
 
 const UsersManagement = () => {
-    const [users, setUsers] = useState([]);
+    const { users, loadingErrorComponent } = useFetchUsers();
 
-    useEffect(() => {
-        const fetchUsersForManagement = async () => {
-            const usersManagement = await getUserRoleCounts();
-            setUsers(usersManagement);
-        };
-        fetchUsersForManagement();
-    }, []);
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <ul className={styles.usersList}>

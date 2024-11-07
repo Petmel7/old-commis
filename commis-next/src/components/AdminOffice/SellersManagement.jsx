@@ -1,24 +1,18 @@
-import { useState, useEffect } from "react";
-import { getUserRoleCounts } from "@/services/admin";
+
+import useFetchUsers from "@/hooks/useFetchUsers";
 
 const SellersManagement = () => {
-    const [selers, setSelers] = useState([]);
+    const { users, loadingErrorComponent } = useFetchUsers();
 
-    useEffect(() => {
-        const fetchSelers = async () => {
-            const sellersManagement = await getUserRoleCounts();
-            setSelers(sellersManagement);
-        }
-        fetchSelers();
-    }, []);
+    const filteredSellers = users.filter(seller => seller.slug === 'seller');
 
-    const filteredSellers = selers.filter(seler => seler.role === 'seler');
+    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <ul>
-            {filteredSellers.map(seler => (
-                <li>
-                    {seler.title}
+            {filteredSellers.map((seller, index) => (
+                <li key={index}>
+                    {seller.title}
                 </li>
             ))}
         </ul>
