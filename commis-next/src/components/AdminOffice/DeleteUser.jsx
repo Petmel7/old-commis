@@ -10,6 +10,7 @@ const DeleteUser = ({ userId, onDelete }) => {
             if (onDelete) onDelete();
         } catch (error) {
             console.error("handleDeleteUser->error", error);
+            alert('Не вдалося видалити користувача');
         }
     };
 

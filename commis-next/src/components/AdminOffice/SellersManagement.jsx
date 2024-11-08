@@ -1,18 +1,16 @@
 
-import useFetchUsers from "@/hooks/useFetchUsers";
+import Link from "next/link";
+import sellerDataList from "./sellers/sellerDataList";
 
 const SellersManagement = () => {
-    const { users, loadingErrorComponent } = useFetchUsers();
-
-    const filteredSellers = users.filter(seller => seller.slug === 'seller');
-
-    if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
         <ul>
-            {filteredSellers.map((seller, index) => (
+            {sellerDataList.map((seller, index) => (
                 <li key={index}>
-                    {seller.title}
+                    <Link href={`/admin/seller/${seller.slug}`}>
+                        {seller.title}
+                    </Link>
                 </li>
             ))}
         </ul>

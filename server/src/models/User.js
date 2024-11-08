@@ -58,6 +58,15 @@ const User = sequelize.define('User', {
         allowNull: false,
         defaultValue: DataTypes.NOW,
     },
+    status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'active'
+    },
+    last_login: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    }
 }, {
     timestamps: false,
     tableName: 'users'

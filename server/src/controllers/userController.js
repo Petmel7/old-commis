@@ -90,6 +90,74 @@ const confirmPhoneNumber = async (req, res, next) => {
 };
 
 // Логін користувача
+
+// const loginUser = async (req, res, next) => {
+//     const { email, password } = req.body;
+//     try {
+//         const user = await User.findOne({ where: { email } });
+//         if (!user) {
+//             return res.status(400).json({ message: 'Invalid credentials' });
+//         }
+
+//         const validPassword = await bcrypt.compare(password, user.password);
+//         if (!validPassword) {
+//             return res.status(400).json({ message: 'Invalid credentials' });
+//         }
+
+//         const accessToken = generateAccessToken(user.id);
+//         const refreshToken = generateRefreshToken(user.id);
+
+//         await RefreshToken.create({ user_id: user.id, token: refreshToken });
+
+//         res.status(200).json({
+//             accessToken,
+//             refreshToken,
+//             user: {
+//                 email: user.email,
+//                 phone: user.phone
+//             }
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+// const loginUser = async (req, res, next) => {
+//     const { email, password } = req.body;
+//     try {
+//         const user = await User.findOne({ where: { email } });
+//         if (!user) {
+//             return res.status(400).json({ message: 'Invalid credentials' });
+//         }
+
+//         const validPassword = await bcrypt.compare(password, user.password);
+//         if (!validPassword) {
+//             return res.status(400).json({ message: 'Invalid credentials' });
+//         }
+
+//         // Оновлення поля last_login після успішного входу
+//         user.last_login = new Date();
+//         await user.save();
+
+//         const accessToken = generateAccessToken(user.id);
+//         const refreshToken = generateRefreshToken(user.id);
+
+//         await RefreshToken.create({ user_id: user.id, token: refreshToken });
+
+//         res.status(200).json({
+//             accessToken,
+//             refreshToken,
+//             user: {
+//                 email: user.email,
+//                 phone: user.phone,
+//                 last_login: user.last_login, // опціонально повертаємо дату останнього входу
+//             }
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
 const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
     try {
@@ -103,6 +171,11 @@ const loginUser = async (req, res, next) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
+        // Оновлення поля last_login після успішного входу
+        user.last_login = new Date();
+        user.changed('last_login', true); // вказуємо, що поле змінилося
+        await user.save(); // зберігаємо зміни
+
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);
 
@@ -113,7 +186,8 @@ const loginUser = async (req, res, next) => {
             refreshToken,
             user: {
                 email: user.email,
-                phone: user.phone
+                phone: user.phone,
+                last_login: user.last_login, // опціонально повертаємо дату останнього входу
             }
         });
     } catch (error) {

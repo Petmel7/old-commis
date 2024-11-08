@@ -192,7 +192,7 @@ const updateUser = async (req, res, next) => {
     }
 };
 
-const blockUser = async (req, res) => {
+const blockUser = async (req, res, next) => {
     const userId = req.params.userId;
     const { is_blocked } = req.body; // Отримуємо значення блокування
 
@@ -210,8 +210,7 @@ const blockUser = async (req, res) => {
             user
         });
     } catch (error) {
-        console.error('updateUserBlockStatus->error:', error);
-        return res.status(500).json({ message: 'Помилка при оновленні статусу користувача' });
+        next(error);
     }
 };
 
