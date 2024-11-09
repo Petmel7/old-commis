@@ -24,6 +24,11 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
             return res.status(500).json({ message: 'Login error' });
         }
         try {
+            // Оновлення поля last_login після успішного входу
+            req.user.last_login = new Date();
+            req.user.changed('last_login', true); // вказуємо, що поле змінилося
+            await req.user.save(); // зберігаємо зміни
+
             const accessToken = generateAccessToken(req.user.id);
             const refreshToken = generateRefreshToken(req.user.id);
 
