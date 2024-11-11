@@ -33,7 +33,12 @@ const Order = sequelize.define('Order', {
     postoffice: {
         type: DataTypes.STRING,
         allowNull: true
-    }
+    },
+    status: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'pending'
+    },
 }, {
     timestamps: false,
     tableName: 'orders'

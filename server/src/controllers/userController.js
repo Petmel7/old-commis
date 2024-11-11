@@ -1,9 +1,10 @@
 
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { User, RefreshToken } = require('../models');
+const { User, RefreshToken, Product } = require('../models');
 const transporter = require('../config/emailConfig');
 const { generateAccessToken, generateRefreshToken, generateConfirmationCode } = require('../auth/auth');
+const { updateUserLoginStatus } = require('../utils/userUtils');
 
 // Реєстрація нового користувача
 const registerUser = async (req, res, next) => {
@@ -103,10 +104,7 @@ const loginUser = async (req, res, next) => {
             return res.status(400).json({ message: 'Invalid credentials' });
         }
 
-        // Оновлення поля last_login після успішного входу
-        user.last_login = new Date();
-        user.changed('last_login', true); // вказуємо, що поле змінилося
-        await user.save(); // зберігаємо зміни
+        await updateUserLoginStatus(user);
 
         const accessToken = generateAccessToken(user.id);
         const refreshToken = generateRefreshToken(user.id);

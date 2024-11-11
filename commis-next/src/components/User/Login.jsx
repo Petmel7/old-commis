@@ -1,7 +1,7 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useAuth } from '@/context/AuthContext';
 import { login } from '../../services/auth';
 import { validateEmail, validatePassword } from '@/utils/validation';

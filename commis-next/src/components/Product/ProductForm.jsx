@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { baseUrl } from '../Url/baseUrl';
 import { addSizeToProduct } from '@/services/sizes';
 import DeleteImage from './DeleteImage';
@@ -19,7 +19,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [shoeSizes, setShoeSizes] = useState([]);
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState(initialData.images ? initialData.images.map(image => `${baseUrl}${image}`) : []);
-    const [errors, setErrors] = useState('');
+    // const [errors, setErrors] = useState('');
 
     // Підкатегорії, які відповідають взуттю
     const shoeSubcategories = ['Чоловіче взуття', 'Жіноче взуття', 'Дитяче взуття'];

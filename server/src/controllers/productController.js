@@ -64,7 +64,8 @@ const addProduct = async (req, res, next) => {
             price,
             stock,
             images: images.length ? images : null,
-            subcategory_id: subcategoryRecord.id
+            subcategory_id: subcategoryRecord.id,
+            is_active: true
         });
 
         res.status(201).json({ message: 'Product added successfully', product });

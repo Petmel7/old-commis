@@ -4,7 +4,8 @@ const passport = require('../config/passport');
 const { registerUser, confirmEmail, addPhoneNumber, confirmPhoneNumber, loginUser, getUserProfile, refreshToken, logoutUser } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
 const { generateAccessToken, generateRefreshToken } = require('../auth/auth');
-const RefreshToken = require('../models/RefreshToken');
+const { RefreshToken } = require('../models');
+const { updateUserLoginStatus } = require('../utils/userUtils');
 const router = express.Router();
 
 router.get('/profile', protect, getUserProfile);
@@ -24,10 +25,8 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
             return res.status(500).json({ message: 'Login error' });
         }
         try {
-            // Оновлення поля last_login після успішного входу
-            req.user.last_login = new Date();
-            req.user.changed('last_login', true); // вказуємо, що поле змінилося
-            await req.user.save(); // зберігаємо зміни
+            const user = req.user;
+            await updateUserLoginStatus(user);
 
             const accessToken = generateAccessToken(req.user.id);
             const refreshToken = generateRefreshToken(req.user.id);

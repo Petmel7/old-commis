@@ -3,6 +3,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const path = require('path');
 const cors = require('cors');
+const cron = require('node-cron');
 const session = require('express-session');
 const passport = require('./config/passport');
 const sequelize = require('./config/db');
@@ -14,10 +15,9 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const catalogRoutes = require('./routes/catalogRoutes');
 const sizeRoutes = require('./routes/sizeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
-
-const cron = require('node-cron');
 const { errorHandler } = require('./middleware/errorHandler');
 const { deleteOldRefreshTokens } = require('./controllers/userController');
+const checkInactiveSellers = require('./tasks/checkInactiveSellers');
 
 dotenv.config({ path: path.resolve(__dirname, '../.env') });
 
@@ -55,6 +55,12 @@ app.use(errorHandler);
 cron.schedule('0 0 * * *', async () => {
     await deleteOldRefreshTokens();
     console.log('Scheduled task executed: old refresh tokens deleted');
+});
+
+// Налаштування cron job для запуску щодня о 2:00 ночі
+cron.schedule('0 2 * * *', () => {
+    console.log('Running daily inactive sellers check...');
+    checkInactiveSellers();
 });
 
 // Синхронізація моделей з базою даних
