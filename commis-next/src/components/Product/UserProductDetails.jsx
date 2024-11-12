@@ -17,7 +17,6 @@ const UserProductDetails = () => {
     const { productId } = router.query;
 
     const { product, loading, error } = useProduct(productId);
-
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     if (loadingErrorComponent) return loadingErrorComponent;
@@ -52,7 +51,7 @@ const UserProductDetails = () => {
 
                     <div className={styles.userProductsContainer}>
                         <button className={styles.modalButtonOpen} onClick={openModal}>Видалити</button>
-                        <Modal show={isModalOpen} onClose={closeModal} >
+                        <Modal show={isModalOpen} onClose={closeModal}>
                             <div className={styles.modalContainer}>
                                 <p className={styles.modalText}>Ви справді хочете видалити цей продукт?</p>
                                 <DeleteProduct productId={product.id} />
@@ -71,3 +70,4 @@ const UserProductDetails = () => {
 };
 
 export default UserProductDetails;
+

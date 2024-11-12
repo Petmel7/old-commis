@@ -1,7 +1,8 @@
+
 import AddOrUpdateProduct from "@/components/Product/AddOrUpdateProduct";
 
-const AddOrUpdateProductPage = () => {
+const AddOrUpdateProductPage = () => (
     <AddOrUpdateProduct />
-}
+)
 
 export default AddOrUpdateProductPage;

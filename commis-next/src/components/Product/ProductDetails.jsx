@@ -47,6 +47,7 @@ const CustomNextArrow = (props) => {
 const ProductDetails = () => {
     const router = useRouter();
     const { productId } = router.query;
+    console.log('[[[[[[[[productId', productId);
     const { product, loading, error } = useProduct(productId);
     const loadingErrorComponent = useLoadingAndError(loading, error);
     const { favorites } = useFavorites();
