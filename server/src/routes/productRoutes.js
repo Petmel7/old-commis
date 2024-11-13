@@ -1,5 +1,4 @@
 
-// server/src/routes/productRoutes.js
 const express = require('express');
 const { getProducts, getProductById, getUserProducts, addProduct, updateProduct, deleteProduct, deleteImage, searchProducts, getProductsByCategory } = require('../controllers/productController');
 const { protect } = require('../middleware/authMiddleware');

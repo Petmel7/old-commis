@@ -30,6 +30,16 @@ export const getUserById = async (userId) => {
     return response.data
 }
 
+export const getActiveSellers = async () => {
+    const response = await api.get('admin/active-sellers');
+    return response.data
+}
+
+export const getActiveSellerById = async (sellerId) => {
+    const response = await api.get(`admin/active-sellers/${sellerId}`);
+    return response.data
+}
+
 export const deleteUser = async (userId) => {
     const response = await api.delete(`admin/users/${userId}`);
     return response.data

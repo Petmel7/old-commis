@@ -1,8 +1,8 @@
 
 const path = require('path');
 const fs = require('fs');
-const { Op } = require('sequelize');
-const { Product, Category, Subcategory, } = require('../models');
+const { Op, where } = require('sequelize');
+const { Product, Category, Subcategory, User, } = require('../models');
 // const Subcategory = require('../models/Subcategory');
 
 // Отримати всі продукти
@@ -68,6 +68,16 @@ const addProduct = async (req, res, next) => {
             is_active: true
         });
 
+        // Оновлюємо роль користувача на 'seller', якщо це необхідно
+        const [updatedRows] = await User.update(
+            { role: 'seller' },
+            { where: { id: req.user.id } }
+        );
+
+        if (updatedRows === 0) {
+            return res.status(404).json({ message: 'User not found or role not updated' });
+        }
+
         res.status(201).json({ message: 'Product added successfully', product });
     } catch (error) {
         next(error);
@@ -132,6 +142,16 @@ const deleteProduct = async (req, res, next) => {
         // Якщо немає інших продуктів, видаляємо підкатегорію
         if (remainingProducts === 0) {
             await Subcategory.destroy({ where: { id: subcategoryId } });
+        }
+
+        // Перевіряємо, чи у користувача залишилися інші продукти
+        const remainingUserProducts = await Product.count({
+            where: { user_id: req.user.id }
+        });
+
+        // Якщо у користувача більше немає продуктів, змінюємо його роль на "buyer"
+        if (remainingUserProducts === 0) {
+            await User.update({ role: 'buyer' }, { where: { id: req.user.id } });
         }
 
         res.json({ message: 'Product and associated subcategory deleted successfully' });
