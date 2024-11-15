@@ -1,4 +1,4 @@
-// src/tasks/checkInactiveSellers.js
+
 const { User, Product } = require('../models');
 const { Op } = require('sequelize');
 

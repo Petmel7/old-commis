@@ -3,7 +3,7 @@ const path = require('path');
 const fs = require('fs');
 const { Op, where } = require('sequelize');
 const { Product, Category, Subcategory, User, } = require('../models');
-// const Subcategory = require('../models/Subcategory');
+const ProductService = require('../services/ProductService');
 
 // Отримати всі продукти
 const getProducts = async (req, res, next) => {
@@ -88,74 +88,48 @@ const addProduct = async (req, res, next) => {
 const updateProduct = async (req, res, next) => {
     const { id } = req.params;
     const { name, description, price, stock } = req.body;
-    const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : null;
+    const images = req.files
+        ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, ''))
+        : null;
 
     try {
-        const product = await Product.findByPk(id);
-
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
-
-        if (product.user_id !== req.user.id) {
-            return res.status(403).json({ message: 'Not authorized to update this product' });
-        }
-
         const updateData = { name, description, price, stock };
-        if (images) {
-            updateData.images = images;
-        }
+        if (images) updateData.images = images;
 
-        await product.update(updateData);
-        res.json({ message: 'Product updated successfully', product });
+        // Перевіряємо права доступу та оновлюємо продукт через сервіс
+        await ProductService.checkOwnershipOrAdmin(req.user, id);
+        const updatedProduct = await ProductService.updateProduct(id, updateData);
+
+        res.json({ message: 'Продукт успішно оновлено', product: updatedProduct });
     } catch (error) {
+        if (error.status) {
+            return res.status(error.status).json({ message: error.message });
+        }
         next(error);
     }
 };
 
 const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
-    console.log('@@@deleteProduct->id', id);
+
     try {
-        // Знайдемо продукт по його ID
-        const product = await Product.findByPk(id);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
+        // Отримуємо продукт
+        const product = await ProductService.findProductById(id);
 
-        // Перевіримо, чи має користувач права видалити цей продукт
-        if (product.user_id !== req.user.id) {
-            return res.status(403).json({ message: 'Not authorized to delete this product' });
-        }
+        // Перевіряємо права доступу
+        await ProductService.checkOwnershipOrAdmin(req.user, product);
 
-        // Отримуємо ID підкатегорії, до якої прив'язаний продукт
-        const subcategoryId = product.subcategory_id;
+        // Видаляємо продукт та пов'язані підкатегорії
+        await ProductService.deleteProduct(product);
 
-        // Видаляємо продукт
-        await product.destroy();
+        // Перевіряємо та оновлюємо роль користувача
+        await ProductService.updateUserRoleIfNoProducts(req.user.id);
 
-        // Перевіряємо, чи залишилися інші продукти, що використовують цю підкатегорію
-        const remainingProducts = await Product.count({
-            where: { subcategory_id: subcategoryId }
-        });
-
-        // Якщо немає інших продуктів, видаляємо підкатегорію
-        if (remainingProducts === 0) {
-            await Subcategory.destroy({ where: { id: subcategoryId } });
-        }
-
-        // Перевіряємо, чи у користувача залишилися інші продукти
-        const remainingUserProducts = await Product.count({
-            where: { user_id: req.user.id }
-        });
-
-        // Якщо у користувача більше немає продуктів, змінюємо його роль на "buyer"
-        if (remainingUserProducts === 0) {
-            await User.update({ role: 'buyer' }, { where: { id: req.user.id } });
-        }
-
-        res.json({ message: 'Product and associated subcategory deleted successfully' });
+        res.json({ message: 'Продукт і пов’язана підкатегорія успішно видалені' });
     } catch (error) {
+        if (error.status) {
+            return res.status(error.status).json({ message: error.message });
+        }
         next(error);
     }
 };

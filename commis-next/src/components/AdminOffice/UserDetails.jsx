@@ -2,6 +2,7 @@
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getUserById, updateUser } from "@/services/admin";
+import { formatDate } from "@/utils/formatDate";
 import DeleteUser from "./DeleteUser";
 import Modal from "../Modal/Modal";
 import BlockUserButton from "./BlockUserButton";
@@ -76,7 +77,7 @@ const UserDetails = () => {
     if (loadingErrorComponent) return loadingErrorComponent;
     if (!userById) return <p>Завантаження...</p>;
 
-    const date = userById ? new Date(userById.createdat).toLocaleDateString("uk-UA") : "Невідомо";
+    const date = formatDate(userById?.createdat);
     const userStatus = userById.is_blocked ? 'заблокований' : 'активний';
 
     return (

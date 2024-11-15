@@ -1,13 +1,11 @@
 
-import Link from 'next/link';
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { getUserProducts } from '../../services/products';
-import { truncateText } from '@/utils/truncateText';
 import { baseUrl } from '../Url/baseUrl';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
 import NoProducts from '../NoProducts/NoProducts';
-import styles from './styles/UserProducts.module.css';
+import UserProductsCart from './UserProductsCart';
 
 const UserProducts = () => {
     const [userProducts, setUserProducts] = useState([]);
@@ -47,27 +45,15 @@ const UserProducts = () => {
     return (
         <>
             <BackButton />
-            <ul className={styles.productList}>
+            <ul className='product-list'>
                 {userProducts.map(product => (
-                    <li key={product.id} className={styles.productItem}>
-                        <div className={styles.productCard}>
-                            <Link href={`/products/userDetails/${product.id}`}>
-                                <div className={styles.imageContainer}>
-                                    <img
-                                        className={styles.productImage}
-                                        src={`${baseUrl}${product.images[0]}`}
-                                        alt={product.name}
-                                    />
-                                </div>
-                            </Link>
-                            <h2 className={styles.productName}>
-                                {truncateText(product.name, 15)}
-                            </h2>
-                            <p className={styles.productPrice}>
-                                Ціна: {product.price} грн
-                            </p>
-                        </div>
-                    </li>
+                    <UserProductsCart
+                        productId={product.id}
+                        pathProductId={`/products/userDetails/${product.id}`}
+                        productImages={`${baseUrl}${product.images[0]}`}
+                        productNames={product.name}
+                        productPrices={product.price}
+                    />
                 ))}
             </ul>
         </>
