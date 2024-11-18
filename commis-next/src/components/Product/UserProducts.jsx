@@ -47,13 +47,14 @@ const UserProducts = () => {
             <BackButton />
             <ul className='product-list'>
                 {userProducts.map(product => (
-                    <UserProductsCart
-                        productId={product.id}
-                        pathProductId={`/products/userDetails/${product.id}`}
-                        productImages={`${baseUrl}${product.images[0]}`}
-                        productNames={product.name}
-                        productPrices={product.price}
-                    />
+                    <li key={product.id} className='product-item'>
+                        <UserProductsCart
+                            pathProductId={`/products/userDetails/${product.id}`}
+                            productImages={`${baseUrl}${product.images[0]}`}
+                            productNames={product.name}
+                            productPrices={product.price}
+                        />
+                    </li>
                 ))}
             </ul>
         </>

@@ -11,12 +11,6 @@
     margin-bottom: 20px;
 }
 
-.productItem {
-    flex: 1 1 calc(33.333% - 10px);
-    box-sizing: border-box;
-    min-width: 150px;
-}
-
 .productCard {
     border: 1px solid #ddd;
     padding: 16px;

@@ -1,24 +1,23 @@
 
 const path = require('path');
 const fs = require('fs');
-const { Op, where } = require('sequelize');
-const { Product, Category, Subcategory, User, } = require('../models');
 const ProductService = require('../services/ProductService');
+const UserService = require('../services/UserService');
 
 // Отримати всі продукти
 const getProducts = async (req, res, next) => {
     try {
-        const products = await Product.findAll();
+        const products = await ProductService.getProducts();
         res.json(products);
     } catch (error) {
-        next(error); // Передача в централізований обробник помилок
+        next(error);
     }
 };
 
 // Отримати продукти поточного користувача
 const getUserProducts = async (req, res, next) => {
     try {
-        const products = await Product.findAll({ where: { user_id: req.user.id } });
+        const products = await ProductService.getUserProducts({ where: { user_id: req.user.id } });
         res.json(products);
     } catch (error) {
         next(error);
@@ -29,10 +28,7 @@ const getUserProducts = async (req, res, next) => {
 const getProductById = async (req, res, next) => {
     const { id } = req.params;
     try {
-        const product = await Product.findByPk(id);
-        if (!product) {
-            return res.status(404).json({ message: 'Product not found' });
-        }
+        const product = await ProductService.getProductById(id);
         res.json(product);
     } catch (error) {
         next(error);
@@ -41,42 +37,25 @@ const getProductById = async (req, res, next) => {
 
 const addProduct = async (req, res, next) => {
     const { name, description, price, stock, category, subcategory } = req.body;
-    const images = req.files ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, '')) : [];
+    const images = req.files
+        ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, ''))
+        : [];
 
     try {
-        // Знайдемо або створимо категорію
-        let categoryRecord = await Category.findOne({ where: { name: category } });
-        if (!categoryRecord) {
-            categoryRecord = await Category.create({ name: category });
-        }
-
-        // Знайдемо або створимо підкатегорію
-        let subcategoryRecord = await Subcategory.findOne({ where: { name: subcategory, category_id: categoryRecord.id } });
-        if (!subcategoryRecord) {
-            subcategoryRecord = await Subcategory.create({ name: subcategory, category_id: categoryRecord.id });
-        }
-
-        // Створюємо новий продукт із посиланням на підкатегорію
-        const product = await Product.create({
-            user_id: req.user.id,
+        // Створюємо продукт через сервіс
+        const product = await ProductService.addProduct({
+            userId: req.user.id,
             name,
             description,
             price,
             stock,
-            images: images.length ? images : null,
-            subcategory_id: subcategoryRecord.id,
-            is_active: true
+            category,
+            subcategory,
+            images
         });
 
-        // Оновлюємо роль користувача на 'seller', якщо це необхідно
-        const [updatedRows] = await User.update(
-            { role: 'seller' },
-            { where: { id: req.user.id } }
-        );
-
-        if (updatedRows === 0) {
-            return res.status(404).json({ message: 'User not found or role not updated' });
-        }
+        // Оновлюємо роль користувача через сервіс, якщо це необхідно
+        await UserService.updateUserRoleIfNecessary(req.user);
 
         res.status(201).json({ message: 'Product added successfully', product });
     } catch (error) {
@@ -117,7 +96,7 @@ const deleteProduct = async (req, res, next) => {
         const product = await ProductService.findProductById(id);
 
         // Перевіряємо права доступу
-        await ProductService.checkOwnershipOrAdmin(req.user, product);
+        await ProductService.checkOwnershipOrAdmin(req.user, product.id);
 
         // Видаляємо продукт та пов'язані підкатегорії
         await ProductService.deleteProduct(product);
@@ -134,30 +113,13 @@ const deleteProduct = async (req, res, next) => {
     }
 };
 
-// Видалити зображення з продукту
 const deleteImage = async (req, res, next) => {
     try {
         const { id } = req.params;
         const { indices } = req.body;
 
-        const product = await Product.findByPk(id);
-        if (!product) {
-            return res.status(404).send('Product not found');
-        }
-
-        // Видалення файлів за індексами
-        const filesToDelete = indices.map(index => product.images[index]).filter(Boolean);
-
-        filesToDelete.forEach(imagePath => {
-            const fullPath = path.join(__dirname, '..', '..', imagePath);
-            if (fs.existsSync(fullPath)) {
-                fs.unlinkSync(fullPath);
-            }
-        });
-
-        // Оновлення масиву images
-        product.images = product.images.filter((image, index) => !indices.includes(index));
-        await product.save();
+        // Викликаємо сервіс для видалення зображень
+        await ProductService.deleteImagesFromProduct(id, indices);
 
         res.send('Images deleted successfully');
     } catch (error) {
@@ -165,19 +127,11 @@ const deleteImage = async (req, res, next) => {
     }
 };
 
-// Пошук продуктів за назвою
 const searchProducts = async (req, res, next) => {
     try {
         const { query } = req.query;
 
-        // Пошук за назвою продукту
-        const products = await Product.findAll({
-            where: {
-                name: {
-                    [Op.iLike]: `%${query}%`
-                }
-            }
-        });
+        const products = await ProductService.searchProducts(query);
 
         res.json({ products });
     } catch (error) {
