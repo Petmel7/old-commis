@@ -132,6 +132,42 @@ const getUserProfile = async (userId) => {
     };
 };
 
+const refreshToken = async (token) => {
+    if (!token) {
+        throw { status: 401, message: 'Invalid token' };
+    }
+
+    const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
+    const storedToken = await RefreshToken.findOne({ where: { token } });
+
+    if (!storedToken) {
+        throw { status: 401, message: 'Invalid token' };
+    }
+
+    const newAccessToken = generateAccessToken(decoded.id);
+    const newRefreshToken = generateRefreshToken(decoded.id);
+
+    storedToken.token = newRefreshToken;
+    await storedToken.save();
+
+    await deleteOldRefreshTokens();
+
+    return { newAccessToken, newRefreshToken };
+}
+
+// Видалення старих Refresh Tokens
+const deleteOldRefreshTokens = async () => {
+    try {
+        const expirationDate = new Date();
+        expirationDate.setDate(expirationDate.getDate() - 7); // Видалення токенів, старших за 7 днів
+
+        const result = await RefreshToken.destroy({ where: { createdAt: { [Op.lt]: expirationDate } } });
+        console.log(`Old refresh tokens deleted: ${result} tokens removed`);
+    } catch (error) {
+        console.error('Error deleting old refresh tokens:', error);
+    }
+};
+
 const updateUserRoleIfNecessary = async (user) => {
     // Якщо користувач — superadmin, ніяких змін не потрібно
     if (user.role === 'superadmin') return;
@@ -170,6 +206,7 @@ module.exports = {
     loginUser,
     logoutUser,
     getUserProfile,
+    refreshToken,
     updateUserRoleIfNecessary,
     updateUserRoleIfNoProducts
 };

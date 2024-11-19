@@ -107,43 +107,12 @@ const getUserProfile = async (req, res, next) => {
 // Оновлення токену доступу
 const refreshToken = async (req, res, next) => {
     const { token } = req.body;
-
-    if (!token) {
-        return res.status(401).json({ message: 'No token provided' });
-    }
-
     try {
-        const decoded = jwt.verify(token, process.env.JWT_REFRESH_SECRET);
-        const storedToken = await RefreshToken.findOne({ where: { token } });
-
-        if (!storedToken) {
-            return res.status(401).json({ message: 'Invalid token' });
-        }
-
-        const newAccessToken = generateAccessToken(decoded.id);
-        const newRefreshToken = generateRefreshToken(decoded.id);
-
-        storedToken.token = newRefreshToken;
-        await storedToken.save();
-
-        await deleteOldRefreshTokens();
+        const { newAccessToken, newRefreshToken } = await UserService.refreshToken(token);
 
         res.json({ accessToken: newAccessToken, refreshToken: newRefreshToken });
     } catch (error) {
         next(error);
-    }
-};
-
-// Видалення старих Refresh Tokens
-const deleteOldRefreshTokens = async () => {
-    try {
-        const expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() - 7); // Видалення токенів, старших за 7 днів
-
-        const result = await RefreshToken.destroy({ where: { createdAt: { [Op.lt]: expirationDate } } });
-        console.log(`Old refresh tokens deleted: ${result} tokens removed`);
-    } catch (error) {
-        console.error('Error deleting old refresh tokens:', error);
     }
 };
 
@@ -156,5 +125,4 @@ module.exports = {
     logoutUser,
     getUserProfile,
     refreshToken,
-    deleteOldRefreshTokens
 };
