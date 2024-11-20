@@ -1,18 +1,13 @@
 
-import { useState, useEffect } from "react";
-import { getActiveSellers } from "@/services/admin";
+import useFetchData from '@/hooks/useFetchData';
+import { getActiveSellers } from '@/services/admin';
 import Link from "next/link";
 
 const ActiveSellers = () => {
-    const [sellers, setSelers] = useState([]);
+    const { data: sellers, loading, error } = useFetchData(getActiveSellers);
 
-    useEffect(() => {
-        const fetchActiveSellers = async () => {
-            const activeSellers = await getActiveSellers();
-            setSelers(activeSellers.data);
-        }
-        fetchActiveSellers();
-    }, []);
+    if (loading) return <p>Завантаження...</p>;
+    if (error) return <p>Помилка: {error.message}</p>;
 
     return (
         <div>
@@ -28,6 +23,6 @@ const ActiveSellers = () => {
             </ul>
         </div>
     );
-}
+};
 
 export default ActiveSellers;

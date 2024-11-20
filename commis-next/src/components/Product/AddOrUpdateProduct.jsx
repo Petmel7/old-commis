@@ -13,8 +13,11 @@ const AddOrUpdateProduct = () => {
 
     const fetchProduct = async () => {
         const productData = await getProductById(productId);
+        console.log('**********productData', productData);
         setInitialData(productData);
     };
+
+    console.log('**********initialData', initialData);
 
     useEffect(() => {
         if (productId) {

@@ -1,6 +1,5 @@
 
 const path = require('path');
-const fs = require('fs');
 const ProductService = require('../services/ProductService');
 const UserService = require('../services/UserService');
 

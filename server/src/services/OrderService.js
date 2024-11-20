@@ -1,5 +1,5 @@
+
 const { Product, User, Order, OrderItem } = require('../models');
-const { createResponse } = require('../utils/response');
 const path = require('path');
 
 // Функція для перевірки наявності продукту та доступності на складі
@@ -65,7 +65,101 @@ const createOrder = async (userId, items, address) => {
     return { order, total, orderDetails, sellers };
 };
 
+const deleteOrder = async (id) => {
+    const order = await Order.findByPk(id);
+    if (!order) {
+        throw { status: 404, message: 'Order not found' };
+    }
+
+    const orderItems = await OrderItem.findAll({ where: { order_id: id } });
+
+    for (let item of orderItems) {
+        const product = await Product.findByPk(item.product_id);
+        await product.update({ stock: product.stock + item.quantity });
+    }
+
+    await OrderItem.destroy({ where: { order_id: id } });
+    await Order.destroy({ where: { id } });
+};
+
+const getOrder = async (id) => {
+    const order = await Order.findByPk(id, {
+        include: [
+            {
+                model: OrderItem,
+                include: [Product]
+            }
+        ]
+    });
+
+    if (!order) {
+        throw { status: 404, message: 'Order not found' };
+    }
+
+    return order;
+}
+
+const getUserOrders = async (userId) => {
+    const orders = await Order.findAll({
+        where: { user_id: userId },
+        include: [
+            {
+                model: OrderItem,
+                include: [Product]
+            }
+        ]
+    });
+    return orders;
+};
+
+const getSellerOrders = async (sellerId) => {
+    const sellerOrders = await Order.findAll({
+        include: [
+            {
+                model: OrderItem,
+                required: true,
+                include: [
+                    {
+                        model: Product,
+                        required: true,
+                        where: { user_id: sellerId },
+                        include: [{ model: User, as: 'seller', attributes: ['name', 'email', 'phone'] }]
+                    }
+                ]
+            },
+            {
+                model: User,
+                as: 'buyer',
+                attributes: ['name', 'email', 'phone']
+            }
+        ]
+    });
+
+    return sellerOrders.map(order => ({
+        order_id: order.id,
+        buyer_name: order.buyer.name,
+        buyer_email: order.buyer.email,
+        buyer_phone: order.buyer.phone,
+        shipping_address: {
+            region: order.region,
+            city: order.city,
+            postoffice: order.postoffice
+        },
+        products: order.OrderItems.map(item => ({
+            product_name: item.Product.name,
+            product_price: item.Product.price,
+            product_images: item.Product.images,
+            quantity: item.quantity,
+            product_size: item.size
+        }))
+    }));
+};
+
 module.exports = {
     createOrder,
+    deleteOrder,
+    getOrder,
+    getUserOrders,
+    getSellerOrders,
     getProductAndValidateStock
 };

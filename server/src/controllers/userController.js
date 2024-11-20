@@ -1,11 +1,4 @@
 
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
-const { User, RefreshToken, Product } = require('../models');
-const transporter = require('../config/emailConfig');
-const { generateAccessToken, generateRefreshToken, generateConfirmationCode } = require('../auth/auth');
-const { updateUserLoginStatus } = require('../utils/userUtils');
-
 const UserService = require('../services/UserService');
 
 // Реєстрація нового користувача

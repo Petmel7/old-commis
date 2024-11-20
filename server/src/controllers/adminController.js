@@ -1,5 +1,4 @@
 
-const { User, Order, Product, OrderItem, RefreshToken } = require('../models');
 const AdminService = require('../services/AdminService');
 
 const getUsersForAdmin = async (req, res, next) => {
