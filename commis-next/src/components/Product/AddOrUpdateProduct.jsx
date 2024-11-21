@@ -13,7 +13,6 @@ const AddOrUpdateProduct = () => {
 
     const fetchProduct = async () => {
         const productData = await getProductById(productId);
-        console.log('**********productData', productData);
         setInitialData(productData);
     };
 
@@ -48,3 +47,4 @@ const AddOrUpdateProduct = () => {
 };
 
 export default AddOrUpdateProduct;
+

@@ -1,13 +1,13 @@
-
+import Link from "next/link";
 import useFetchData from '@/hooks/useFetchData';
 import { getActiveSellers } from '@/services/admin';
-import Link from "next/link";
+import useLoadingAndError from '@/hooks/useLoadingAndError';
 
 const ActiveSellers = () => {
     const { data: sellers, loading, error } = useFetchData(getActiveSellers);
+    const loadingAndError = useLoadingAndError(loading, error);
 
-    if (loading) return <p>Завантаження...</p>;
-    if (error) return <p>Помилка: {error.message}</p>;
+    if (loadingAndError) return loadingAndError;
 
     return (
         <div>

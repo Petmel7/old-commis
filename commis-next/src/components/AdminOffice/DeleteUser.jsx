@@ -6,7 +6,7 @@ const DeleteUser = ({ userId, onDelete }) => {
     const handleDeleteUser = async () => {
 
         try {
-            const response = await deleteUser(userId);
+            await deleteUser(userId);
             if (onDelete) onDelete();
         } catch (error) {
             console.error("handleDeleteUser->error", error);

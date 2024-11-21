@@ -1,12 +1,15 @@
 
 import Link from "next/link";
-import useFetchUsers from "@/hooks/useFetchUsers";
 import styles from "./styles/UsersManagement.module.css";
+import useFetchData from "@/hooks/useFetchData";
+import useLoadingAndError from "@/hooks/useLoadingAndError";
+import { getUserRoleCounts } from "@/services/admin";
 
 const UsersManagement = () => {
-    const { users, loadingErrorComponent } = useFetchUsers();
+    const { data: users, loading, error } = useFetchData(getUserRoleCounts);
+    const loadingAndError = useLoadingAndError(loading, error);
 
-    if (loadingErrorComponent) return loadingErrorComponent;
+    if (loadingAndError) return loadingAndError;
 
     return (
         <ul className={styles.usersList}>

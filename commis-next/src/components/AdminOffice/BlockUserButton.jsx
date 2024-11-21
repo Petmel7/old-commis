@@ -9,7 +9,6 @@ const BlockUserButton = ({ userId, isBlocked, onStatusChange }) => {
         setLoading(true);
         try {
             const response = await blockUser(userId, isBlocked);
-            console.log('++++++toggleBlockStatus->response', response);
             onStatusChange(response.user);
         } catch (error) {
             console.error("Помилка блокування користувача:", error);

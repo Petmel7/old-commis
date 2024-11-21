@@ -1,34 +1,18 @@
 
-import { useEffect, useState } from 'react';
 import { getUserProducts } from '../../services/products';
 import { baseUrl } from '../Url/baseUrl';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
 import NoProducts from '../NoProducts/NoProducts';
 import UserProductsCart from './UserProductsCart';
+import useFetchDataByKey from '@/hooks/useFetchDataByKey';
 
 const UserProducts = () => {
-    const [userProducts, setUserProducts] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState(null);
+    const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+
+    const { data: userProducts = [], loading, error } = useFetchDataByKey(getUserProducts, accessToken);
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
-
-    const fetchProducts = async () => {
-        try {
-            const accessToken = localStorage.getItem('accessToken');
-            const data = await getUserProducts(accessToken);
-            setUserProducts(data);
-        } catch (err) {
-            setError(err.message);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
 
     if (loadingErrorComponent) return loadingErrorComponent;
 

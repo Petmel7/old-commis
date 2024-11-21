@@ -5,36 +5,45 @@ import useLoadingAndError from "@/hooks/useLoadingAndError";
 import styles from './styles/Dashboard.module.css';
 
 const Dashboard = () => {
-    const [users, setUsers] = useState([]);
-    const [orders, setOrders] = useState([]);
-    const [products, setProducts] = useState([]);
-    const [roleUsers, setRoleUsers] = useState([]);
+    const [stats, setStats] = useState({
+        users: [],
+        orders: [],
+        products: [],
+        roleUsers: [],
+    });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {
-        const fetchUsersForAdmin = async () => {
+        const fetchDashboardData = async () => {
             try {
-                const usersForAdmin = await getUsersForAdmin();
-                setUsers(usersForAdmin);
-                const ordersForAdmin = await getOrdersForAdmin();
-                setOrders(ordersForAdmin);
-                const productsForAdmin = await getProductsForAdmin();
-                setProducts(productsForAdmin);
-                const roleData = await getUserRoleCounts();
-                setRoleUsers(roleData);
+                const [usersForAdmin, ordersForAdmin, productsForAdmin, roleData] = await Promise.all([
+                    getUsersForAdmin(),
+                    getOrdersForAdmin(),
+                    getProductsForAdmin(),
+                    getUserRoleCounts(),
+                ]);
+                setStats({
+                    users: usersForAdmin,
+                    orders: ordersForAdmin,
+                    products: productsForAdmin,
+                    roleUsers: roleData,
+                });
                 setLoading(false);
             } catch (error) {
                 setError(error.message);
                 setLoading(false);
             }
-        }
-        fetchUsersForAdmin();
+        };
+
+        fetchDashboardData();
     }, []);
 
     if (loadingErrorComponent) return loadingErrorComponent;
+
+    const { users, orders, products, roleUsers } = stats;
 
     return (
         <div className={styles.dashboardContainer}>
@@ -52,6 +61,7 @@ const Dashboard = () => {
             </ul>
         </div>
     );
-}
+};
 
 export default Dashboard;
+

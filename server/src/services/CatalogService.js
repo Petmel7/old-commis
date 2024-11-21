@@ -6,7 +6,7 @@ const getProductsByCategory = async (category) => {
     const subcategoryRecord = await Subcategory.findOne({ where: { name: category } });
 
     if (!subcategoryRecord) {
-        throw { status: 404, message: 'Subcategory not found' };
+        return []; // Якщо підкатегорія не знайдена, повертаємо порожній масив
     }
 
     // Знайдемо всі продукти, які прив'язані до цієї підкатегорії
@@ -14,14 +14,8 @@ const getProductsByCategory = async (category) => {
         where: { subcategory_id: subcategoryRecord.id },
     });
 
-    if (products.length === 0) {
-        throw { status: 404, message: 'No products found for this subcategory' };
-    }
-
     // Валідація продуктів (опціонально)
-    const validatedProducts = products.map(validateProduct);
-
-    return validatedProducts;
-}
+    return products.map(validateProduct);
+};
 
 module.exports = { getProductsByCategory }

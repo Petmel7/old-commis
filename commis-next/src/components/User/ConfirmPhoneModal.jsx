@@ -5,6 +5,7 @@ import { useCart } from '@/context/CartContext';
 import { getUserProfile, confirmPhone } from '../../services/auth';
 import Modal from '../Modal/Modal';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
+import useFetchData from '@/hooks/useFetchData';
 import styles from './styles/Auth.module.css';
 
 const ConfirmPhoneModal = ({ show, onClose }) => {
@@ -12,24 +13,12 @@ const ConfirmPhoneModal = ({ show, onClose }) => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [errors, setErrors] = useState({});
-    const [user, setUser] = useState(null);
     const { cart } = useCart();
     const router = useRouter();
 
+    const { data: user } = useFetchData(getUserProfile);
+
     const loadingErrorComponent = useLoadingAndError(loading, error);
-
-    useEffect(() => {
-        const fetchUserProfile = async () => {
-            try {
-                const userProfile = await getUserProfile();
-                setUser(userProfile);
-            } catch (err) {
-                setError('Не вдалося завантажити профіль користувача');
-            }
-        };
-
-        fetchUserProfile();
-    }, []);
 
     const validationConfirmPhone = () => {
         const errors = {};

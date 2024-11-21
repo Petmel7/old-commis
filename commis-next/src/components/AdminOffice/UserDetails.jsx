@@ -131,3 +131,114 @@ const UserDetails = () => {
 
 export default UserDetails;
 
+
+
+
+
+
+
+
+
+
+
+// import { useRouter } from "next/router";
+// import useEntityDetails from "@/hooks/useEntityDetails";
+// import { getUserById } from "@/services/admin";
+// import { formatDate } from "@/utils/formatDate";
+// import BlockUserButton from "./BlockUserButton";
+// import DeleteUser from "./DeleteUser";
+// import Modal from "../Modal/Modal";
+// import useModal from "@/hooks/useModal";
+// import styles from './styles/UserDetails.module.css';
+
+// const UserDetails = () => {
+//     const router = useRouter();
+//     const { userId } = router.query;
+//     const { isModalOpen, openModal, closeModal } = useModal();
+
+//     const { data: user, loading, error } = useEntityDetails(getUserById, userId);
+
+//     if (loading) return <p>Завантаження...</p>;
+//     if (error) return <p>Помилка: {error}</p>;
+//     if (!user) return <p>Користувача не знайдено</p>;
+
+//     const date = formatDate(user.createdat);
+//     const userStatus = user.is_blocked ? "заблокований" : "активний";
+
+//     const handleDeleteUser = () => {
+//         router.push("/admin/users-management");
+//     };
+
+//     return (
+//         <div className={styles.userDetailsContainer}>
+//             <h3>Деталі користувача</h3>
+//             <div className={styles.userInfo}>
+//                 <p>Ім'я: {user.name}</p>
+//                 <p>Email: {user.email}</p>
+//                 <p>Номер: {user.phone}</p>
+//                 <p>Дата створення: {date}</p>
+//                 <p>Статус: {userStatus}</p>
+//             </div>
+//             <div className={styles.userActions}>
+//                 <BlockUserButton userId={userId} isBlocked={user.is_blocked} onStatusChange={user} />
+//                 <button onClick={openModal} className={styles.deleteButton}>
+//                     Видалити
+//                 </button>
+//             </div>
+//             <Modal show={isModalOpen} onClose={closeModal} text="Ви справді хочете видалити цього користувача?">
+//                 <DeleteUser userId={userId} onDelete={handleDeleteUser} />
+//                 <button onClick={closeModal}>Відміна</button>
+//             </Modal>
+//         </div>
+//     );
+
+//     // return (
+//     //     <div className={styles.userDetailsContainer}>
+//     //         <h3>Деталі користувача</h3>
+//     //         {!isEditMode ? (
+//     //             <>
+//     //                 <div className={styles.userInfo}>
+//     //                     <p>Ім'я: {userById.name}</p>
+//     //                     <p>Email: {userById.email}</p>
+//     //                     <p>Номер: {userById.phone}</p>
+//     //                     <p>Роль: {roleTranslations[userById.role] || userById.role}</p>
+//     //                     <p>Дата створення: {date}</p>
+//     //                     <p>Статус: Користувач {userById.name} {userStatus} </p>
+//     //                 </div>
+//     //                 <div className={styles.userActions}>
+//     //                     <button onClick={handleEditClick} className={styles.editButton}>Редагувати</button>
+//     //                     <button onClick={openModal} className={styles.deleteButton}>Видалити</button>
+//     //                     <BlockUserButton userId={userId} isBlocked={userById.is_blocked} onStatusChange={setUserById} className={styles.blockButton} />
+//     //                 </div>
+//     //                 <Modal show={isModalOpen} onClose={closeModal} text='Ви справді хочете видалити цього користувача? Ця дія видалить користувача разом з його продуктами!'>
+//     //                     <div className={styles.buttonContainer}>
+//     //                         <DeleteUser userId={userId} onDelete={handleDeleteUser} />
+//     //                         <button onClick={closeModal}>Відміна</button>
+//     //                     </div>
+//     //                 </Modal>
+//     //             </>
+//     //         ) : (
+//     //             <form className={styles.editForm} onSubmit={handleEditSubmit}>
+//     //                 <label>Ім'я:</label>
+//     //                 <input type="text" name="name" value={editData.name} onChange={handleChange} />
+
+//     //                 <label>Email:</label>
+//     //                 <input type="email" name="email" value={editData.email} onChange={handleChange} />
+
+//     //                 <label>Номер:</label>
+//     //                 <input type="text" name="phone" value={editData.phone} onChange={handleChange} />
+
+//     //                 <label>Роль:</label>
+//     //                 <select name="role" value={editData.role} onChange={handleChange}>
+//     //                     <option value="buyer">Покупець</option>
+//     //                     <option value="seller">Продавець</option>
+//     //                     <option value="superadmin">Адміністратор</option>
+//     //                 </select>
+//     //                 <button type="submit">Зберегти</button>
+//     //             </form>
+//     //         )}
+//     //     </div>
+//     // );
+// };
+
+// export default UserDetails;
