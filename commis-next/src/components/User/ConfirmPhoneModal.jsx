@@ -1,6 +1,6 @@
 
 import { useRouter } from 'next/router';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import { getUserProfile, confirmPhone } from '../../services/auth';
 import Modal from '../Modal/Modal';

@@ -1,15 +1,15 @@
 
 import { useRouter } from "next/router";
-import useFetchDataByKey from "@/hooks/useFetchDataByKey";
 import { getActiveSellerById } from "@/services/admin";
 import { formatDate } from "@/utils/formatDate";
+import useFetchData from "@/hooks/useFetchData";
 import Link from "next/link";
 
 const ActiveSellersDetails = () => {
     const router = useRouter();
     const { sellerId } = router.query;
 
-    const { data: seller, loading, error } = useFetchDataByKey(getActiveSellerById, sellerId);
+    const { data: seller, loading, error } = useFetchData(getActiveSellerById, sellerId);
 
     const handleStorageSave = () => {
         if (seller?.products) {

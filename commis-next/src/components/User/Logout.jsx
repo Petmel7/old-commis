@@ -7,7 +7,7 @@ import Modal from '../Modal/Modal';
 import useModal from '../../hooks/useModal';
 import styles from './styles/Auth.module.css';
 
-const Logout = ({ onLogout }) => {
+const Logout = () => {
     const { isModalOpen, openModal, closeModal } = useModal();
     const router = useRouter();
     const { handleLogout } = useAuth();
@@ -21,10 +21,8 @@ const Logout = ({ onLogout }) => {
             }
 
             await logoutUser({ token: refreshToken });
-            localStorage.removeItem('accessToken');
-            localStorage.removeItem('refreshToken');
             handleLogout();
-            onLogout();
+
             router.push('/login');
         } catch (error) {
             console.error('Logout failed:', error);

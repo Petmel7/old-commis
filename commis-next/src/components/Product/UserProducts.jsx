@@ -5,12 +5,12 @@ import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
 import NoProducts from '../NoProducts/NoProducts';
 import UserProductsCart from './UserProductsCart';
-import useFetchDataByKey from '@/hooks/useFetchDataByKey';
+import useFetchData from '@/hooks/useFetchData';
 
 const UserProducts = () => {
     const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-    const { data: userProducts = [], loading, error } = useFetchDataByKey(getUserProducts, accessToken);
+    const { data: userProducts = [], loading, error } = useFetchData(getUserProducts, accessToken);
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
