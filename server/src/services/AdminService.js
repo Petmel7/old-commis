@@ -141,6 +141,18 @@ const blockUser = async (userId, is_blocked) => {
     return user;
 }
 
+const blockProduct = async (productId, is_blocked) => {
+    const product = await Product.findByPk(productId);
+    if (!productId) {
+        throw { status: 404, message: 'Продукту не знайдено' };
+    }
+
+    // Оновлюємо статус блокування
+    await product.update({ is_blocked });
+
+    return product;
+}
+
 module.exports = {
     getUsersForAdmin,
     getUserById,
@@ -150,5 +162,6 @@ module.exports = {
     getUsersByRole,
     deleteUserForAdmin,
     updateUser,
-    blockUser
+    blockUser,
+    blockProduct
 }

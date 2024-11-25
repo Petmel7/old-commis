@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { protect } = require('../middleware/authMiddleware');
-const { getUsersForAdmin, getOrdersForAdmin, getProductsForAdmin, getUserRoleCounts, getUsersByRole, deleteUserForAdmin, getUserById, updateUser, blockUser } = require('../controllers/adminController');
+const { getUsersForAdmin, getOrdersForAdmin, getProductsForAdmin, getUserRoleCounts, getUsersByRole, deleteUserForAdmin, getUserById, updateUser, blockUser, blockProduct } = require('../controllers/adminController');
 const { getActiveSellers, getActiveSellersById, getNewSellers, getBlockedSellers } = require('../controllers/sellerController');
 
 router.get('/users', protect, getUsersForAdmin);
@@ -17,5 +17,6 @@ router.get('/active-sellers/:sellerId', protect, getActiveSellersById);
 router.delete('/users/:userId', protect, deleteUserForAdmin);
 router.patch('/users/update/:id', protect, updateUser);
 router.put('/users/block/:userId', protect, blockUser);
+router.put('/products/block/:productId', protect, blockProduct);
 
 module.exports = router;

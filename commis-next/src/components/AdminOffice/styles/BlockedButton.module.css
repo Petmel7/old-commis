@@ -1,0 +1,19 @@
+.blockedButton {
+    margin-left: 20px;
+}
+
+.reslategreyButton {
+    background-color: slategrey;
+}
+
+.reslategreyButton:hover {
+    background-color: rgb(88, 100, 112);
+}
+
+.blackButton {
+    background-color: rgb(32, 32, 32);
+}
+
+.blackButton:hover {
+    background-color: black;
+}

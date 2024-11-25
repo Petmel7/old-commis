@@ -67,3 +67,10 @@ export const blockUser = async (userId, isBlocked) => {
     });
     return response.data;
 }
+
+export const blockProduct = async (productId, isBlocked) => {
+    const response = await api.put(`admin/products/block/${productId}`, {
+        is_blocked: !isBlocked,
+    });
+    return response.data;
+}

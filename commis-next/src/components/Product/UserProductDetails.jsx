@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { baseUrl } from '../Url/baseUrl';
+import { useAuth } from '@/context/AuthContext';
 import useProduct from '@/hooks/useProduct';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import DeleteProduct from './DeleteProduct';
@@ -9,14 +10,15 @@ import BackButton from '../BackButton/BackButton';
 import Modal from '../Modal/Modal';
 import useModal from '@/hooks/useModal';
 import Slider from 'react-slick';
+import BlockedButton from '../AdminOffice/BlockedButton';
 import styles from './styles/UserProductDetails.module.css';
 
 const UserProductDetails = () => {
-    const { isModalOpen, openModal, closeModal } = useModal();
     const router = useRouter();
     const { productId } = router.query;
-
-    const { product, loading, error } = useProduct(productId);
+    const { user } = useAuth();
+    const { isModalOpen, openModal, closeModal } = useModal();
+    const { product, setProduct, loading, error } = useProduct(productId);
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     if (loadingErrorComponent) return loadingErrorComponent;
@@ -62,6 +64,16 @@ const UserProductDetails = () => {
                         <Link href={`/products/update/${product.id}`}>
                             <button className={styles.editButton}>Редагувати</button>
                         </Link>
+
+                        {user.role === 'superadmin' &&
+                            <BlockedButton
+                                className={styles.blockedButton}
+                                id={productId}
+                                isBlocked={product.is_blocked}
+                                onStatusChange={setProduct}
+                                type='product'
+                            />
+                        }
                     </div>
                 </div>
             ))}

@@ -97,6 +97,22 @@ const blockUser = async (req, res, next) => {
     }
 };
 
+const blockProduct = async (req, res, next) => {
+    const productId = req.params.productId;
+    const { is_blocked } = req.body;
+
+    try {
+        const product = await AdminService.blockProduct(productId, is_blocked);
+
+        return res.status(200).json({
+            message: `Статус блокування продукту успішно оновлено на ${is_blocked}`,
+            product
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getUsersForAdmin,
     getUserById,
@@ -107,4 +123,5 @@ module.exports = {
     deleteUserForAdmin,
     updateUser,
     blockUser,
+    blockProduct
 };

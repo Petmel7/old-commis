@@ -32,7 +32,7 @@ const ActiveSellersDetails = () => {
             <p>Дата останнього логування: {date}</p>
 
             <Link href={`/admin/seller/products/${sellerId}`} onClick={handleStorageSave}>
-                <p>Продукти</p>
+                <p>Модерація товарів</p>
             </Link>
         </div>
     );

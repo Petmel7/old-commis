@@ -49,6 +49,11 @@ const Product = sequelize.define('Product', {
     is_active: {
         type: DataTypes.BOOLEAN,
         allowNull: false
+    },
+    is_blocked: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
     }
 }, {
     timestamps: false,

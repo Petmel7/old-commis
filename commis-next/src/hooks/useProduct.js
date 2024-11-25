@@ -30,7 +30,7 @@ const useProduct = (productId) => {
         }
     }, [productId]);
 
-    return { product, sizes, loading, error };
+    return { product, setProduct, sizes, loading, error };
 };
 
 export default useProduct;
