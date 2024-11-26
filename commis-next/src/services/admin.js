@@ -50,6 +50,15 @@ export const getBlockedSellers = async () => {
     return response.data;
 };
 
+export const getSellerStatistics = async () => {
+    const response = await api.get('/admin/sellers/statistics');
+    return response.data;
+};
+
+export const staticsSellerById = async (sellerId) => {
+    const response = await api.get(`admin/sellers/statistics/${sellerId}`);
+    return response.data
+}
 
 export const deleteUser = async (userId) => {
     const response = await api.delete(`admin/users/${userId}`);
@@ -74,3 +83,4 @@ export const blockProduct = async (productId, isBlocked) => {
     });
     return response.data;
 }
+

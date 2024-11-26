@@ -11,6 +11,10 @@ const sellerDataList = [
         title: "Заблоковані",
         slug: "blocked",
     },
+    {
+        title: "Статистика",
+        slug: "statistics",
+    },
 ];
 
 export default sellerDataList;

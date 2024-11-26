@@ -6,6 +6,7 @@ const componentMap = {
     'active': dynamic(() => import('./sellers/ActiveSellers')),
     'new-ones': dynamic(() => import('./sellers/NewSellers')),
     'blocked': dynamic(() => import('./sellers/BlockedSellers')),
+    'statistics': dynamic(() => import('./sellers/StatisticsSellers')),
 }
 
 const SellerList = () => {

@@ -1,5 +1,6 @@
 
 const SellerService = require('../services/SellerService');
+const sequelize = require('../config/db');
 
 const getActiveSellers = async (req, res, next) => {
     try {
@@ -40,12 +41,34 @@ const getBlockedSellers = async (req, res, next) => {
     } catch (error) {
         next(error);
     }
+};
+
+const getSellerStatistics = async (req, res, next) => {
+    try {
+        const usersStats = await SellerService.getSellerStatistics();
+        // Повернення результату
+        res.status(200).json({ data: usersStats });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getSellerStatisticsById = async (req, res, next) => {
+    const { sellerId } = req.params;
+    try {
+        const userStats = await SellerService.getSellerStatisticsById(sellerId);
+        res.status(200).json({ data: userStats });
+    } catch (error) {
+        next(error);
+    }
 }
 
 module.exports = {
     getActiveSellers,
     getActiveSellersById,
     getNewSellers,
-    getBlockedSellers
+    getBlockedSellers,
+    getSellerStatistics,
+    getSellerStatisticsById
 };
 
