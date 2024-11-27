@@ -1,10 +1,13 @@
 
 import useFetchData from '@/hooks/useFetchData';
 import { getBlockedSellers } from '@/services/admin';
+import { validateArray } from '@/utils/validation';
 import useLoadingAndError from '@/hooks/useLoadingAndError';
 
 const BlockedSellers = () => {
-    const { data: sellers, loading, error } = useFetchData(getBlockedSellers);
+    const { data: rawSellers, loading, error } = useFetchData(getBlockedSellers);
+    const sellers = validateArray(rawSellers);
+
     const loadingAndError = useLoadingAndError(loading, error);
 
     if (loadingAndError) return loadingAndError;

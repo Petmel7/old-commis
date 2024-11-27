@@ -1,10 +1,13 @@
 import Link from "next/link";
-import useFetchData from '@/hooks/useFetchData';
 import { getActiveSellers } from '@/services/admin';
+import { validateArray } from "@/utils/validation";
+import useFetchData from '@/hooks/useFetchData';
 import useLoadingAndError from '@/hooks/useLoadingAndError';
 
 const ActiveSellers = () => {
-    const { data: sellers, loading, error } = useFetchData(getActiveSellers);
+    const { data: rawSellers, loading, error } = useFetchData(getActiveSellers);
+    const sellers = validateArray(rawSellers);
+
     const loadingAndError = useLoadingAndError(loading, error);
 
     if (loadingAndError) return loadingAndError;

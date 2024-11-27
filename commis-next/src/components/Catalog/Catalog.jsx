@@ -1,7 +1,8 @@
 
 import { useRouter } from 'next/router';
 import { getProductsByCategory } from '@/services/catalog';
-import useFetchDataByKey from '@/hooks/useFetchDataByKey';
+import { validateArray } from '@/utils/validation';
+import useFetchDataWithArg from '@/hooks/useFetchDataWithArg';
 import useLoadingAndError from '@/hooks/useLoadingAndError';
 import ProductCard from '../Product/ProductCard';
 import NoProducts from '../NoProducts/NoProducts';
@@ -10,7 +11,10 @@ import styles from './styles/Catalog.module.css';
 const Catalog = () => {
     const router = useRouter();
     const { category } = router.query;
-    const { data: products, loading, error } = useFetchDataByKey(getProductsByCategory, category);
+
+    const { data: rawProducts, loading, error } = useFetchDataWithArg(getProductsByCategory, category);
+    const products = validateArray(rawProducts);
+
     const loadingAndError = useLoadingAndError(loading, error);
 
     if (loadingAndError) return loadingAndError;

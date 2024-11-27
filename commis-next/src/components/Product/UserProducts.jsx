@@ -1,16 +1,18 @@
 
 import { getUserProducts } from '../../services/products';
 import { baseUrl } from '../Url/baseUrl';
+import { validateArray } from '@/utils/validation';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
 import NoProducts from '../NoProducts/NoProducts';
 import UserProductsCart from './UserProductsCart';
-import useFetchData from '@/hooks/useFetchData';
+import useFetchDataWithArg from '@/hooks/useFetchDataWithArg';
 
 const UserProducts = () => {
     const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-    const { data: userProducts = [], loading, error } = useFetchData(getUserProducts, accessToken);
+    const { data: rawUserProducts, loading, error } = useFetchDataWithArg(getUserProducts, accessToken);
+    const userProducts = validateArray(rawUserProducts);
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
 

@@ -1,16 +1,21 @@
 
 // import { useState, useEffect } from "react";
 
-// const useFetchData = (fetchFunction, keyValue = null) => {
+// const useFetchData = (fetchFunction) => {
 //     const [data, setData] = useState(null);
-//     const [loading, setLoading] = useState(true);
+//     const [loading, setLoading] = useState(false);
 //     const [error, setError] = useState(null);
 
 //     useEffect(() => {
 //         const fetchData = async () => {
+//             setLoading(true);
 //             try {
-//                 // Виклик fetchFunction без keyValue, якщо воно не передано
-//                 const result = keyValue ? await fetchFunction(keyValue) : await fetchFunction();
+//                 const result = await fetchFunction();
+
+//                 if (!result || typeof result !== 'object') {
+//                     throw new Error('Unexpected response format');
+//                 }
+
 //                 setData(result.data || result);
 //             } catch (err) {
 //                 setError(err.message || "An error occurred");
@@ -20,7 +25,7 @@
 //         };
 
 //         fetchData();
-//     }, [fetchFunction, keyValue]);
+//     }, [fetchFunction]);
 
 //     return { data, loading, error };
 // };
@@ -29,34 +34,33 @@
 
 
 
+
 import { useState, useEffect } from "react";
 
-const useFetchData = (fetchFunction, keyValue = null) => {
+const useFetchData = (fetchFunction, validateData = null) => {
     const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(false); // Початково не завантажується
+    const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
-            if (keyValue === null || keyValue === undefined) return; // Пропустити запит, якщо ключ недоступний
-
-            setLoading(true); // Увімкнути індикатор завантаження перед запитом
+            setLoading(true);
             try {
-                // Виклик fetchFunction з параметром, якщо він переданий
-                const result = await fetchFunction(keyValue);
-                setData(result.data || result); // Обробка результату
+                const result = await fetchFunction();
+                const validatedResult = validateData ? validateData(result.data || result) : result.data || result;
+
+                setData(validatedResult);
             } catch (err) {
-                setError(err.message || "An error occurred"); // Обробка помилок
+                setError(err.message || "An error occurred");
             } finally {
-                setLoading(false); // Завершення завантаження
+                setLoading(false);
             }
         };
 
-        fetchData(); // Виклик запиту
-    }, [fetchFunction, keyValue]);
+        fetchData();
+    }, [fetchFunction, validateData]);
 
-    return { data, loading, error }; // Повернення станів
+    return { data, loading, error };
 };
 
 export default useFetchData;
-

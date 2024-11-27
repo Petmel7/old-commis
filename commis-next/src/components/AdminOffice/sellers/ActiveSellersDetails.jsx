@@ -2,14 +2,16 @@
 import { useRouter } from "next/router";
 import { getActiveSellerById } from "@/services/admin";
 import { formatDate } from "@/utils/formatDate";
-import useFetchData from "@/hooks/useFetchData";
+import { validateArray } from "@/utils/validation";
+import useFetchDataWithArg from "@/hooks/useFetchDataWithArg";
 import Link from "next/link";
 
 const ActiveSellersDetails = () => {
     const router = useRouter();
     const { sellerId } = router.query;
 
-    const { data: seller, loading, error } = useFetchData(getActiveSellerById, sellerId);
+    const { data: rawSeller, loading, error } = useFetchDataWithArg(getActiveSellerById, sellerId);
+    const seller = validateArray(rawSeller);
 
     const handleStorageSave = () => {
         if (seller?.products) {

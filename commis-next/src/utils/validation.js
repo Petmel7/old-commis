@@ -33,3 +33,6 @@ export const validateSize = (size) => {
     }
     return errors;
 };
+
+export const validateArray = (data) => Array.isArray(data) ? data : [];
+

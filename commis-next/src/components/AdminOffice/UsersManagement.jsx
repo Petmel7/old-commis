@@ -4,9 +4,12 @@ import styles from "./styles/UsersManagement.module.css";
 import useFetchData from "@/hooks/useFetchData";
 import useLoadingAndError from "@/hooks/useLoadingAndError";
 import { getUserRoleCounts } from "@/services/admin";
+import { validateArray } from "@/utils/validation";
 
 const UsersManagement = () => {
-    const { data: users, loading, error } = useFetchData(getUserRoleCounts);
+    const { data: rawUsers, loading, error } = useFetchData(getUserRoleCounts);
+    const users = validateArray(rawUsers);
+
     const loadingAndError = useLoadingAndError(loading, error);
 
     if (loadingAndError) return loadingAndError;
