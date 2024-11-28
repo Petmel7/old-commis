@@ -32,13 +32,22 @@ export const getUserById = async (userId) => {
 
 export const getActiveSellers = async () => {
     const response = await api.get('admin/active-sellers');
+    console.log('API getActiveSellers Response:', response.data)
     return response.data
 }
 
+// export const getActiveSellerById = async (sellerId) => {
+//     const response = await api.get(`admin/active-sellers/${sellerId}`);
+//     return response.data
+// }
+
 export const getActiveSellerById = async (sellerId) => {
+    console.log(`Fetching seller with ID: ${sellerId}`); // Логування ID
     const response = await api.get(`admin/active-sellers/${sellerId}`);
-    return response.data
-}
+    console.log('API Response:', response.data); // Логування відповіді API
+    return response.data;
+};
+
 
 export const getNewSellers = async () => {
     const response = await api.get('admin/new-sellers');

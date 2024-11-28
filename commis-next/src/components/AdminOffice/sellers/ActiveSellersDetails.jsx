@@ -2,7 +2,6 @@
 import { useRouter } from "next/router";
 import { getActiveSellerById } from "@/services/admin";
 import { formatDate } from "@/utils/formatDate";
-import { validateArray } from "@/utils/validation";
 import useFetchDataWithArg from "@/hooks/useFetchDataWithArg";
 import Link from "next/link";
 
@@ -10,20 +9,19 @@ const ActiveSellersDetails = () => {
     const router = useRouter();
     const { sellerId } = router.query;
 
-    const { data: rawSeller, loading, error } = useFetchDataWithArg(getActiveSellerById, sellerId);
-    const seller = validateArray(rawSeller);
+    console.log('(((((((sellerId', sellerId);
 
-    const handleStorageSave = () => {
-        if (seller?.products) {
-            localStorage.setItem("products", JSON.stringify(seller.products));
-        }
-    };
+    const { data: rawSeller, loading, error } = useFetchDataWithArg(getActiveSellerById, sellerId);
+
+    const seller = Array.isArray(rawSeller) ? rawSeller[0] : rawSeller;
 
     if (loading) return <p>Завантаження...</p>;
     if (error) return <p>Помилка: {error}</p>;
     if (!seller) return <p>Продавця не знайдено</p>;
 
     const date = formatDate(seller.last_login);
+
+    console.log('(((((((seller', seller);
 
     return (
         <div>
@@ -33,7 +31,7 @@ const ActiveSellersDetails = () => {
             <p>email: {seller.email}</p>
             <p>Дата останнього логування: {date}</p>
 
-            <Link href={`/admin/seller/products/${sellerId}`} onClick={handleStorageSave}>
+            <Link href={`/admin/seller/products/${sellerId}`}>
                 <p>Модерація товарів</p>
             </Link>
         </div>

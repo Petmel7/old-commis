@@ -123,7 +123,7 @@ const getSellerStatistics = async () => {
 
 const getSellerStatisticsById = async (sellerId) => {
 
-    const query = getSellerStatisticsQuery();
+    const query = getSellerStatisticsQuery(sellerId);
 
     // Виконання запиту через Sequelize
     return await sequelize.query(query, {

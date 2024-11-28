@@ -34,5 +34,13 @@ export const validateSize = (size) => {
     return errors;
 };
 
-export const validateArray = (data) => Array.isArray(data) ? data : [];
+// export const validateArray = (data) => Array.isArray(data) ? data : [];
+
+export const validateArray = (data) => {
+    if (!data || !Array.isArray(data)) return []; // Повертає порожній масив, якщо дані некоректні
+    return data;
+};
+
+
+
 
