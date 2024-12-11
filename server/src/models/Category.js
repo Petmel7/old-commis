@@ -1,4 +1,4 @@
-// server/src/models/Category.js
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 

@@ -8,7 +8,6 @@ const createOrder = async (req, res, next) => {
     try {
         const { order, total, orderDetails } = await OrderService.createOrder(req.user.id, items, address);
 
-        // Надсилання електронного листа
         await sendOrderEmail(req.user.email, order.id, orderDetails, total);
 
         res.status(201).json({ message: 'Order created successfully', orderId: order.id });

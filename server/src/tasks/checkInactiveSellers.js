@@ -3,7 +3,7 @@ const { User, Product } = require('../models');
 const { Op } = require('sequelize');
 
 const checkInactiveSellers = async () => {
-    const inactiveThreshold = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000); // 30 днів тому
+    const inactiveThreshold = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
 
     try {
         const sellers = await User.findAll({

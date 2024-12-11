@@ -37,11 +37,10 @@ const Product = sequelize.define('Product', {
         type: DataTypes.ARRAY(DataTypes.TEXT),
         allowNull: true
     },
-    // Поля category/subcategory видалені, оскільки вони більше не потрібні
     subcategory_id: {
         type: DataTypes.INTEGER,
         references: {
-            model: 'subcategories', // Назва таблиці підкатегорій
+            model: 'subcategories',
             key: 'id'
         },
         allowNull: false

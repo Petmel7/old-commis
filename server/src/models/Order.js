@@ -1,5 +1,4 @@
 
-// server/src/models/Order.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const User = require('./User');
@@ -30,7 +29,7 @@ const Order = sequelize.define('Order', {
         type: DataTypes.STRING,
         allowNull: true
     },
-    postoffice: {
+    post_office: {
         type: DataTypes.STRING,
         allowNull: true
     },

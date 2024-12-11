@@ -1,6 +1,5 @@
 const transporter = require('../config/emailConfig');
 
-// Функція для надсилання електронної пошти
 const sendOrderEmail = async (userEmail, orderId, orderDetails, total) => {
     const baseURL = 'http://localhost:5000/uploads';
     await transporter.sendMail({

@@ -8,7 +8,6 @@ if (!fs.existsSync(uploadsDir)) {
     fs.mkdirSync(uploadsDir);
 }
 
-// Налаштування збереження файлів
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
         cb(null, uploadsDir);
@@ -32,7 +31,7 @@ const upload = multer({
     storage,
     fileFilter,
     limits: {
-        fileSize: 5000000, // 5 MB
+        fileSize: 5000000,
     },
 });
 

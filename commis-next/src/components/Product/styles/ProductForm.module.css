@@ -1,5 +1,3 @@
-/* src/components/AddProduct.module.css */
-
 .container {
     max-width: 400px;
     margin: 0 auto;
@@ -72,7 +70,6 @@
 }
 
 .customUploadButton {
-    /* display: inline-block; */
     padding: 5px 10px;
     background-color: #7F8C8D;
     color: white;
@@ -89,16 +86,6 @@
     ;
 }
 
-/* ======================================== */
-
-/* styles/ProductForm.module.css */
-
-/* .formGroup {
-    margin-bottom: 15px;
-    display: flex;
-    flex-direction: column;
-} */
-
 .select {
     width: 100%;
     padding: 10px;
@@ -108,37 +95,20 @@
     font-size: 16px;
     color: #333;
     appearance: none;
-    /* Видаляє стилі браузера для селекту */
 }
 
 .select:focus {
     border-color: #0070f3;
-    /* Колір рамки при фокусі */
     outline: none;
     box-shadow: 0 0 5px rgba(0, 112, 243, 0.5);
-    /* Світіння при фокусі */
 }
 
-/* option {
-    padding: 10px;
-    background-color: #fff;
-    color: #333;
-    font-size: 16px;
-} */
-
-/* option:disabled {
-    font-weight: bold;
-    color: #999;
-} */
-
-/* Стилі для заголовків категорій (disabled опції) */
 .categoryHeader {
     font-weight: bold;
     background-color: #f0f0f0;
     color: #555;
 }
 
-/* Додатковий стиль для активної опції */
 .optionActive {
     background-color: #0070f3;
     color: #fff;

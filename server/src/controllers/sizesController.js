@@ -1,7 +1,6 @@
 
 const SizesService = require('../services/SizesService');
 
-// Отримати всі доступні розміри для певного продукту
 const getSizesByProductId = async (req, res, next) => {
     const { productId } = req.params;
 
@@ -16,7 +15,7 @@ const getSizesByProductId = async (req, res, next) => {
 
 const addSizeToProduct = async (req, res, next) => {
     const { productId } = req.params;
-    const { sizes } = req.body; // Приймаємо масив розмірів
+    const { sizes } = req.body;
 
     try {
         await SizesService.addSizeToProduct(productId, sizes);
@@ -27,7 +26,6 @@ const addSizeToProduct = async (req, res, next) => {
     }
 };
 
-// Видалити розмір для продукту
 const removeSizeFromProduct = async (req, res, next) => {
     const { productId, sizeId } = req.params;
 

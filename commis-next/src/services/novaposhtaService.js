@@ -1,7 +1,6 @@
 import axios from 'axios';
 
-const API_KEY = '7117ddde34fbe00bfdd633721af85e80'; // Замініть на ваш API ключ
-
+const API_KEY = '7117ddde34fbe00bfdd633721af85e80';
 export const getRegions = async () => {
     const response = await axios.post('https://api.novaposhta.ua/v2.0/json/', {
         "apiKey": API_KEY,

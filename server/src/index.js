@@ -51,19 +51,16 @@ app.get('/', (req, res) => {
 
 app.use(errorHandler);
 
-// Запуск задачі кожного дня в 00:00 для видалення старих refresh tokens
 cron.schedule('0 0 * * *', async () => {
     await deleteOldRefreshTokens();
     console.log('Scheduled task executed: old refresh tokens deleted');
 });
 
-// Налаштування cron job для запуску щодня о 2:00 ночі
 cron.schedule('0 2 * * *', () => {
     console.log('Running daily inactive sellers check...');
     checkInactiveSellers();
 });
 
-// Синхронізація моделей з базою даних
 sequelize.sync().then(() => {
     const PORT = process.env.PORT || 5000;
     app.listen(PORT, () => {

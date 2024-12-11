@@ -7,7 +7,7 @@ const useFetchDataWithArg = (fetchFunction, arg) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            if (arg === null || arg === undefined) return; // Пропуск, якщо аргумент не задано
+            if (arg === null || arg === undefined) return;
 
             setLoading(true);
             try {

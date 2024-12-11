@@ -44,7 +44,7 @@ const AddressForm = ({ onAddressSelected }) => {
             onAddressSelected({
                 region: selectedRegion.label,
                 city: selectedCity.label,
-                postoffice: selectedPostOffice.label,
+                post_office: selectedPostOffice.label,
             });
         }
     }, [selectedRegion, selectedCity, selectedPostOffice]);

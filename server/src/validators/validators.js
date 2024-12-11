@@ -1,6 +1,5 @@
 const Joi = require('joi');
 
-// Схема для валідації продуктів
 const productSchema = Joi.object({
     id: Joi.number().integer().required(),
     user_id: Joi.number().integer().required(),
@@ -13,11 +12,10 @@ const productSchema = Joi.object({
     is_active: Joi.boolean().default(true)
 });
 
-// Схема для валідації додавання до улюблених
 const addFavoriteSchema = Joi.object({
     productId: Joi.number().integer().required().messages({
-        'number.base': '"productId" повинно бути числом',
-        'any.required': '"productId" обов’язкове для заповнення'
+        'number.base': '"productId" must be a number',
+        'any.required': '"productId" mandatory to fill'
     })
 });
 

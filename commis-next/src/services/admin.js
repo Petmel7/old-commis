@@ -36,15 +36,8 @@ export const getActiveSellers = async () => {
     return response.data
 }
 
-// export const getActiveSellerById = async (sellerId) => {
-//     const response = await api.get(`admin/active-sellers/${sellerId}`);
-//     return response.data
-// }
-
 export const getActiveSellerById = async (sellerId) => {
-    console.log(`Fetching seller with ID: ${sellerId}`); // Логування ID
     const response = await api.get(`admin/active-sellers/${sellerId}`);
-    console.log('API Response:', response.data); // Логування відповіді API
     return response.data;
 };
 

@@ -1,5 +1,4 @@
 
-// server/src/models/Favorite.js
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const Product = require('./Product');
@@ -31,10 +30,6 @@ const Favorite = sequelize.define('Favorite', {
     timestamps: false,
     tableName: 'favorites'
 });
-
-// // Визначення асоціацій
-// Favorite.belongsTo(Product, { foreignKey: 'product_id' });
-// Favorite.belongsTo(User, { foreignKey: 'user_id' });
 
 module.exports = Favorite;
 

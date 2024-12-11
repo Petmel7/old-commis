@@ -5,7 +5,7 @@ const getSizesByProductId = async (productId) => {
     const product = await Product.findByPk(productId, {
         include: {
             model: Size,
-            through: { attributes: [] } // Приєднуємо розміри до продукту без додаткових полів з таблиці зв'язків
+            through: { attributes: [] }
         }
     });
 

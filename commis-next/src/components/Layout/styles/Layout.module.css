@@ -10,10 +10,8 @@
     flex-direction: column;
     overflow-y: auto;
     padding-top: 60px;
-    /* Відступ для уникнення перекриття хедером */
 }
 
 .main {
     flex: 1;
-    /* Додаємо відступи для основного контенту */
 }

@@ -1,7 +1,6 @@
 
 const UserService = require('../services/UserService');
 
-// Реєстрація нового користувача
 const registerUser = async (req, res, next) => {
     const { name, lastname, email, password } = req.body;
     try {
@@ -12,7 +11,6 @@ const registerUser = async (req, res, next) => {
     }
 };
 
-// Підтвердження електронної пошти
 const confirmEmail = async (req, res, next) => {
     const { token } = req.params;
     try {
@@ -23,7 +21,6 @@ const confirmEmail = async (req, res, next) => {
     }
 };
 
-// Додавання номера телефону
 const addPhoneNumber = async (req, res, next) => {
     const { phone } = req.body;
     try {
@@ -35,11 +32,10 @@ const addPhoneNumber = async (req, res, next) => {
 };
 
 const confirmPhoneNumber = async (req, res, next) => {
-    const { confirmationcode } = req.body;
+    const { confirmation_code } = req.body;
 
     try {
-        // Викликаємо сервіс для підтвердження номера телефону
-        const result = await UserService.confirmPhoneNumber(req.user.id, confirmationcode);
+        const result = await UserService.confirmPhoneNumber(req.user.id, confirmation_code);
 
         res.json({ message: result.message });
     } catch (error) {
@@ -54,7 +50,7 @@ const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
     try {
-        // Викликаємо сервіс для авторизації
+
         const { accessToken, refreshToken, user } = await UserService.loginUser(email, password);
 
         res.status(200).json({
@@ -74,7 +70,6 @@ const loginUser = async (req, res, next) => {
     }
 };
 
-// Логаут користувача
 const logoutUser = async (req, res, next) => {
     const { token } = req.body;
 
@@ -86,8 +81,6 @@ const logoutUser = async (req, res, next) => {
     }
 };
 
-// Профіль користувача
-
 const getUserProfile = async (req, res, next) => {
     try {
         const userProfile = await UserService.getUserProfile(req.user.id);
@@ -97,7 +90,6 @@ const getUserProfile = async (req, res, next) => {
     }
 };
 
-// Оновлення токену доступу
 const refreshToken = async (req, res, next) => {
     const { token } = req.body;
     try {

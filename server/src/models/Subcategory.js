@@ -1,7 +1,7 @@
-// server/src/models/Subcategory.js
+
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Category = require('./Category');  // Підключаємо модель категорії
+const Category = require('./Category');
 
 const Subcategory = sequelize.define('Subcategory', {
     id: {

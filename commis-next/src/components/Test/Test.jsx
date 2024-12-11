@@ -13,7 +13,6 @@ const Test = () => {
 
     return (
         <div>
-            {/* <button type="button" onClick={openModal}>Test</button> */}
             <Modal show={isModalOpen} onClose={closeModal}>
                 <div>
                     Так то працює!

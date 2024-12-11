@@ -3,7 +3,6 @@ const path = require('path');
 const ProductService = require('../services/ProductService');
 const UserService = require('../services/UserService');
 
-// Отримати всі продукти
 const getProducts = async (req, res, next) => {
     try {
         const products = await ProductService.getProducts();
@@ -13,7 +12,6 @@ const getProducts = async (req, res, next) => {
     }
 };
 
-// Отримати продукти поточного користувача
 const getUserProducts = async (req, res, next) => {
     try {
         const products = await ProductService.getUserProducts({ where: { user_id: req.user.id } });
@@ -23,7 +21,6 @@ const getUserProducts = async (req, res, next) => {
     }
 };
 
-// Отримати продукт за ID
 const getProductById = async (req, res, next) => {
     const { id } = req.params;
     try {
@@ -41,7 +38,7 @@ const addProduct = async (req, res, next) => {
         : [];
 
     try {
-        // Створюємо продукт через сервіс
+
         const product = await ProductService.addProduct({
             userId: req.user.id,
             name,
@@ -53,7 +50,6 @@ const addProduct = async (req, res, next) => {
             images
         });
 
-        // Оновлюємо роль користувача через сервіс, якщо це необхідно
         await UserService.updateUserRoleIfNecessary(req.user);
 
         res.status(201).json({ message: 'Product added successfully', product });
@@ -62,7 +58,6 @@ const addProduct = async (req, res, next) => {
     }
 };
 
-// Оновити продукт
 const updateProduct = async (req, res, next) => {
     const { id } = req.params;
     const { name, description, price, stock } = req.body;
@@ -74,11 +69,10 @@ const updateProduct = async (req, res, next) => {
         const updateData = { name, description, price, stock };
         if (images) updateData.images = images;
 
-        // Перевіряємо права доступу та оновлюємо продукт через сервіс
         await ProductService.checkOwnershipOrAdmin(req.user, id);
         const updatedProduct = await ProductService.updateProduct(id, updateData);
 
-        res.json({ message: 'Продукт успішно оновлено', product: updatedProduct });
+        res.json({ message: 'The product has been updated successfully', product: updatedProduct });
     } catch (error) {
         if (error.status) {
             return res.status(error.status).json({ message: error.message });
@@ -91,19 +85,15 @@ const deleteProduct = async (req, res, next) => {
     const { id } = req.params;
 
     try {
-        // Отримуємо продукт
         const product = await ProductService.findProductById(id);
 
-        // Перевіряємо права доступу
         await ProductService.checkOwnershipOrAdmin(req.user, product.id);
 
-        // Видаляємо продукт та пов'язані підкатегорії
         await ProductService.deleteProduct(product);
 
-        // Перевіряємо та оновлюємо роль користувача
         await ProductService.updateUserRoleIfNoProducts(req.user.id);
 
-        res.json({ message: 'Продукт і пов’язана підкатегорія успішно видалені' });
+        res.json({ message: 'The product and associated subcategory have been successfully deleted' });
     } catch (error) {
         if (error.status) {
             return res.status(error.status).json({ message: error.message });
@@ -117,7 +107,6 @@ const deleteImage = async (req, res, next) => {
         const { id } = req.params;
         const { indices } = req.body;
 
-        // Викликаємо сервіс для видалення зображень
         await ProductService.deleteImagesFromProduct(id, indices);
 
         res.send('Images deleted successfully');

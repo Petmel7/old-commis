@@ -14,7 +14,6 @@ export const login = async (data) => {
 };
 
 export const googleAuth = async () => {
-    // Виклик для початкового перенаправлення
     window.location.href = 'http://localhost:5000/api/users/google';
 };
 
@@ -29,6 +28,7 @@ export const confirmEmail = async (data) => {
 };
 
 export const confirmPhone = async (data) => {
+    console.log('confirmPhone->data', data);
     const response = await api.post('/users/confirm-phone', data);
     return response.data;
 };

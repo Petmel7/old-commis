@@ -27,7 +27,7 @@ const registerUser = async ({ name, lastname, email, password }) => {
 
 const confirmEmail = async (token) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    await User.update({ emailconfirmed: true }, { where: { email: decoded.email } });
+    await User.update({ email_confirmed: true }, { where: { email: decoded.email } });
 }
 
 const addPhoneNumber = async (phone, userId) => {
@@ -38,7 +38,7 @@ const addPhoneNumber = async (phone, userId) => {
     }
 
     const confirmationCode = generateConfirmationCode();
-    await user.update({ phone, confirmationcode: confirmationCode });
+    await user.update({ phone, confirmation_code: confirmationCode });
 
     await transporter.sendMail({
         to: user.email,
@@ -48,45 +48,43 @@ const addPhoneNumber = async (phone, userId) => {
 }
 
 const confirmPhoneNumber = async (userId, confirmationcode) => {
-    // Знаходимо користувача за ID
+
+    console.log('???????userId', userId);
+    console.log('???????confirmationcode', confirmationcode);
+
     const user = await User.findByPk(userId);
     if (!user) {
-        throw { status: 404, message: 'Користувача не знайдено' };
+        throw { status: 404, message: 'No user found' };
     }
 
-    // Перевіряємо код підтвердження
-    if (user.confirmationcode !== confirmationcode) {
-        throw { status: 400, message: 'Невірний код підтвердження.' };
+    console.log('???????user.confirmation_code', user.confirmation_code);
+
+    if (user.confirmation_code !== confirmationcode) {
+        throw { status: 400, message: 'Invalid verification code.' };
     }
 
-    // Оновлюємо статус підтвердження телефону
-    await user.update({ phoneconfirmed: true, confirmationcode: null });
+    await user.update({ phone_confirmed: true, confirmation_code: null });
 
-    return { message: 'Номер телефону успішно підтверджено.' };
+    return { message: 'The phone number has been successfully verified.' };
 };
 
-// Логіка авторизації
 const loginUser = async (email, password) => {
-    // Перевірка наявності користувача
+
     const user = await User.findOne({ where: { email } });
     if (!user) {
-        throw { status: 400, message: 'Невірні облікові дані' };
+        throw { status: 400, message: 'Invalid credentials' };
     }
 
-    // Перевірка пароля
     const validPassword = await bcrypt.compare(password, user.password);
     if (!validPassword) {
-        throw { status: 400, message: 'Невірні облікові дані' };
+        throw { status: 400, message: 'Invalid credentials' };
     }
 
-    // Оновлюємо дату останнього входу
     await updateUserLoginStatus(user);
 
-    // Генеруємо токени
     const accessToken = generateAccessToken(user.id);
     const refreshToken = generateRefreshToken(user.id);
 
-    // Зберігаємо refresh token у базі даних
     await RefreshToken.create({ user_id: user.id, token: refreshToken });
 
     return { accessToken, refreshToken, user };
@@ -109,13 +107,13 @@ const getUserProfile = async (userId) => {
         attributes: [
             'id',
             'name',
-            'lastname',
+            'last_name',
             'email',
-            'emailconfirmed',
+            'email_confirmed',
             'phone',
-            'phoneconfirmed',
-            'confirmationcode',
-            'googleid',
+            'phone_confirmed',
+            'confirmation_code',
+            'google_id',
             'role',
             'is_blocked'
         ]
@@ -125,10 +123,9 @@ const getUserProfile = async (userId) => {
         throw { status: 404, message: 'User not found' };
     }
 
-    // Додаємо додаткові поля до профілю
     return {
         ...user.toJSON(),
-        googleRegistered: !!user.googleid // Boolean значення для реєстрації через Google
+        googleRegistered: !!user.googleid
     };
 };
 
@@ -155,11 +152,10 @@ const refreshToken = async (token) => {
     return { newAccessToken, newRefreshToken };
 }
 
-// Видалення старих Refresh Tokens
 const deleteOldRefreshTokens = async () => {
     try {
         const expirationDate = new Date();
-        expirationDate.setDate(expirationDate.getDate() - 7); // Видалення токенів, старших за 7 днів
+        expirationDate.setDate(expirationDate.getDate() - 7);
 
         const result = await RefreshToken.destroy({ where: { createdAt: { [Op.lt]: expirationDate } } });
         console.log(`Old refresh tokens deleted: ${result} tokens removed`);
@@ -169,10 +165,9 @@ const deleteOldRefreshTokens = async () => {
 };
 
 const updateUserRoleIfNecessary = async (user) => {
-    // Якщо користувач — superadmin, ніяких змін не потрібно
+
     if (user.role === 'superadmin') return;
 
-    // Оновлюємо роль користувача на 'seller', якщо це необхідно
     const [updatedRows] = await User.update({ role: 'seller' }, { where: { id: user.id } });
 
     if (updatedRows === 0) {
@@ -181,14 +176,13 @@ const updateUserRoleIfNecessary = async (user) => {
 };
 
 const updateUserRoleIfNoProducts = async (userId) => {
-    // Отримуємо користувача, щоб перевірити його роль
+
     const user = await User.findByPk(userId, { attributes: ['role'] });
 
     if (!user) {
-        throw new Error('Користувача не знайдено');
+        throw new Error('No user found');
     }
 
-    // Ігноруємо зміну ролі для адміністраторів
     if (user.role === 'superadmin') {
         return;
     }

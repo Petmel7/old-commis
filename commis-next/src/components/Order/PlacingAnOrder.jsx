@@ -21,7 +21,7 @@ const PlacingAnOrder = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
     const [paymentMethod, setPaymentMethod] = useState('');
-    const [isLoadingCart, setIsLoadingCart] = useState(true); // Додаємо стан завантаження
+    const [isLoadingCart, setIsLoadingCart] = useState(true);
     const router = useRouter();
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
@@ -107,7 +107,7 @@ const PlacingAnOrder = () => {
 
     if (loadingErrorComponent) return loadingErrorComponent;
 
-    if (isLoadingCart) return <p>Завантаження кошика...</p>; // Показуємо повідомлення про завантаження
+    if (isLoadingCart) return <p>Завантаження кошика...</p>;
 
     return (
         <div className={styles.container}>

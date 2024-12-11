@@ -17,7 +17,6 @@
     transition: opacity 0.3s;
 }
 
-/* Позиція знизу */
 .bottom {
     top: 125%;
     left: 50%;
@@ -52,11 +51,6 @@
     border-style: solid;
     border-color: #333 transparent transparent transparent;
 }
-
-/* .iconWrapper:hover .tooltip {
-    visibility: visible;
-    opacity: 1;
-} */
 
 @media (min-width: 768px) {
     .iconWrapper:hover .tooltip {

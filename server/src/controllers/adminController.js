@@ -1,7 +1,7 @@
 
 const AdminService = require('../services/AdminService');
 
-const getUsersForAdmin = async (req, res, next) => {
+const getUsersForAdmin = async (res, next) => {
     try {
         const users = await AdminService.getUsersForAdmin();
         res.json(users);
@@ -22,7 +22,7 @@ const getUserById = async (req, res, next) => {
     }
 };
 
-const getOrdersForAdmin = async (req, res, next) => {
+const getOrdersForAdmin = async (res, next) => {
     try {
         const orders = await AdminService.getOrdersForAdmin();
         res.json(orders);
@@ -31,7 +31,7 @@ const getOrdersForAdmin = async (req, res, next) => {
     }
 };
 
-const getProductsForAdmin = async (req, res, next) => {
+const getProductsForAdmin = async (res, next) => {
     try {
         const products = await AdminService.getProductsForAdmin();
         res.json(products);
@@ -40,7 +40,7 @@ const getProductsForAdmin = async (req, res, next) => {
     }
 };
 
-const getUserRoleCounts = async (req, res, next) => {
+const getUserRoleCounts = async (res, next) => {
     try {
         const result = await AdminService.getUserRoleCounts();
         res.status(200).json(result);
@@ -64,14 +64,13 @@ const deleteUserForAdmin = async (req, res, next) => {
     const { userId } = req.params;
     try {
         await AdminService.deleteUserForAdmin(userId);
-        res.status(200).json({ message: 'Користувач та його дані успішно видалені.' });
+        res.status(200).json({ message: 'The user and his data have been successfully deleted.' });
     } catch (error) {
         next(error);
     }
 };
 
-// Контролер для оновлення профілю користувача
-const updateUser = async (req, res, next) => {
+const updateUser = async (req, next) => {
     const userId = req.params.id;
     const { name, email, phone, role } = req.body;
     try {
@@ -89,7 +88,7 @@ const blockUser = async (req, res, next) => {
         const user = await AdminService.blockUser(userId, is_blocked);
 
         return res.status(200).json({
-            message: `Статус блокування користувача успішно оновлено на ${is_blocked}`,
+            message: `User lock status successfully updated to ${is_blocked}`,
             user
         });
     } catch (error) {
@@ -105,7 +104,7 @@ const blockProduct = async (req, res, next) => {
         const product = await AdminService.blockProduct(productId, is_blocked);
 
         return res.status(200).json({
-            message: `Статус блокування продукту успішно оновлено на ${is_blocked}`,
+            message: `User lock status successfully updated to ${is_blocked}`,
             product
         });
     } catch (error) {

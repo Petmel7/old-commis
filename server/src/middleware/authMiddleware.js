@@ -15,28 +15,28 @@ const protect = async (req, res, next) => {
             });
 
             if (!user) {
-                return res.status(401).json({ message: 'Неавторизовано, користувача не знайдено' });
+                return res.status(401).json({ message: 'Unauthorized, user not found' });
             }
 
             if (user.is_blocked) {
-                return res.status(403).json({ message: 'Користувача заблоковано' });
+                return res.status(403).json({ message: 'The user has been blocked' });
             }
 
-            req.user = user; // Додаємо користувача до об'єкта запиту
+            req.user = user;
             next();
         } catch (error) {
             console.error(error);
-            res.status(401).json({ message: 'Неавторизовано, помилка токена' });
+            res.status(401).json({ message: 'Unauthorized, token error' });
         }
     } else {
-        res.status(401).json({ message: 'Неавторизовано, відсутній токен' });
+        res.status(401).json({ message: 'Unauthorized, missing token' });
     }
 };
 
 const authorize = (...roles) => {
     return (req, res, next) => {
         if (!roles.includes(req.user.role)) {
-            return res.status(403).json({ message: 'Недостатньо прав для виконання цієї дії' });
+            return res.status(403).json({ message: 'You do not have sufficient rights to perform this action' });
         }
         next();
     };

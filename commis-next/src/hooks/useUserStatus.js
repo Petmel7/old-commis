@@ -19,11 +19,11 @@ const useUserStatus = () => {
             try {
                 const userProfile = await getUserProfile();
 
-                if (!userProfile.emailconfirmed) {
+                if (!userProfile.email_confirmed) {
                     openEmailModal();
                 } else if (!userProfile.phone) {
                     openAddPhoneModal();
-                } else if (!userProfile.phoneconfirmed) {
+                } else if (!userProfile.phone_confirmed) {
                     openConfirmPhoneModal();
                 } else {
                     setUser(userProfile);

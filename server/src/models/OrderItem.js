@@ -34,7 +34,7 @@ const OrderItem = sequelize.define('OrderItem', {
         type: DataTypes.FLOAT,
         allowNull: false
     },
-    size: {  // Додаємо поле для розміру
+    size: {
         type: DataTypes.STRING,
         allowNull: false
     }
@@ -44,8 +44,3 @@ const OrderItem = sequelize.define('OrderItem', {
 });
 
 module.exports = OrderItem;
-
-
-// OrderItem.belongsTo(Order, { foreignKey: 'order_id' });
-// OrderItem.belongsTo(Product, { foreignKey: 'product_id' });
-

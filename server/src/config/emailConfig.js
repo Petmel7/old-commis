@@ -1,4 +1,4 @@
-// server/src/config/emailConfig.js
+
 const nodemailer = require('nodemailer');
 
 const transporter = nodemailer.createTransport({

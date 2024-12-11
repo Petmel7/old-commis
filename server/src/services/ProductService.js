@@ -17,26 +17,24 @@ const getProductById = async (id) => {
     const product = await Product.findByPk(id);
 
     if (!product) {
-        throw { status: 404, message: 'Продукт не знайдено' };
+        throw { status: 404, message: 'Product not found' };
     }
 
     return product;
 };
 
 const addProduct = async ({ userId, name, description, price, stock, category, subcategory, images }) => {
-    // Знайдемо або створимо категорію
+
     let categoryRecord = await Category.findOne({ where: { name: category } });
     if (!categoryRecord) {
         categoryRecord = await Category.create({ name: category });
     }
 
-    // Знайдемо або створимо підкатегорію
     let subcategoryRecord = await Subcategory.findOne({ where: { name: subcategory, category_id: categoryRecord.id } });
     if (!subcategoryRecord) {
         subcategoryRecord = await Subcategory.create({ name: subcategory, category_id: categoryRecord.id });
     }
 
-    // Створюємо новий продукт із посиланням на підкатегорію
     const product = await Product.create({
         user_id: userId,
         name,
@@ -61,21 +59,21 @@ const updateProduct = async (id, updateData) => {
 const findProductById = async (id) => {
     const product = await Product.findByPk(id);
     if (!product) {
-        throw { status: 404, message: 'Продукт не знайдено' };
+        throw { status: 404, message: 'Product not found' };
     }
     return product;
 };
 
 const checkOwnershipOrAdmin = async (user, productId) => {
     const product = await Product.findByPk(productId);
-    console.log('Перевірка прав доступу:', { userId: user.id, role: user.role, product });
+    console.log('Checking access rights:', { userId: user.id, role: user.role, product });
 
     if (!product) {
-        throw { status: 404, message: 'Продукт не знайдено' };
+        throw { status: 404, message: 'Product not found' };
     }
 
     if (user.role !== 'superadmin' && product.user_id !== user.id) {
-        throw { status: 403, message: 'Ви не можете редагувати цей продукт' };
+        throw { status: 403, message: 'You cannot edit this product' };
     }
 
     return product;
@@ -96,7 +94,7 @@ const deleteImagesFromProduct = async (productId, indices) => {
     const product = await Product.findByPk(productId);
 
     if (!product) {
-        throw { status: 404, message: 'Продукт не знайдено' };
+        throw { status: 404, message: 'Product not found' };
     }
 
     // Отримуємо шляхи зображень, які потрібно видалити
@@ -117,7 +115,7 @@ const deleteImagesFromProduct = async (productId, indices) => {
 
 const searchProducts = async (query) => {
     if (!query) {
-        throw new Error('Пошуковий запит не може бути порожнім');
+        throw new Error('The search query cannot be empty');
     }
 
     // Пошук продуктів за назвою

@@ -2,7 +2,6 @@
 const { Product, User, Order, OrderItem } = require('../models');
 const path = require('path');
 
-// Функція для перевірки наявності продукту та доступності на складі
 const getProductAndValidateStock = async (productId, quantity) => {
     const product = await Product.findByPk(productId);
     if (!product) {
@@ -15,17 +14,17 @@ const getProductAndValidateStock = async (productId, quantity) => {
 };
 
 const createOrder = async (userId, items, address) => {
+
     let total = 0;
     let orderDetails = '';
     const sellers = new Set();
 
-    // Генеруємо деталі замовлення
     for (const item of items) {
         const product = await getProductAndValidateStock(item.product_id, item.quantity);
         total += product.price * item.quantity;
 
         const productImageURL = `http://localhost:5000/uploads/${path.basename(product.images[0])}`;
-        const seller = await User.findByPk(product.user_id, { attributes: ['name', 'lastname', 'email'] });
+        const seller = await User.findByPk(product.user_id, { attributes: ['name', 'last_name', 'email'] });
         if (seller) sellers.add(seller.email);
 
         orderDetails += `
@@ -38,16 +37,22 @@ const createOrder = async (userId, items, address) => {
             </tr>`;
     }
 
-    // Створюємо замовлення
+    console.log('???????Order creation data:', {
+        user_id: userId,
+        total,
+        region: address[0].region,
+        city: address[0].city,
+        post_office: address[0].post_office,
+    });
+
     const order = await Order.create({
         user_id: userId,
         total,
         region: address[0].region,
         city: address[0].city,
-        postoffice: address[0].postoffice,
+        post_office: address[0].post_office,
     });
 
-    // Додаємо позиції до замовлення
     for (const item of items) {
         const product = await getProductAndValidateStock(item.product_id, item.quantity);
         await OrderItem.create({
@@ -58,7 +63,6 @@ const createOrder = async (userId, items, address) => {
             size: item.size,
         });
 
-        // Оновлюємо залишок на складі
         await product.update({ stock: product.stock - item.quantity });
     }
 
@@ -143,7 +147,7 @@ const getSellerOrders = async (sellerId) => {
         shipping_address: {
             region: order.region,
             city: order.city,
-            postoffice: order.postoffice
+            post_office: order.post_office
         },
         products: order.OrderItems.map(item => ({
             product_name: item.Product.name,

@@ -18,11 +18,16 @@ const ConfirmPhoneModal = ({ show, onClose }) => {
 
     const { data: user } = useFetchData(getUserProfile);
 
+    console.log('???????ConfirmPhoneModal->data: user', user);
+
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     const validationConfirmPhone = () => {
         const errors = {};
-        const userConfirmCode = user?.confirmationcode;
+        const userConfirmCode = user?.confirmation_code;
+
+        console.log('???????userConfirmCode', userConfirmCode);
+        console.log('???????confirm', confirm);
 
         if (!confirm.trim()) {
             errors.confirm = "Введіть код підтвердження телефону";
@@ -45,7 +50,8 @@ const ConfirmPhoneModal = ({ show, onClose }) => {
         setError(null);
 
         try {
-            await confirmPhone({ confirmationcode: confirm });
+            await confirmPhone({ confirmation_code: confirm });
+
             if (cart.length > 0) {
                 router.push('/placingAnOrder');
             } else {
@@ -63,7 +69,7 @@ const ConfirmPhoneModal = ({ show, onClose }) => {
     return (
         <Modal show={show} onClose={onClose} text='Підтвердіть номер телефону'>
             <div className={styles.modalContainer}>
-                {/* <h3>Підтвердіть номер телефону</h3> */}
+
                 <div className={styles.confirmPhoneContent}>
                     <p className={styles.modalText}>Ми надіслали код підтвердження на номер: {user?.phone}</p>
                     <p>На даний час ця функція не працює тому код підтвердження прийде вам на пошту</p>
