@@ -1,24 +1,55 @@
 services:
   - type: web
-    name: backend
+    name: commis-backend
     env: node
-    rootDir: server
-    buildCommand: npm install
-    startCommand: node src/index.js
+    plan: free
+    buildCommand: cd server && npm install
+    startCommand: cd server && npm start
     envVars:
       - key: NODE_ENV
         value: production
       - key: PORT
         value: 5000
-      - fromDotEnv: true
+      - key: DB_HOST
+        sync: false
+      - key: DB_USER
+        sync: false
+      - key: DB_PASSWORD
+        sync: false
+      - key: DB_NAME
+        sync: false
+      - key: DATABASE_URL
+        sync: false
+      - key: JWT_SECRET
+        sync: false
+      - key: JWT_REFRESH_SECRET
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
+      - key: GOOGLE_CLIENT_ID
+        sync: false
+      - key: GOOGLE_CLIENT_SECRET
+        sync: false
+      - key: SESSION_SECRET
+        sync: false
+      - key: PAYPAL_CLIENT_ID
+        sync: false
+      - key: PAYPAL_CLIENT_SECRET
+        sync: false
 
   - type: web
-    name: frontend
-    env: node
-    rootDir: commis-next
-    buildCommand: npm install && npm run build
-    startCommand: npm run start
+    name: commis-frontend
+    env: static
+    plan: free
+    buildCommand: cd commis-next && npm install && npm run build
+    staticPublishPath: commis-next/out
     envVars:
-      - key: NODE_ENV
-        value: production
-      - fromDotEnv: true
+      - key: NEXT_PUBLIC_API_URL
+        sync: false
+      - key: NEXT_PUBLIC_GOOGLE_CLIENT_ID
+        sync: false
+      - key: NEXT_PUBLIC_PAYPAL_CLIENT_ID
+        sync: false
+
