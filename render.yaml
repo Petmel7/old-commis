@@ -2,7 +2,6 @@ services:
   - type: web
     name: commis-backend
     env: node
-    plan: free
     buildCommand: cd server && npm install
     startCommand: cd server && npm start
     envVars:
@@ -42,7 +41,6 @@ services:
   - type: web
     name: commis-frontend
     env: static
-    plan: free
     buildCommand: cd commis-next && npm install && npm run build
     staticPublishPath: commis-next/out
     envVars:
@@ -52,4 +50,3 @@ services:
         sync: false
       - key: NEXT_PUBLIC_PAYPAL_CLIENT_ID
         sync: false
-
