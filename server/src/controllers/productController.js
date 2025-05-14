@@ -8,6 +8,7 @@ const getProducts = async (req, res, next) => {
         const products = await ProductService.getProducts();
         res.json(products);
     } catch (error) {
+        console.error('DB error:', error);
         next(error);
     }
 };
