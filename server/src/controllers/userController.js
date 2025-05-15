@@ -1,5 +1,6 @@
 
 const UserService = require('../services/UserService');
+const { getClientUrl } = require('../utils/env');
 
 const registerUser = async (req, res, next) => {
     const { name, lastname, email, password } = req.body;
@@ -13,9 +14,15 @@ const registerUser = async (req, res, next) => {
 
 const confirmEmail = async (req, res, next) => {
     const { token } = req.params;
+
+    if (!token) {
+        return res.status(400).json({ error: 'Token is required' });
+    }
+
     try {
         await UserService.confirmEmail(token);
-        res.redirect('http://localhost:3000/login');
+
+        res.redirect(`${getClientUrl()}/login`);
     } catch (error) {
         next(error);
     }
