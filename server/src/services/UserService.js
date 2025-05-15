@@ -17,8 +17,11 @@ const registerUser = async ({ name, lastname, email, password }) => {
     const newUser = await User.create({ name, lastname, email, password: hashedPassword });
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    // const url = `http://localhost:5000/api/users/confirm/${token}`;
-    const url = `${getServerUrl()}/api/users/confirm/${token}`;
+
+    // const url = `${getServerUrl()}/api/users/confirm/${token}`;
+    const url = `${getServerUrl()}/confirm/${token}`;
+
+    comsole.log('✅url', url);
 
     await transporter.sendMail({
         to: email,
@@ -51,15 +54,10 @@ const addPhoneNumber = async (phone, userId) => {
 
 const confirmPhoneNumber = async (userId, confirmationcode) => {
 
-    console.log('???????userId', userId);
-    console.log('???????confirmationcode', confirmationcode);
-
     const user = await User.findByPk(userId);
     if (!user) {
         throw { status: 404, message: 'No user found' };
     }
-
-    console.log('???????user.confirmation_code', user.confirmation_code);
 
     if (user.confirmation_code !== confirmationcode) {
         throw { status: 400, message: 'Invalid verification code.' };
