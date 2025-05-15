@@ -51,10 +51,8 @@ const { Sequelize } = require('sequelize');
 const dotenv = require('dotenv');
 const path = require('path');
 
-// Завантаження .env
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-// Умова для перевірки середовища
 const isProduction = process.env.NODE_ENV === 'production';
 
 const sequelize = new Sequelize(
