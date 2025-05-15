@@ -18,8 +18,7 @@ const registerUser = async ({ name, lastname, email, password }) => {
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-    // const url = `${getServerUrl()}/api/users/confirm/${token}`;
-    const url = `${getServerUrl()}/confirm/${token}`;
+    const url = `${getServerUrl()}/api/users/confirm/${token}`;
 
     comsole.log('✅url', url);
 
