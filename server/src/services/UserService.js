@@ -4,6 +4,7 @@ const transporter = require('../config/emailConfig');
 const { User, RefreshToken, Product } = require('../models');
 const { generateAccessToken, generateRefreshToken, generateConfirmationCode } = require('../auth/auth');
 const { updateUserLoginStatus } = require('../utils/userUtils');
+const { getServerUrl } = require('../utils/env');
 
 const registerUser = async ({ name, lastname, email, password }) => {
     const existingUser = await User.findOne({ where: { email } });
@@ -16,7 +17,8 @@ const registerUser = async ({ name, lastname, email, password }) => {
     const newUser = await User.create({ name, lastname, email, password: hashedPassword });
 
     const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' });
-    const url = `http://localhost:5000/api/users/confirm/${token}`;
+    // const url = `http://localhost:5000/api/users/confirm/${token}`;
+    const url = `${getServerUrl()}/api/users/confirm/${token}`;
 
     await transporter.sendMail({
         to: email,
