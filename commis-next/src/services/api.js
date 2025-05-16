@@ -1,7 +1,7 @@
 
 import axios from 'axios';
 import { getServerUrl } from '@/utils/env';
-
+console.log('getServerUrl()', getServerUrl());
 const api = axios.create({
     baseURL: `${getServerUrl()}/api`,
     headers: {
