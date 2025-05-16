@@ -1,6 +1,7 @@
 
 const { Product, User, Order, OrderItem } = require('../models');
 const path = require('path');
+const { getServerUrl } = require('../utils/env')
 
 const getProductAndValidateStock = async (productId, quantity) => {
     const product = await Product.findByPk(productId);
@@ -23,7 +24,7 @@ const createOrder = async (userId, items, address) => {
         const product = await getProductAndValidateStock(item.product_id, item.quantity);
         total += product.price * item.quantity;
 
-        const productImageURL = `http://localhost:5000/uploads/${path.basename(product.images[0])}`;
+        const productImageURL = `${getServerUrl()}/uploads/${path.basename(product.images[0])}`;
         const seller = await User.findByPk(product.user_id, { attributes: ['name', 'last_name', 'email'] });
         if (seller) sellers.add(seller.email);
 

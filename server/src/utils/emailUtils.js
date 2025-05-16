@@ -1,7 +1,8 @@
 const transporter = require('../config/emailConfig');
+const { getServerUrl } = require('../utils/env');
 
 const sendOrderEmail = async (userEmail, orderId, orderDetails, total) => {
-    const baseURL = 'http://localhost:5000/uploads';
+    const baseURL = `${getServerUrl()}/uploads`;
     await transporter.sendMail({
         to: userEmail,
         subject: `Ваше замовлення ${orderId} отримано продавцями`,
