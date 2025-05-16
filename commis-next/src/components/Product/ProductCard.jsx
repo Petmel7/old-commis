@@ -6,7 +6,7 @@ import FavoriteButton from '../Favorite/FavoriteButton';
 import styles from './styles/ProductCard.module.css';
 
 const ProductCard = ({ product, isFavorite = false, favoriteId = null }) => {
-
+    console.log('product', product);
     const firstImage = product.images && product.images.length > 0 ? product.images[0] : '';
 
     return (
@@ -14,6 +14,7 @@ const ProductCard = ({ product, isFavorite = false, favoriteId = null }) => {
             <div className={styles.productCard}>
                 <Link href={`/products/details/${product.id}`}>
                     <div className={styles.productCardImageContainer}>
+                        {console.log('${getServerUrl()}/${firstImage}', `${getServerUrl()} / ${firstImage}`)}
                         <img className={styles.productCardImage} src={`${getServerUrl()}/${firstImage}`} alt={product.name} />
                     </div>
                 </Link>
