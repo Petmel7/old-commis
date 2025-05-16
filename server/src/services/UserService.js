@@ -20,7 +20,7 @@ const registerUser = async ({ name, lastname, email, password }) => {
 
     const url = `${getServerUrl()}/api/users/confirm/${token}`;
 
-    comsole.log('✅url', url);
+    console.log('✅url', url);
 
     await transporter.sendMail({
         to: email,
