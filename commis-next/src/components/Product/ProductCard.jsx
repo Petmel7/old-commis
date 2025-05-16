@@ -1,6 +1,6 @@
 
 import Link from 'next/link';
-import { baseUrl } from '../Url/baseUrl';
+import { getServerUrl } from '@/utils/env';
 import { truncateText } from '@/utils/truncateText';
 import FavoriteButton from '../Favorite/FavoriteButton';
 import styles from './styles/ProductCard.module.css';
@@ -14,7 +14,7 @@ const ProductCard = ({ product, isFavorite = false, favoriteId = null }) => {
             <div className={styles.productCard}>
                 <Link href={`/products/details/${product.id}`}>
                     <div className={styles.productCardImageContainer}>
-                        <img className={styles.productCardImage} src={`${baseUrl}${firstImage}`} alt={product.name} />
+                        <img className={styles.productCardImage} src={`${getServerUrl()}/${firstImage}`} alt={product.name} />
                     </div>
                 </Link>
                 <h2 className={styles.productCardName}>

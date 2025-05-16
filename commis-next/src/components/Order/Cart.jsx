@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCart } from '../../context/CartContext';
 import { useAuth } from '@/context/AuthContext';
-import { baseUrl } from '../Url/baseUrl';
+import { getServerUrl } from '@/utils/env';
 import DeleteOrderCart from './DeleteOrderCart';
 import EmptyCart from './EmptyСart';
 import styles from './styles/Cart.module.css';
@@ -38,7 +38,7 @@ const Cart = () => {
                 <div className={styles.cartContainer} key={item.id}>
                     <div className={styles.cartItem}>
                         <div>
-                            <img className={styles.cartImage} src={`${baseUrl}${item.images[0]}`} alt={item.name} />
+                            <img className={styles.cartImage} src={`${getServerUrl()}/${item.images[0]}`} alt={item.name} />
                         </div>
 
                         <div className={styles.quantityContainer}>

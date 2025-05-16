@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import { createOrder } from '../../services/order';
 import { createPayment } from '@/services/payment';
-import { baseUrl } from '../Url/baseUrl';
+import { getServerUrl } from '@/utils/env';
 import { useRouter } from 'next/router';
 import useUserStatus from '../../hooks/useUserStatus';
 import ConfirmEmailModal from '../User/ConfirmEmailModal';
@@ -118,7 +118,7 @@ const PlacingAnOrder = () => {
                         <div className={styles.cartContainer} key={item.id}>
                             <div className={styles.cartItem}>
                                 <div>
-                                    <img className={styles.cartImage} src={`${baseUrl}${item.images[0]}`} alt={item.name} />
+                                    <img className={styles.cartImage} src={`${getServerUrl()}/${item.images[0]}`} alt={item.name} />
                                 </div>
 
                                 <div className={styles.quantityContainer}>

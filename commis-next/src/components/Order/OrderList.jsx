@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { getSellerOrders } from '../../services/order';
-import { baseUrl } from '../Url/baseUrl';
+import { getServerUrl } from '@/utils/env';
 import DeleteOrderList from './DeleteOrderList';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
@@ -87,13 +87,13 @@ const OrderList = () => {
                             {order.products.map(product => (
                                 <li key={`${order.order_id}-${product.product_name}`}>
                                     <button className={styles.productImageButton} onClick={() => openImageModal(order.order_id)}>
-                                        <img className={styles.productImage} src={`${baseUrl}${product.product_images[0]}`} alt={product.product_name} width="50" />
+                                        <img className={styles.productImage} src={`${getServerUrl()}/${product.product_images[0]}`} alt={product.product_name} width="50" />
                                     </button>
                                     <Modal show={modalState.viewImage === order.order_id} onClose={closeModal}>
                                         <div
                                             className={styles.productImageModal}
                                             style={{
-                                                backgroundImage: `url(${baseUrl}${product.product_images[0].replace(/\\/g, '/')})`
+                                                backgroundImage: `url(${getServerUrl()}/${product.product_images[0].replace(/\\/g, '/')})`
                                             }}
                                         ></div>
                                     </Modal>

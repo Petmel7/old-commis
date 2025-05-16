@@ -2,7 +2,7 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useFavorites } from '@/context/FavoritesContext';
-import { baseUrl } from '../Url/baseUrl';
+import { getServerUrl } from '@/utils/env';
 import Slider from 'react-slick';
 import useProduct from '@/hooks/useProduct';
 import BackButton from '../BackButton/BackButton';
@@ -92,7 +92,7 @@ const ProductDetails = () => {
                 <Slider {...settings} className={styles.slider}>
                     {product.images.map((image, index) => (
                         <div key={index} className={styles.imageContainer}>
-                            <img className={styles.productImage} src={`${baseUrl}${image}`} alt={product.name} />
+                            <img className={styles.productImage} src={`${getServerUrl()}/${image}`} alt={product.name} />
                         </div>
                     ))}
                 </Slider>

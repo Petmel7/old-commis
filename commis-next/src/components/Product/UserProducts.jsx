@@ -1,6 +1,7 @@
 
 import { getUserProducts } from '../../services/products';
 import { baseUrl } from '../Url/baseUrl';
+import { getServerUrl } from '@/utils/env';
 import { validateArray } from '@/utils/validation';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
@@ -36,7 +37,7 @@ const UserProducts = () => {
                     <li key={product.id} className='product-item'>
                         <UserProductsCart
                             pathProductId={`/products/userDetails/${product.id}`}
-                            productImages={`${baseUrl}${product.images[0]}`}
+                            productImages={`${getServerUrl()}/${product.images[0]}`}
                             productNames={product.name}
                             productPrices={product.price}
                         />

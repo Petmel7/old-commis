@@ -1,6 +1,6 @@
 
 import { useState, useEffect } from 'react';
-import { baseUrl } from '../Url/baseUrl';
+import { getServerUrl } from '@/utils/env';
 import { addSizeToProduct } from '@/services/sizes';
 import DeleteImage from './DeleteImage';
 import DeleteIcon from '../../../public/img/delete.svg';
@@ -18,7 +18,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [ukrainianSizes, setUkrainianSizes] = useState([]);
     const [shoeSizes, setShoeSizes] = useState([]);
     const [images, setImages] = useState([]);
-    const [imagePreviews, setImagePreviews] = useState(initialData.images ? initialData.images.map(image => `${baseUrl}${image}`) : []);
+    const [imagePreviews, setImagePreviews] = useState(initialData.images ? initialData.images.map(image => `${getServerUrl()}/${image}`) : []);
 
     // Підкатегорії, які відповідають взуттю
     const shoeSubcategories = ['Чоловіче взуття', 'Жіноче взуття', 'Дитяче взуття'];
@@ -33,7 +33,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
         setInternationalSizes([]);
         setUkrainianSizes([]);
         setShoeSizes([]);
-        setImagePreviews(initialData.images ? initialData.images.map(image => `${baseUrl}${image}`) : []);
+        setImagePreviews(initialData.images ? initialData.images.map(image => `${getServerUrl()}/${image}`) : []);
     }, [initialData]);
 
     // Оновлюємо міжнародні розміри і очищаємо українські та розміри взуття

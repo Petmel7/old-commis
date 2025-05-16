@@ -7,16 +7,14 @@ const DeleteUser = ({ userId, onDelete }) => {
 
     const handleDeleteUser = async () => {
         try {
-            // Видалення користувача на сервері
             await deleteUser(userId);
 
             if (onDelete) onDelete();
 
-            // Якщо видаляється поточний користувач
             if (user && user.id === userId) {
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
-                handleLogout(); // Виклик handleLogout для очищення контексту
+                handleLogout();
             }
 
         } catch (error) {
