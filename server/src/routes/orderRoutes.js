@@ -10,8 +10,3 @@ router.get('/seller', protect, getSellerOrders);
 router.get('/', protect, getUserOrders);
 
 module.exports = router;
-
-
-
-
-
