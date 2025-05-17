@@ -92,6 +92,7 @@ const ProductDetails = () => {
                 <Slider {...settings} className={styles.slider}>
                     {product.images.map((image, index) => (
                         <div key={index} className={styles.imageContainer}>
+                            {console.log('`${getServerUrl()}/${image}`', `${getServerUrl()}/${image}`)}
                             <img className={styles.productImage} src={`${getServerUrl()}/${image}`} alt={product.name} />
                         </div>
                     ))}
