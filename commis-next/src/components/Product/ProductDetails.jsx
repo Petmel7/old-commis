@@ -7,7 +7,6 @@ import Slider from 'react-slick';
 import useProduct from '@/hooks/useProduct';
 import BackButton from '../BackButton/BackButton';
 import BuyButton from '../BuyButton/BuyButton';
-// import ProductSize from './ProductSize';
 import ProductSize from './productSize';
 import FavoriteButton from '../Favorite/FavoriteButton';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
@@ -92,7 +91,8 @@ const ProductDetails = () => {
                 <Slider {...settings} className={styles.slider}>
                     {product.images.map((image, index) => (
                         <div key={index} className={styles.imageContainer}>
-                            {console.log('`${getServerUrl()}/${image}`', `${getServerUrl()}/${image}`)}
+                            {console.log('ProductDetails->getServerUrl():', getServerUrl())}
+                            {console.log('image src:', `${getServerUrl()}/${product.images[0]}`)}
                             <img className={styles.productImage} src={`${getServerUrl()}/${image}`} alt={product.name} />
                         </div>
                     ))}
