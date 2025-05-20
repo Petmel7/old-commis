@@ -111,37 +111,37 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             console.log('formData', formData);
             formData.append('image', image);
 
-            // const res = await fetch(`${getServerUrl()}/api/upload-image`, {
-            //     method: 'POST',
-            //     body: formData,
-            // });
-
-            // const data = await res.json();
-
             const res = await fetch(`${getServerUrl()}/api/upload-image`, {
                 method: 'POST',
                 body: formData,
             });
 
-            const text = await res.text();
-            console.log('text', text)
+            const data = await res.json();
 
-            try {
-                const data = JSON.parse(text);
-                if (!res.ok) throw new Error(data.error || 'Upload failed');
-                return data;
-            } catch (err) {
-                console.error('Invalid JSON or Upload failed:', text);
-                throw new Error('Invalid server response');
-            }
+            // const res = await fetch(`${getServerUrl()}/api/upload-image`, {
+            //     method: 'POST',
+            //     body: formData,
+            // });
 
-            // if (!res.ok || !data.url) {
-            //     console.error('Upload error:', data.error);
-            //     alert('Помилка при завантаженні зображення');
-            //     return;
+            // const text = await res.text();
+            // console.log('text', text)
+
+            // try {
+            //     const data = JSON.parse(text);
+            //     if (!res.ok) throw new Error(data.error || 'Upload failed');
+            //     return data;
+            // } catch (err) {
+            //     console.error('Invalid JSON or Upload failed:', text);
+            //     throw new Error('Invalid server response');
             // }
 
-            // uploadedUrls.push(data.url);
+            if (!res.ok || !data.url) {
+                console.error('Upload error:', data.error);
+                alert('Помилка при завантаженні зображення');
+                return;
+            }
+
+            uploadedUrls.push(data.url);
         }
 
         const productData = {
