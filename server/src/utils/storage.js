@@ -1,4 +1,4 @@
-import supabase from '../lib/supabase';
+const supabase = require('../lib/supabase');
 
 const BUCKET = process.env.SUPABASE_BUCKET_NAME;
 
@@ -6,15 +6,15 @@ const BUCKET = process.env.SUPABASE_BUCKET_NAME;
  * Upload image to Supabase Storage
  * @param {Buffer} fileBuffer
  * @param {string} filename
- * @returns {string} public URL
+ * @returns {Promise<string>} public URL
  */
-export const uploadImage = async (fileBuffer, filename) => {
-    const { data, error } = await supabase.storage
+const uploadImage = async (fileBuffer, filename) => {
+    const { error } = await supabase.storage
         .from(BUCKET)
         .upload(filename, fileBuffer, {
             cacheControl: '3600',
             upsert: false,
-            contentType: 'image/jpeg'
+            contentType: 'image/jpeg',
         });
 
     if (error) {
@@ -29,7 +29,13 @@ export const uploadImage = async (fileBuffer, filename) => {
  * @param {string} filename
  * @returns {string} public URL
  */
-export const getPublicUrl = (filename) => {
+const getPublicUrl = (filename) => {
     const { publicURL } = supabase.storage.from(BUCKET).getPublicUrl(filename);
     return publicURL;
 };
+
+module.exports = {
+    uploadImage,
+    getPublicUrl,
+};
+
