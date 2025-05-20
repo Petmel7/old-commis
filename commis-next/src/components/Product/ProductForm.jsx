@@ -108,6 +108,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
 
         for (const image of images) {
             const formData = new FormData();
+            console.log('formData', formData);
             formData.append('image', image);
 
             const res = await fetch(`${getServerUrl()}/api/upload-image`, {
