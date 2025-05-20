@@ -124,6 +124,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             });
 
             const text = await res.text();
+            console.log('text', text)
 
             try {
                 const data = JSON.parse(text);
