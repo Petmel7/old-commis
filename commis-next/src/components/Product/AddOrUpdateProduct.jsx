@@ -16,8 +16,6 @@ const AddOrUpdateProduct = () => {
         setInitialData(productData);
     };
 
-    console.log('**********initialData', initialData);
-
     useEffect(() => {
         if (productId) {
             fetchProduct();
@@ -39,7 +37,11 @@ const AddOrUpdateProduct = () => {
         <>
             <BackButton />
             <div className={styles.container}>
-                <ProductForm initialData={initialData} fetchProduct={fetchProduct} onSubmit={handleSubmit} />
+                <ProductForm
+                    initialData={initialData}
+                    fetchProduct={fetchProduct}
+                    onSubmit={handleSubmit}
+                />
             </div>
         </>
     );

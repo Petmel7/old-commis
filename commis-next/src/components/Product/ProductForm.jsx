@@ -60,23 +60,82 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
         setUkrainianSizes([]);
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+
+    //     const productData = new FormData();
+    //     productData.append('name', name);
+    //     productData.append('description', description);
+    //     productData.append('price', price);
+    //     productData.append('stock', stock);
+    //     productData.append('category', category);
+    //     productData.append('subcategory', subcategory);
+
+    //     // Додавання зображень
+    //     images.forEach((image, index) => {
+    //         productData.append('images', image);
+    //     });
+
+    //     // Вибір, які розміри будуть додані
+    //     let selectedSizes = [];
+    //     if (shoeSubcategories.includes(subcategory)) {
+    //         selectedSizes = shoeSizes;
+    //     } else {
+    //         selectedSizes = internationalSizes.length > 0 ? internationalSizes : ukrainianSizes;
+    //     }
+
+    //     if (selectedSizes.length === 0) {
+    //         alert('Будь ласка, виберіть розміри.');
+    //         return;
+    //     }
+
+    //     try {
+    //         const response = await onSubmit(productData);
+
+    //         if (response && response.product) {
+    //             // Додаємо обрані розміри до продукту
+    //             await addSizeToProduct(response.product.id, selectedSizes);
+    //         }
+    //     } catch (error) {
+    //         console.error('Error in handleSubmit:', error);
+    //     }
+    // };
+
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const productData = new FormData();
-        productData.append('name', name);
-        productData.append('description', description);
-        productData.append('price', price);
-        productData.append('stock', stock);
-        productData.append('category', category);
-        productData.append('subcategory', subcategory);
+        const uploadedUrls = [];
 
-        // Додавання зображень
-        images.forEach((image, index) => {
-            productData.append('images', image);
-        });
+        for (const image of images) {
+            const formData = new FormData();
+            formData.append('image', image);
 
-        // Вибір, які розміри будуть додані
+            const res = await fetch(`${getServerUrl()}/api/upload-image`, {
+                method: 'POST',
+                body: formData,
+            });
+
+            const data = await res.json();
+
+            if (!res.ok || !data.url) {
+                console.error('Upload error:', data.error);
+                alert('Помилка при завантаженні зображення');
+                return;
+            }
+
+            uploadedUrls.push(data.url);
+        }
+
+        const productData = {
+            name,
+            description,
+            price,
+            stock,
+            category,
+            subcategory,
+            images: uploadedUrls,
+        };
+
         let selectedSizes = [];
         if (shoeSubcategories.includes(subcategory)) {
             selectedSizes = shoeSizes;
@@ -93,7 +152,6 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             const response = await onSubmit(productData);
 
             if (response && response.product) {
-                // Додаємо обрані розміри до продукту
                 await addSizeToProduct(response.product.id, selectedSizes);
             }
         } catch (error) {

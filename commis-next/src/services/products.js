@@ -24,12 +24,17 @@ export const searchProducts = async (query) => {
     return response.data;
 };
 
-export const addProduct = async (formData) => {
-    const response = await api.post('/products', formData, {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-    });
+// export const addProduct = async (formData) => {
+//     const response = await api.post('/products', formData, {
+//         headers: {
+//             'Content-Type': 'multipart/form-data'
+//         }
+//     });
+//     return response.data;
+// };
+
+export const addProduct = async (productData) => {
+    const response = await api.post('/products', productData);
     return response.data;
 };
 

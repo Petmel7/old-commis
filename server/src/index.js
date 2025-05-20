@@ -15,6 +15,7 @@ const paymentRoutes = require('./routes/paymentRoutes');
 const catalogRoutes = require('./routes/catalogRoutes');
 const sizeRoutes = require('./routes/sizeRoutes');
 const adminRoutes = require('./routes/adminRoutes');
+const uploadRoutes = require('./routes/uploadRoutes');
 const { errorHandler } = require('./middleware/errorHandler');
 const { deleteOldRefreshTokens } = require('./controllers/userController');
 const checkInactiveSellers = require('./tasks/checkInactiveSellers');
@@ -34,8 +35,9 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
+// app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
+app.use('/api', uploadRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/products', sizeRoutes);
 app.use('/api/users', userRoutes);
