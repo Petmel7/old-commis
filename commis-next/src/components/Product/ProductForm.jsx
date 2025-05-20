@@ -111,17 +111,12 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             console.log('formData', formData);
             formData.append('image', image);
 
-            // const res = await fetch(`${getServerUrl()}/api/upload-image`, {
-            //     method: 'POST',
-            //     body: formData,
-            // });
-
-            // const data = await res.json();
-
             const res = await fetch(`${getServerUrl()}/api/upload-image`, {
                 method: 'POST',
                 body: formData,
             });
+
+            // const data = await res.json();
 
             const text = await res.text();
             console.log('text', text)
