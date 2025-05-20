@@ -111,20 +111,36 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             console.log('formData', formData);
             formData.append('image', image);
 
+            // const res = await fetch(`${getServerUrl()}/api/upload-image`, {
+            //     method: 'POST',
+            //     body: formData,
+            // });
+
+            // const data = await res.json();
+
             const res = await fetch(`${getServerUrl()}/api/upload-image`, {
                 method: 'POST',
                 body: formData,
             });
 
-            const data = await res.json();
+            const text = await res.text();
 
-            if (!res.ok || !data.url) {
-                console.error('Upload error:', data.error);
-                alert('Помилка при завантаженні зображення');
-                return;
+            try {
+                const data = JSON.parse(text);
+                if (!res.ok) throw new Error(data.error || 'Upload failed');
+                return data;
+            } catch (err) {
+                console.error('Invalid JSON or Upload failed:', text);
+                throw new Error('Invalid server response');
             }
 
-            uploadedUrls.push(data.url);
+            // if (!res.ok || !data.url) {
+            //     console.error('Upload error:', data.error);
+            //     alert('Помилка при завантаженні зображення');
+            //     return;
+            // }
+
+            // uploadedUrls.push(data.url);
         }
 
         const productData = {
