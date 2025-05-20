@@ -57,24 +57,47 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
  * @param {string} filename - The name to save the file as.
  * @returns {Promise<string>} - The public URL of the uploaded image.
  */
+// const uploadImage = async (fileBuffer, filename) => {
+//     const { data, error } = await supabase.storage
+//         .from(BUCKET)
+//         .upload(filename, fileBuffer, {
+//             cacheControl: '3600',
+//             upsert: false,
+//             contentType: 'image/jpeg',
+//         });
+
+//     if (error) {
+//         throw new Error(`Upload failed: ${error.message}`);
+//     }
+
+//     const { data: publicUrlData } = supabase.storage
+//         .from(BUCKET)
+//         .getPublicUrl(filename);
+
+//     return publicUrlData.publicUrl;
+// };
+
 const uploadImage = async (fileBuffer, filename) => {
+    console.log('➡️ Uploading to bucket:', BUCKET, 'File:', filename);
+
     const { data, error } = await supabase.storage
         .from(BUCKET)
         .upload(filename, fileBuffer, {
             cacheControl: '3600',
             upsert: false,
-            contentType: 'image/jpeg',
+            contentType: 'image/jpeg'
         });
 
     if (error) {
-        throw new Error(`Upload failed: ${error.message}`);
+        console.error('❌ Supabase upload error:', error.message);
+        throw new Error(error.message);
     }
 
-    const { data: publicUrlData } = supabase.storage
+    const { publicURL } = supabase.storage
         .from(BUCKET)
         .getPublicUrl(filename);
 
-    return publicUrlData.publicUrl;
+    return publicURL;
 };
 
 module.exports = { uploadImage };
