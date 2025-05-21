@@ -32,14 +32,45 @@ const getProductById = async (req, res, next) => {
     }
 };
 
+// const addProduct = async (req, res, next) => {
+//     const { name, description, price, stock, category, subcategory } = req.body;
+//     const images = req.files
+//         ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, ''))
+//         : [];
+
+//     try {
+
+//         const product = await ProductService.addProduct({
+//             userId: req.user.id,
+//             name,
+//             description,
+//             price,
+//             stock,
+//             category,
+//             subcategory,
+//             images
+//         });
+
+//         await UserService.updateUserRoleIfNecessary(req.user);
+
+//         res.status(201).json({ message: 'Product added successfully', product });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
 const addProduct = async (req, res, next) => {
-    const { name, description, price, stock, category, subcategory } = req.body;
-    const images = req.files
-        ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, ''))
-        : [];
+    const {
+        name,
+        description,
+        price,
+        stock,
+        category,
+        subcategory,
+        images // 👈 public URL array from Supabase
+    } = req.body;
 
     try {
-
         const product = await ProductService.addProduct({
             userId: req.user.id,
             name,
@@ -59,12 +90,32 @@ const addProduct = async (req, res, next) => {
     }
 };
 
+// const updateProduct = async (req, res, next) => {
+//     const { id } = req.params;
+//     const { name, description, price, stock } = req.body;
+//     const images = req.files
+//         ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, ''))
+//         : null;
+
+//     try {
+//         const updateData = { name, description, price, stock };
+//         if (images) updateData.images = images;
+
+//         await ProductService.checkOwnershipOrAdmin(req.user, id);
+//         const updatedProduct = await ProductService.updateProduct(id, updateData);
+
+//         res.json({ message: 'The product has been updated successfully', product: updatedProduct });
+//     } catch (error) {
+//         if (error.status) {
+//             return res.status(error.status).json({ message: error.message });
+//         }
+//         next(error);
+//     }
+// };
+
 const updateProduct = async (req, res, next) => {
     const { id } = req.params;
-    const { name, description, price, stock } = req.body;
-    const images = req.files
-        ? req.files.map(file => file.path.replace(`${path.join(__dirname, '../../')}`, ''))
-        : null;
+    const { name, description, price, stock, images } = req.body;
 
     try {
         const updateData = { name, description, price, stock };
