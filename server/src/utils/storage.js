@@ -77,15 +77,21 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 //     return publicUrlData.publicUrl;
 // };
 
-const uploadImage = async (fileBuffer, filename) => {
-    console.log('➡️ Uploading to bucket:', BUCKET, 'File:', filename);
+const path = require('path');
 
-    const { data, error } = await supabase.storage
+const uploadImage = async (fileBuffer, originalName) => {
+    const extension = path.extname(originalName); // .jpg / .png
+    const baseName = path.basename(originalName, extension);
+    const uniqueName = `${Date.now()}-${baseName}${extension}`;
+
+    console.log('➡️ Final filename for upload:', uniqueName);
+
+    const { error } = await supabase.storage
         .from(BUCKET)
-        .upload(filename, fileBuffer, {
+        .upload(uniqueName, fileBuffer, {
             cacheControl: '3600',
             upsert: false,
-            contentType: 'image/jpeg'
+            contentType: 'image/jpeg',
         });
 
     if (error) {
@@ -95,7 +101,7 @@ const uploadImage = async (fileBuffer, filename) => {
 
     const { publicURL } = supabase.storage
         .from(BUCKET)
-        .getPublicUrl(filename);
+        .getPublicUrl(uniqueName);
 
     return publicURL;
 };
