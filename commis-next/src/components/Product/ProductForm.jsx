@@ -346,7 +346,12 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [ukrainianSizes, setUkrainianSizes] = useState([]);
     const [shoeSizes, setShoeSizes] = useState([]);
     const [images, setImages] = useState([]);
-    const [imagePreviews, setImagePreviews] = useState(initialData.images ? initialData.images.map(image => `${getServerUrl()}/${image}`) : []);
+    // const [imagePreviews, setImagePreviews] = useState(initialData.images ? initialData.images.map(image => `${getServerUrl()}/${image}`) : []);
+    const [imagePreviews, setImagePreviews] = useState(
+        Array.isArray(initialData.images)
+            ? initialData.images.map(image => `${getServerUrl()}/${image}`)
+            : []
+    );
 
     const shoeSubcategories = ['Чоловіче взуття', 'Жіноче взуття', 'Дитяче взуття'];
 
@@ -360,7 +365,12 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
         setInternationalSizes([]);
         setUkrainianSizes([]);
         setShoeSizes([]);
-        setImagePreviews(initialData.images ? initialData.images.map(image => `${getServerUrl()}/${image}`) : []);
+        // setImagePreviews(initialData.images ? initialData.images.map(image => `${getServerUrl()}/${image}`) : []);
+        setImagePreviews(
+            Array.isArray(initialData.images)
+                ? initialData.images.map(image => `${getServerUrl()}/${image}`)
+                : []
+        );
     }, [initialData]);
 
     const handleInternationalSizeChange = (e) => {
