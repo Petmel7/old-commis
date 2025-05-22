@@ -92,6 +92,8 @@ const checkOwnershipOrAdmin = async (user, productId) => {
 const deleteProduct = async (product) => {
     const subcategoryId = product.subcategory_id;
 
+    console.log('🗑️ Deleting product id:', product.id, 'with subcategoryId:', subcategoryId);
+
     await product.destroy();
 
     if (!subcategoryId) return;

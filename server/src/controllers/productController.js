@@ -103,7 +103,9 @@ const deleteProduct = async (req, res, next) => {
         if (error.status) {
             return res.status(error.status).json({ message: error.message });
         }
-        next(error);
+        // next(error);
+        res.status(500).json({ message: 'Server error', details: error.message || 'Unexpected' });
+
     }
 };
 
