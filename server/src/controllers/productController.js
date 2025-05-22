@@ -97,6 +97,9 @@ const deleteProduct = async (req, res, next) => {
 
         res.json({ message: 'The product and associated subcategory have been successfully deleted' });
     } catch (error) {
+        console.error('❌ Delete product error:', error);
+        res.status(500).json({ message: 'Server error', details: error.message });
+
         if (error.status) {
             return res.status(error.status).json({ message: error.message });
         }

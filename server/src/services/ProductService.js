@@ -79,11 +79,25 @@ const checkOwnershipOrAdmin = async (user, productId) => {
     return product;
 };
 
+// const deleteProduct = async (product) => {
+//     const subcategoryId = product.subcategory_id;
+//     await product.destroy();
+
+//     const remainingProducts = await Product.count({ where: { subcategory_id: subcategoryId } });
+//     if (remainingProducts === 0) {
+//         await Subcategory.destroy({ where: { id: subcategoryId } });
+//     }
+// };
+
 const deleteProduct = async (product) => {
     const subcategoryId = product.subcategory_id;
+
     await product.destroy();
 
+    if (!subcategoryId) return;
+
     const remainingProducts = await Product.count({ where: { subcategory_id: subcategoryId } });
+
     if (remainingProducts === 0) {
         await Subcategory.destroy({ where: { id: subcategoryId } });
     }
