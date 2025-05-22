@@ -36,12 +36,11 @@ const UserProducts = () => {
                     <li key={product.id} className='product-item'>
                         <UserProductsCart
                             pathProductId={`/products/userDetails/${product.id}`}
-                            productImages={product.images[0]}
-                            // productImages={
-                            //     Array.isArray(product.images) && product.images.length > 0
-                            //         ? `${getServerUrl()}/${product.images[0]}`
-                            //         : `${getServerUrl()}/img/fallback.jpg`
-                            // }
+                            productImages={
+                                Array.isArray(product.images) && product.images.length > 0
+                                    ? product.images[0]
+                                    : `${getServerUrl()}/img/fallback.jpg`
+                            }
                             productNames={product.name}
                             productPrices={product.price}
                         />

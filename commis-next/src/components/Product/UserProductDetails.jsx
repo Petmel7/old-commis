@@ -1,7 +1,6 @@
 
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { getServerUrl } from '@/utils/env';
 import { useAuth } from '@/context/AuthContext';
 import useProduct from '@/hooks/useProduct';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
@@ -42,7 +41,7 @@ const UserProductDetails = () => {
                     <Slider {...settings} className={styles.slider}>
                         {Array.isArray(product.images) && product.images.map((image, index) => (
                             <div key={index} className={styles.imageContainer}>
-                                <img className={styles.productImage} src={`${getServerUrl}/${image}`} alt={product.name} />
+                                <img className={styles.productImage} src={image} alt={product.name} />
                             </div>
                         ))}
                     </Slider>
