@@ -9,8 +9,10 @@ const productSchema = Joi.object({
     stock: Joi.number().integer().required(),
     images: Joi.array().items(Joi.string()).required(),
     subcategory_id: Joi.number().integer().required(),
-    is_active: Joi.boolean().default(true)
+    is_active: Joi.boolean().default(true),
+    is_blocked: Joi.boolean().default(false)
 });
+
 
 const addFavoriteSchema = Joi.object({
     productId: Joi.number().integer().required().messages({
