@@ -1,6 +1,8 @@
 import api from './api';
 import { getServerUrl } from '@/utils/env';
 
+console.log('servicesFront->getServerUrl');
+
 export const register = async (data) => {
     const response = await api.post('/users/register', data);
     localStorage.setItem('isRegistered', response.data.isRegistered);
