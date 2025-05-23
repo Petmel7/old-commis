@@ -13,7 +13,10 @@ const DeleteOrderCart = ({ productId }) => {
     };
 
     return (
-        <button className={styles.deleteOrder} type="button" onClick={handleDelete}>
+        <button
+            className={styles.deleteOrder}
+            type="button"
+            onClick={handleDelete}>
             <DeleteIcon />
         </button>
     )

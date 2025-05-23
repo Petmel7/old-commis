@@ -7,7 +7,11 @@ const EmptyCart = () => (
         <p>Корзина порожня. Продовжуйте покупки!</p>
         <img className={styles.cartImg} src={cartImg.src} alt="Кошик" />
         <Link href="/" >
-            <button className={`${styles.actionButton} ${styles.continueShoppingButton}`}>Продовжити покупки</button>
+            <button
+                className={`${styles.actionButton} 
+                ${styles.continueShoppingButton}`}>
+                Продовжити покупки
+            </button>
         </Link>
     </div>
 );

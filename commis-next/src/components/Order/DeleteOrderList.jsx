@@ -15,7 +15,11 @@ const DeleteOrderList = ({ orderId, fetchOrders }) => {
     }
     return (
         <div className={styles.deleteOrderConteaner}>
-            <button className={styles.deleteOrderList} onClick={hamdlerDelete}>Видалити</button>
+            <button
+                className={styles.deleteOrderList}
+                onClick={hamdlerDelete}>
+                Видалити
+            </button>
         </div>
     )
 }
