@@ -6,6 +6,7 @@ const { protect } = require('../middleware/authMiddleware');
 const { generateAccessToken, generateRefreshToken } = require('../auth/auth');
 const { RefreshToken } = require('../models');
 const { updateUserLoginStatus } = require('../utils/userUtils');
+const { getClientUrl } = require('../utils/env');
 const router = express.Router();
 
 router.get('/profile', protect, getUserProfile);
@@ -33,7 +34,7 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
 
             await RefreshToken.create({ user_id: req.user.id, token: refreshToken });
 
-            res.redirect(`http://localhost:3000/auth/callback?token=${accessToken}&refreshToken=${refreshToken}`);
+            res.redirect(`${getClientUrl()}/auth/callback?token=${accessToken}&refreshToken=${refreshToken}`);
         } catch (error) {
             console.error('Error during Google authentication:', error);
             res.status(500).json({ message: 'Failed to authenticate with Google' });
