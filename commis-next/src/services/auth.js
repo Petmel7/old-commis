@@ -1,4 +1,5 @@
 import api from './api';
+import { getServerUrl } from '@/utils/env';
 
 export const register = async (data) => {
     const response = await api.post('/users/register', data);
@@ -14,7 +15,7 @@ export const login = async (data) => {
 };
 
 export const googleAuth = async () => {
-    window.location.href = 'http://localhost:5000/api/users/google';
+    window.location.href = `${getServerUrl()}/api/users/google`;
 };
 
 export const addPhone = async (data) => {
