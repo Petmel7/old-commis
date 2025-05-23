@@ -9,8 +9,6 @@ const ActiveSellersDetails = () => {
     const router = useRouter();
     const { sellerId } = router.query;
 
-    console.log('(((((((sellerId', sellerId);
-
     const { data: rawSeller, loading, error } = useFetchDataWithArg(getActiveSellerById, sellerId);
 
     const seller = Array.isArray(rawSeller) ? rawSeller[0] : rawSeller;
@@ -20,8 +18,6 @@ const ActiveSellersDetails = () => {
     if (!seller) return <p>Продавця не знайдено</p>;
 
     const date = formatDate(seller.last_login);
-
-    console.log('(((((((seller', seller);
 
     return (
         <div>

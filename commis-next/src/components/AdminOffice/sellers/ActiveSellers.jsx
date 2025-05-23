@@ -8,8 +8,6 @@ const ActiveSellers = () => {
     const { data: rawSellers, loading, error } = useFetchData(getActiveSellers);
     const sellers = validateArray(rawSellers);
 
-    console.log('\\\\\\\\\\sellers', sellers);
-
     const loadingAndError = useLoadingAndError(loading, error);
 
     if (loadingAndError) return loadingAndError;
