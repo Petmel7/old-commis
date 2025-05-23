@@ -11,8 +11,15 @@ const getClientUrl = () =>
         ? process.env.CLIENT_PROD_URL
         : process.env.CLIENT_DEV_URL;
 
+const getGoogleCallbackUrl = () => {
+    isProduction
+        ? process.env.GOOGLE_CALLBACK_PROD_URL
+        : process.env.GOOGLE_CALLBACK_DEV_URL;
+}
+
 module.exports = {
     isProduction,
     getServerUrl,
     getClientUrl,
+    getGoogleCallbackUrl
 };
