@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
                 await fetchUserProfile();
             }
             const registered = localStorage.getItem('isRegistered') === 'true';
+
             if (registered) {
                 setIsRegistered(true);
             }

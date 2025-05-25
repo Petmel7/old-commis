@@ -9,5 +9,9 @@ const getClientUrl = () =>
         ? process.env.NEXT_PUBLIC_CLIENT_PROD_URL
         : process.env.NEXT_PUBLIC_CLIENT_DEV_URL;
 
-export { isProduction, getServerUrl, getClientUrl };
+export {
+    isProduction,
+    getServerUrl,
+    getClientUrl,
+};
 

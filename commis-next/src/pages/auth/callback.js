@@ -1,3 +1,4 @@
+
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { getUserProfile } from '@/services/auth';
@@ -10,39 +11,37 @@ const AuthCallback = () => {
     const [error, setError] = useState(null);
     const loadingErrorComponent = useLoadingAndError(loading, error);
     const router = useRouter();
-    const { refreshToken } = router.query;
 
     useEffect(() => {
         const authenticate = async () => {
+            const { token, refreshToken } = router.query;
+
+            if (!token || !refreshToken) return;
+
             try {
+                localStorage.setItem('accessToken', token);
                 localStorage.setItem('refreshToken', refreshToken);
 
-                handleLogin();
+                await handleLogin();
 
-                const accessToken = localStorage.getItem('accessToken');
+                const profile = await getUserProfile(token);
 
-                const userProfile = await getUserProfile(accessToken);
+                const isGoogle = profile?.googleRegistered === true;
+                setGoogleRegisteredStatus(isGoogle);
 
-                if (userProfile.googleRegistered) {
-                    setGoogleRegisteredStatus(true);
-                    localStorage.setItem('isGoogleRegistered', 'true');
-                } else {
-                    setGoogleRegisteredStatus(false);
-                    localStorage.setItem('isGoogleRegistered', 'false');
-                }
+                localStorage.setItem('isGoogleRegistered', isGoogle.toString());
 
-                setLoading(false);
                 router.push('/profile');
-            } catch (error) {
-                setError(error.message);
+            } catch (err) {
+                setError(err.message);
                 setLoading(false);
             }
         };
 
-        if (refreshToken) {
+        if (router.isReady) {
             authenticate();
         }
-    }, [refreshToken, router]);
+    }, [router.isReady]);
 
     if (loadingErrorComponent) return loadingErrorComponent;
 
@@ -50,7 +49,3 @@ const AuthCallback = () => {
 };
 
 export default AuthCallback;
-
-
-
-

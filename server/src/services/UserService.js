@@ -124,7 +124,7 @@ const getUserProfile = async (userId) => {
 
     return {
         ...user.toJSON(),
-        googleRegistered: !!user.googleid
+        googleRegistered: !!user.google_id
     };
 };
 

@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
+import { getServerUrl } from '@/utils/env';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 
 const GoogleAuth = () => {
@@ -8,7 +9,7 @@ const GoogleAuth = () => {
 
     useEffect(() => {
         try {
-            window.location.href = 'http://localhost:5000/api/users/google';
+            window.location.href = `${getServerUrl()}/api/users/google`;
         } catch (error) {
             setError('Redirect failed');
             setLoading(false);

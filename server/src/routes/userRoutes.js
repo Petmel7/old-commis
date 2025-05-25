@@ -33,7 +33,7 @@ router.get('/google/callback', passport.authenticate('google', { failureRedirect
             const refreshToken = generateRefreshToken(req.user.id);
 
             await RefreshToken.create({ user_id: req.user.id, token: refreshToken });
-            console.log('✅✅✅getClientUrl()', getClientUrl());
+
             res.redirect(`${getClientUrl()}/auth/callback?token=${accessToken}&refreshToken=${refreshToken}`);
         } catch (error) {
             console.error('Error during Google authentication:', error);
