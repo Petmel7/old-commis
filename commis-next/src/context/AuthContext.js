@@ -80,6 +80,7 @@ export const AuthProvider = ({ children }) => {
             isBlocked,
             user,
             loading,
+            setUser,
             handleLogin,
             handleLogout,
             handleRegister,

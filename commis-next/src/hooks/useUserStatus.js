@@ -1,42 +1,45 @@
+
 import { useEffect, useState } from 'react';
-import { getUserProfile } from '../services/auth';
+import { useAuth } from '@/context/AuthContext';
 import useModal from './useModal';
 import useLoadingAndError from './useLoadingAndError';
+import checkUserStatus from '../utils/checkUserStatus';
 
 const useUserStatus = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
-    const [user, setUser] = useState(null);
+    const { user, setUser } = useAuth();
 
-    const { isModalOpen: isEmailModalOpen, openModal: openEmailModal, closeModal: closeEmailModal } = useModal();
-    const { isModalOpen: isAddPhoneModalOpen, openModal: openAddPhoneModal, closeModal: closeAddPhoneModal } = useModal();
-    const { isModalOpen: isConfirmPhoneModalOpen, openModal: openConfirmPhoneModal, closeModal: closeConfirmPhoneModal } = useModal();
+    const {
+        isModalOpen: isEmailModalOpen,
+        openModal: openEmailModal,
+        closeModal: closeEmailModal
+    } = useModal();
+
+    const {
+        isModalOpen: isAddPhoneModalOpen,
+        openModal: openAddPhoneModal,
+        closeModal: closeAddPhoneModal
+    } = useModal();
+
+    const {
+        isModalOpen: isConfirmPhoneModalOpen,
+        openModal: openConfirmPhoneModal,
+        closeModal: closeConfirmPhoneModal
+    } = useModal();
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {
-        const checkUserStatus = async () => {
-            try {
-                const userProfile = await getUserProfile();
-
-                if (!userProfile.email_confirmed) {
-                    openEmailModal();
-                } else if (!userProfile.phone) {
-                    openAddPhoneModal();
-                } else if (!userProfile.phone_confirmed) {
-                    openConfirmPhoneModal();
-                } else {
-                    setUser(userProfile);
-                }
-
-                setLoading(false);
-            } catch (err) {
-                setError(err.message);
-                setLoading(false);
-            }
-        };
-
-        checkUserStatus();
+        checkUserStatus({
+            user,
+            setUser,
+            setError,
+            setLoading,
+            openEmailModal,
+            openAddPhoneModal,
+            openConfirmPhoneModal
+        });
     }, []);
 
     return {

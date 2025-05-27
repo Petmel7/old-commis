@@ -31,7 +31,7 @@ const AuthCallback = () => {
 
                 localStorage.setItem('isGoogleRegistered', isGoogle.toString());
 
-                router.push('/profile');
+                router.push('/');
             } catch (err) {
                 setError(err.message);
                 setLoading(false);

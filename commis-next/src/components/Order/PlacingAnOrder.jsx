@@ -37,7 +37,7 @@ const PlacingAnOrder = () => {
     } = useUserStatus();
 
     useEffect(() => {
-        if (cart && user) {
+        if (cart && (cart.length === 0 || user !== null)) {
             setIsLoadingCart(false);
         }
     }, [cart, user]);

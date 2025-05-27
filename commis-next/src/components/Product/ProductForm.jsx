@@ -7,6 +7,11 @@ import DeleteIcon from '../../../public/img/delete.svg';
 import CategorySelect from '../Catalog/CategorySelect';
 import styles from './styles/ProductForm.module.css';
 
+import ConfirmEmailModal from '../User/ConfirmEmailModal';
+import AddPhoneNumber from '../User/AddPhoneNumber';
+import ConfirmPhoneModal from '../User/ConfirmPhoneModal';
+import useUserStatus from '@/hooks/useUserStatus';
+
 const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [name, setName] = useState(initialData.name || '');
     const [description, setDescription] = useState(initialData.description || '');
@@ -23,6 +28,17 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             ? initialData.images.map(image => `${getServerUrl()}/${image}`)
             : []
     );
+
+    const {
+        user,
+        isEmailModalOpen,
+        closeEmailModal,
+        isAddPhoneModalOpen,
+        closeAddPhoneModal,
+        openConfirmPhoneModal,
+        isConfirmPhoneModalOpen,
+        closeConfirmPhoneModal,
+    } = useUserStatus();
 
     const shoeSubcategories = ['Чоловіче взуття', 'Жіноче взуття', 'Дитяче взуття'];
 
@@ -271,6 +287,10 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             </div>
 
             <button type="submit">{initialData.id ? 'Редагувати' : 'Додати'}</button>
+
+            {isEmailModalOpen && <ConfirmEmailModal show={isEmailModalOpen} onClose={closeEmailModal} email={user?.email} />}
+            {isAddPhoneModalOpen && <AddPhoneNumber show={isAddPhoneModalOpen} onClose={closeAddPhoneModal} onPhoneAdded={openConfirmPhoneModal} />}
+            {isConfirmPhoneModalOpen && <ConfirmPhoneModal show={isConfirmPhoneModalOpen} onClose={closeConfirmPhoneModal} />}
         </form>
     );
 };
