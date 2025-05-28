@@ -79,6 +79,7 @@
     .authText {
         font-size: 14px;
         margin-bottom: 8px;
+        margin-right: 0;
     }
 
     .authButton {
@@ -96,7 +97,7 @@
 
 .authButton {
     border-radius: 50px;
-    margin-bottom: 20px;
+    /* margin-bottom: 20px; */
     width: 150px;
     cursor: pointer;
 }
