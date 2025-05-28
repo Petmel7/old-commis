@@ -35,24 +35,9 @@
     font-size: 16px;
 }
 
-/*  */
-/* .authButtonConteaner {
-    position: fixed;
-    bottom: 526px;
-    right: 80px;
-    z-index: 1;
-}
-
-.authText {
-    margin-right: 10px;
-    background-color: #fff;
-    padding: 5px;
-    border-radius: 50px;
-} */
-
 .authButton {
     border-radius: 50px;
-    margin-bottom: 20px;
+    margin-bottom: 15px;
     width: 150px;
 }
 
@@ -65,7 +50,8 @@
     align-items: center;
 }
 
-.authText {
+.authText,
+.selerText {
     margin-right: 10px;
     background-color: #fff;
     padding: 5px;
@@ -86,7 +72,7 @@
         align-items: flex-end;
     }
 
-    .authText {
+    .selerText {
         font-size: 14px;
         margin-bottom: 8px;
         margin-right: 0;
@@ -98,7 +84,6 @@
     }
 }
 
-/*  */
 .logout {
     color: #fff;
     cursor: pointer;
