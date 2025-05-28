@@ -35,7 +35,8 @@
     font-size: 16px;
 }
 
-.authButtonConteaner {
+/*  */
+/* .authButtonConteaner {
     position: fixed;
     bottom: 526px;
     right: 80px;
@@ -53,8 +54,54 @@
     border-radius: 50px;
     margin-bottom: 20px;
     width: 150px;
+} */
+
+.authButtonConteaner {
+    position: fixed;
+    bottom: 526px;
+    right: 80px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
 }
 
+/* мобільна адаптація */
+@media (max-width: 768px) {
+    .authButtonConteaner {
+        bottom: 100px;
+        /* нижче до екрана */
+        right: 16px;
+        /* ближче до краю */
+        flex-direction: column;
+        align-items: flex-end;
+    }
+
+    .authText {
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .authButton {
+        width: 120px;
+        font-size: 14px;
+    }
+}
+
+.authText {
+    margin-right: 10px;
+    background-color: #fff;
+    padding: 5px;
+    border-radius: 50px;
+}
+
+.authButton {
+    border-radius: 50px;
+    margin-bottom: 20px;
+    width: 150px;
+    cursor: pointer;
+}
+
+/*  */
 .logout {
     color: #fff;
     cursor: pointer;
