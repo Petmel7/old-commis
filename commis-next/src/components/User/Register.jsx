@@ -50,7 +50,7 @@ const Register = () => {
     if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
-        <>
+        <div className="authWrapper">
             <form className={styles.authForm} onSubmit={handleSubmit}>
                 <h2 className={styles.authHeading}>Реєстрація</h2>
 
@@ -87,7 +87,7 @@ const Register = () => {
                 <Link href='/login'>Увійти</Link>
             </form>
             <ConfirmEmailModal show={isModalOpen} onClose={closeModal} email={email} />
-        </>
+        </div>
     );
 };
 

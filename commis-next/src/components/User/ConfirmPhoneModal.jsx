@@ -67,7 +67,7 @@ const ConfirmPhoneModal = ({ show, onClose }) => {
 
                 <div className={styles.confirmPhoneContent}>
                     <p className={styles.modalText}>Ми надіслали код підтвердження на номер: {user?.phone}</p>
-                    <p>На даний час ця функція не працює тому код підтвердження прийде вам на пошту</p>
+                    <p className={styles.modalText}>На даний час ця функція не працює тому код підтвердження прийде вам на пошту</p>
                     <input
                         className={`${styles.authInput} ${errors.confirm ? styles.errorInput : ''}`}
                         type="number"

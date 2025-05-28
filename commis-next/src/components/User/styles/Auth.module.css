@@ -9,6 +9,16 @@
     outline: 1px solid red;
 }
 
+.authWrapper {
+    display: flex;
+    justify-content: center;
+    /* по горизонталі */
+    align-items: center;
+    /* по вертикалі */
+    height: 100vh;
+    /* вся висота екрану */
+}
+
 .authForm {
     max-width: 400px;
     margin: 0 auto;

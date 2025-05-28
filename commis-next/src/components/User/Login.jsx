@@ -50,20 +50,22 @@ const Login = () => {
     if (loadingErrorComponent) return loadingErrorComponent;
 
     return (
-        <form className={styles.authForm} onSubmit={handleSubmit}>
-            <h2 className={styles.authHeading}>Увійти</h2>
+        <div className="authWrapper">
+            <form className={styles.authForm} onSubmit={handleSubmit}>
+                <h2 className={styles.authHeading}>Увійти</h2>
 
-            <input className={`${styles.authInput} ${errors.email ? styles.errorInput : ''}`} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
-            {errors.email && <p className={styles.errorText}>{errors.email}</p>}
+                <input className={`${styles.authInput} ${errors.email ? styles.errorInput : ''}`} type="email" value={email} onChange={e => setEmail(e.target.value)} placeholder="Email" />
+                {errors.email && <p className={styles.errorText}>{errors.email}</p>}
 
-            <input className={`${styles.authInput} ${errors.password ? styles.errorInput : ''}`} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Пароль" />
-            {errors.password && <p className={styles.errorText}>{errors.password}</p>}
+                <input className={`${styles.authInput} ${errors.password ? styles.errorInput : ''}`} type="password" value={password} onChange={e => setPassword(e.target.value)} placeholder="Пароль" />
+                {errors.password && <p className={styles.errorText}>{errors.password}</p>}
 
-            <button className={styles.authButton} type="submit">Увійти</button>
-            <GoogleAuth />
-            <span className={styles.authText}>Немає аккаунта?</span>
-            <Link href='/register'>Зареєструватися</Link>
-        </form>
+                <button className={styles.authButton} type="submit">Увійти</button>
+                <GoogleAuth />
+                <span className={styles.authText}>Немає аккаунта?</span>
+                <Link href='/register'>Зареєструватися</Link>
+            </form>
+        </div>
     );
 };
 
