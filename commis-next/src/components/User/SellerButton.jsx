@@ -11,7 +11,7 @@ const SellerButton = () => {
             {!isRegistered && !isGoogleRegistered ? (
                 <div className={styles.authButtonConteaner}>
                     <span className={styles.authText}>Хочете стати продавцем?</span>
-                    <Link href='/register'><button className={styles.authButton}>Так</button></Link>
+                    <Link href='/register'><button className={styles.selerButton}>Так</button></Link>
                 </div>
             ) : (
                 ''

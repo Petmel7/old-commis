@@ -48,13 +48,13 @@
     background-color: #fff;
     padding: 5px;
     border-radius: 50px;
-}
+} */
 
 .authButton {
     border-radius: 50px;
     margin-bottom: 20px;
     width: 150px;
-} */
+}
 
 .authButtonConteaner {
     position: fixed;
@@ -72,7 +72,7 @@
     border-radius: 50px;
 }
 
-.authButton {
+.selerButton {
     border-radius: 50px;
     width: 150px;
     cursor: pointer;
@@ -92,7 +92,7 @@
         margin-right: 0;
     }
 
-    .authButton {
+    .selerButton {
         width: 120px;
         font-size: 14px;
     }
