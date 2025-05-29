@@ -23,8 +23,6 @@ const Profile = () => {
         closeConfirmPhoneModal,
     } = useUserStatus();
 
-    // if (!user) return <p>Завантаження профілю...</p>;
-
     if (isBlocked) return <UserStatusText />;
 
     if (loadingErrorComponent) return loadingErrorComponent;
