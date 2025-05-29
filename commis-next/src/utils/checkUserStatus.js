@@ -9,6 +9,10 @@ const checkUserStatus = async ({
     openConfirmPhoneModal
 }) => {
     try {
+        if (!user) {
+            setLoading(false);
+            return;
+        }
         if (!user.email_confirmed) {
             openEmailModal();
         } else if (!user.phone) {

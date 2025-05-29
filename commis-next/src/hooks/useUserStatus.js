@@ -31,6 +31,7 @@ const useUserStatus = () => {
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {
+        if (user === null) return;
         checkUserStatus({
             user,
             setUser,
@@ -40,7 +41,7 @@ const useUserStatus = () => {
             openAddPhoneModal,
             openConfirmPhoneModal
         });
-    }, []);
+    }, [user]);
 
     return {
         loading,
