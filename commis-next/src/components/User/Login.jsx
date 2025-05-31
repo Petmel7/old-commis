@@ -40,9 +40,15 @@ const Login = () => {
             await login({ email, password });
             handleLogin();
             router.push('/profile');
-            setLoading(false);
         } catch (error) {
-            setError(error.message);
+            const msg = error.message;
+
+            if (msg.includes('Google')) {
+                alert(msg);
+            } else {
+                setError(msg);
+            }
+
             setLoading(false);
         }
     };

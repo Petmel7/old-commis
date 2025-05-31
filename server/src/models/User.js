@@ -66,6 +66,11 @@ const User = sequelize.define('User', {
     last_login: {
         type: DataTypes.DATE,
         allowNull: true,
+    },
+    auth_provider: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'local',
     }
 }, {
     timestamps: false,

@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { googleAuth } from '@/services/auth';
+import { useRouter } from "next/router";
 import GoogleIcon from '../../../public/img/google.svg';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import styles from './styles/GoogleAuth.module.css';
@@ -7,8 +8,15 @@ import styles from './styles/GoogleAuth.module.css';
 const GoogleAuth = () => {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const router = useRouter();
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
+
+    useEffect(() => {
+        if (router.query.error === 'google-local-conflict') {
+            alert('Цей акаунт зареєстрований вручну. Увійдіть з email і паролем.');
+        }
+    }, [router.query]);
 
     const handleGoogleSignIn = async (e) => {
         e.preventDefault();

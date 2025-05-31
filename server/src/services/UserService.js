@@ -70,8 +70,13 @@ const confirmPhoneNumber = async (userId, confirmationcode) => {
 const loginUser = async (email, password) => {
 
     const user = await User.findOne({ where: { email } });
+
     if (!user) {
         throw { status: 400, message: 'Invalid credentials' };
+    }
+
+    if (user.auth_provider === 'google') {
+        throw { status: 400, message: 'Цей акаунт зареєстрований через Google. Увійдіть через Google.' };
     }
 
     const validPassword = await bcrypt.compare(password, user.password);

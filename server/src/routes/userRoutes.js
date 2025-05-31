@@ -20,27 +20,31 @@ router.post('/confirm-phone', protect, confirmPhoneNumber);
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/' }), async (req, res) => {
-    req.login(req.user, async (err) => {
-        if (err) {
-            return res.status(500).json({ message: 'Login error' });
-        }
-        try {
-            const user = req.user;
-            await updateUserLoginStatus(user);
+router.get('/google/callback', passport.authenticate('google', {
+    failureRedirect: '/login?error=google-local-conflict',
+    session: false
+}),
+    async (req, res) => {
+        req.login(req.user, async (err) => {
+            if (err) {
+                return res.status(500).json({ message: 'Login error' });
+            }
+            try {
+                const user = req.user;
+                await updateUserLoginStatus(user);
 
-            const accessToken = generateAccessToken(req.user.id);
-            const refreshToken = generateRefreshToken(req.user.id);
+                const accessToken = generateAccessToken(req.user.id);
+                const refreshToken = generateRefreshToken(req.user.id);
 
-            await RefreshToken.create({ user_id: req.user.id, token: refreshToken });
+                await RefreshToken.create({ user_id: req.user.id, token: refreshToken });
 
-            res.redirect(`${getClientUrl()}/auth/callback?token=${accessToken}&refreshToken=${refreshToken}`);
-        } catch (error) {
-            console.error('Error during Google authentication:', error);
-            res.status(500).json({ message: 'Failed to authenticate with Google' });
-        }
+                res.redirect(`${getClientUrl()}/auth/callback?token=${accessToken}&refreshToken=${refreshToken}`);
+            } catch (error) {
+                console.error('Error during Google authentication:', error);
+                res.status(500).json({ message: 'Failed to authenticate with Google' });
+            }
+        });
     });
-});
 
 module.exports = router;
 
