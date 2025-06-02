@@ -53,7 +53,7 @@
 
 .authButtonConteaner {
     position: fixed;
-    bottom: 526px;
+    bottom: 500px;
     right: 80px;
     z-index: 10;
     display: flex;
