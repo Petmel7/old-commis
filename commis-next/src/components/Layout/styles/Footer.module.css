@@ -1,6 +1,6 @@
 .footer {
     background-color: #1D2533;
-    padding: 20px 0px;
+    /* padding: 20px 0px; */
     z-index: 1000;
     bottom: 0;
     left: 0;
@@ -69,7 +69,6 @@
 @media (max-width: 768px) {
     .footer {
         position: fixed;
-        padding: 20px;
     }
 
     .lightFooterSection {
