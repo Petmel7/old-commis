@@ -13,7 +13,8 @@ const GoogleAuth = () => {
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {
-        if (router.query.error === 'google-local-conflict') {
+        const { error } = router.query;
+        if (error === 'google-local-conflict') {
             alert('Цей акаунт зареєстрований вручну. Увійдіть з email і паролем.');
         }
     }, [router.query]);
@@ -47,6 +48,3 @@ const GoogleAuth = () => {
 };
 
 export default GoogleAuth;
-
-
-

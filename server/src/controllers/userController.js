@@ -1,4 +1,4 @@
-
+const passport = require('passport');
 const UserService = require('../services/UserService');
 const { getClientUrl } = require('../utils/env');
 
@@ -77,6 +77,22 @@ const loginUser = async (req, res, next) => {
     }
 };
 
+const googleCallback = (req, res, next) => {
+    passport.authenticate('google', { session: false }, (err, user, info) => {
+        if (err || !user) {
+            const errorCode = info?.message || 'unknown-error';
+            return res.redirect(`${getClientUrl()}/login?error=${errorCode}`);
+        }
+
+        req.login(user, async (err) => {
+            if (err) return res.redirect(`${getClientUrl()}/login?error=login-failed`);
+
+            const { redirectUrl } = await UserService.handleGoogleLogin(user);
+            return res.redirect(redirectUrl);
+        });
+    })(req, res, next);
+};
+
 const logoutUser = async (req, res, next) => {
     const { token } = req.body;
 
@@ -114,6 +130,7 @@ module.exports = {
     addPhoneNumber,
     confirmPhoneNumber,
     loginUser,
+    googleCallback,
     logoutUser,
     getUserProfile,
     refreshToken,

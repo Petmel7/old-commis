@@ -4,7 +4,7 @@ const transporter = require('../config/emailConfig');
 const { User, RefreshToken, Product } = require('../models');
 const { generateAccessToken, generateRefreshToken, generateConfirmationCode } = require('../auth/auth');
 const { updateUserLoginStatus } = require('../utils/userUtils');
-const { getServerUrl } = require('../utils/env');
+const { getServerUrl, getClientUrl } = require('../utils/env');
 
 const registerUser = async ({ name, lastname, email, password }) => {
     const existingUser = await User.findOne({ where: { email } });
@@ -92,6 +92,24 @@ const loginUser = async (email, password) => {
     await RefreshToken.create({ user_id: user.id, token: refreshToken });
 
     return { accessToken, refreshToken, user };
+};
+
+const handleGoogleLogin = async (user) => {
+    try {
+        await updateUserLoginStatus(user);
+        const accessToken = generateAccessToken(user.id);
+        const refreshToken = generateRefreshToken(user.id);
+
+        await RefreshToken.create({ user_id: user.id, token: refreshToken });
+
+        return {
+            redirectUrl: `${getClientUrl()}/auth/callback?token=${accessToken}&refreshToken=${refreshToken}`
+        };
+    } catch (error) {
+        return {
+            redirectUrl: `${getClientUrl()}/login?error=token-failed`
+        };
+    }
 };
 
 const logoutUser = async (token) => {
@@ -202,6 +220,7 @@ module.exports = {
     addPhoneNumber,
     confirmPhoneNumber,
     loginUser,
+    handleGoogleLogin,
     logoutUser,
     getUserProfile,
     refreshToken,
