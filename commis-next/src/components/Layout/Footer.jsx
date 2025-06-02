@@ -11,7 +11,7 @@ import Viber from '../../../public/img/viber.svg';
 const Footer = () => (
     <>
         <footer className={styles.footer}>
-            <div className={styles.footerContainer}>
+            <div className={`${styles.footerContainer} container`}>
                 <div className="mobile-only">
                     <NavIcons />
                 </div>
@@ -41,7 +41,7 @@ const Footer = () => (
         </footer>
 
         <div className={styles.lightFooterSection}>
-            <div className={`${styles.policiesContainer} ${styles.desktopFooter}`}>
+            <div className={`${styles.policiesContainer} ${styles.desktopFooter} container`}>
                 <div className={styles.rightsReserved}>
                     <p>© 2024 Всі права захищені</p>
                 </div>

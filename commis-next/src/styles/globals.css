@@ -78,7 +78,7 @@ body::-webkit-scrollbar {
     display: none;
 }
 
-/* ✅ для великих екранів — повернути скролбар */
+/* для великих екранів — повернути скролбар */
 @media (min-width: 1024px) {
     body {
         scrollbar-width: auto;
@@ -126,7 +126,6 @@ ul {
 }
 
 .container {
-    /* max-width: 1200px; */
     width: 1200px;
     max-width: 100%;
     box-sizing: border-box;
