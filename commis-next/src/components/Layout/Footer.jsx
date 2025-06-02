@@ -11,7 +11,7 @@ import Viber from '../../../public/img/viber.svg';
 const Footer = () => (
     <>
         <footer className={styles.footer}>
-            <div className={`${styles.footerContainer} container`}>
+            <div className={styles.footerContainer}>
                 <div className="mobile-only">
                     <NavIcons />
                 </div>

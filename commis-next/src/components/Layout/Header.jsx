@@ -15,7 +15,7 @@ const Header = () => {
     return (
         <>
             <header className={styles.header}>
-                <div className={`${styles.headerContainer} container`}>
+                <div className={styles.headerContainer}>
                     <Logo />
                     <div className={styles.iconContainer}>
                         <Tooltip text="Пошук" position="bottom">
