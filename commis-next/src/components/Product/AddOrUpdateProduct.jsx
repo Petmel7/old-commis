@@ -2,6 +2,8 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { addProduct, updateProduct, getProductById } from '../../services/products';
+import { getSubcategoryById, getCategoryBySubcategoryId } from '@/services/catalog';
+import { getSizesByProductId } from '@/services/sizes';
 import ProductForm from './ProductForm';
 import BackButton from '../BackButton/BackButton';
 import styles from './styles/ProductForm.module.css';
@@ -12,8 +14,28 @@ const AddOrUpdateProduct = () => {
     const [initialData, setInitialData] = useState({});
 
     const fetchProduct = async () => {
-        const productData = await getProductById(productId);
-        setInitialData(productData);
+        try {
+            const productData = await getProductById(productId);
+
+            const [subcategory, category, sizes] = await Promise.all([
+                getSubcategoryById(productData.subcategory_id),
+                getCategoryBySubcategoryId(productData.subcategory_id),
+                getSizesByProductId(productId),
+            ]);
+
+            const enrichedData = {
+                ...productData,
+                subcategory,
+                category,
+                sizes,
+            };
+            console.log('✅subcategory:', productData.subcategory);
+            console.log('✅enrichedData', enrichedData);
+
+            setInitialData(enrichedData);
+        } catch (error) {
+            console.error('fetchProduct error:', error);
+        }
     };
 
     useEffect(() => {

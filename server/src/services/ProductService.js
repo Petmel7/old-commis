@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs');
-const { Product, Category, Subcategory } = require('../models');
+const { Product, Category, Subcategory, Size } = require('../models');
 
 const getProducts = async () => {
     const products = await Product.findAll();
@@ -14,7 +14,23 @@ const getUserProducts = async (productId) => {
 }
 
 const getProductById = async (id) => {
-    const product = await Product.findByPk(id);
+    const product = await Product.findByPk(id, {
+        include: [
+            {
+                model: Subcategory,
+                as: 'subcategory',
+                include: [
+                    {
+                        model: Category,
+                        as: 'category' // Повинен відповідати `as` з асоціації
+                    }
+                ]
+            },
+            {
+                model: Size
+            }
+        ]
+    });
 
     if (!product) {
         throw { status: 404, message: 'Product not found' };
@@ -78,16 +94,6 @@ const checkOwnershipOrAdmin = async (user, productId) => {
 
     return product;
 };
-
-// const deleteProduct = async (product) => {
-//     const subcategoryId = product.subcategory_id;
-//     await product.destroy();
-
-//     const remainingProducts = await Product.count({ where: { subcategory_id: subcategoryId } });
-//     if (remainingProducts === 0) {
-//         await Subcategory.destroy({ where: { id: subcategoryId } });
-//     }
-// };
 
 const deleteProduct = async (product) => {
     const subcategoryId = product.subcategory_id;

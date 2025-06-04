@@ -1,4 +1,4 @@
-const { Product, Subcategory } = require('../models');
+const { Product, Category, Subcategory } = require('../models');
 const { validateProduct } = require('../validators/validators');
 const { Op } = require('sequelize');
 
@@ -20,4 +20,20 @@ const getProductsByCategory = async (category) => {
     return products.map(validateProduct);
 };
 
-module.exports = { getProductsByCategory }
+const getSubcategoryById = async (id) => {
+    return await Subcategory.findByPk(id);
+};
+
+const getCategoryBySubcategoryId = async (subcategoryId) => {
+    const subcategory = await Subcategory.findByPk(subcategoryId);
+    if (!subcategory) return null;
+
+    const category = await Category.findByPk(subcategory.category_id);
+    return category;
+};
+
+module.exports = {
+    getProductsByCategory,
+    getSubcategoryById,
+    getCategoryBySubcategoryId
+}

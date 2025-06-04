@@ -38,8 +38,20 @@ const removeSizeFromProduct = async (req, res, next) => {
     }
 };
 
+const removeAllSizesFromProduct = async (req, res, next) => {
+    const { productId } = req.body;
+
+    try {
+        await SizesService.removeAllSizesFromProduct(productId);
+        res.status(200).json({ message: 'All sizes removed from product' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     getSizesByProductId,
     addSizeToProduct,
-    removeSizeFromProduct
+    removeSizeFromProduct,
+    removeAllSizesFromProduct
 };

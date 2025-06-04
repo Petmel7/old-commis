@@ -35,7 +35,6 @@ app.use(session({
 
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use('/uploads', express.static(path.join(__dirname, '../uploads')));
 
 app.use('/api', uploadRoutes);
 app.use('/api/products', productRoutes);

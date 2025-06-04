@@ -24,15 +24,6 @@ export const searchProducts = async (query) => {
     return response.data;
 };
 
-// export const addProduct = async (formData) => {
-//     const response = await api.post('/products', formData, {
-//         headers: {
-//             'Content-Type': 'multipart/form-data'
-//         }
-//     });
-//     return response.data;
-// };
-
 export const addProduct = async (productData) => {
     const response = await api.post('/products', productData);
     return response.data;
@@ -40,6 +31,7 @@ export const addProduct = async (productData) => {
 
 export const updateProduct = async (productId, productData) => {
     const response = await api.patch(`/products/${productId}`, productData);
+    console.log('updateProduct->response', response);
     return response.data;
 };
 

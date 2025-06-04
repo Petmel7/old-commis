@@ -15,6 +15,8 @@ const Catalog = () => {
     const { data: rawProducts, loading, error } = useFetchDataWithArg(getProductsByCategory, category);
     const products = validateArray(rawProducts);
 
+    console.log('Catalog->products', products);
+
     const loadingAndError = useLoadingAndError(loading, error);
 
     if (loadingAndError) return loadingAndError;

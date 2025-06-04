@@ -5,8 +5,7 @@ import styles from './styles/CategorySelect.module.css';
 
 const CategorySelect = ({ category, setCategory, subcategory, setSubcategory }) => {
     const [subcategories, setSubcategories] = useState([]);
-    console.log('category', category);
-    console.log('subcategory', subcategory);
+
     useEffect(() => {
         if (category) {
             const selectedCategory = catalogDataSelect.find(cat => cat.title === category);

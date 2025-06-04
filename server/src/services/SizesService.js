@@ -46,12 +46,24 @@ const removeSizeFromProduct = async (productId, sizeId) => {
         throw { status: 404, message: 'Product or Size not found' };
     }
 
-    // Видалити розмір для продукту
     await product.removeSize(size);
 }
+
+const removeAllSizesFromProduct = async (productId) => {
+    const product = await Product.findByPk(productId, {
+        include: Size,
+    });
+
+    if (!product) {
+        throw { status: 404, message: 'Product not found' };
+    }
+
+    await product.setSizes([]); // Видаляє всі зв'язки
+};
 
 module.exports = {
     getSizesByProductId,
     addSizeToProduct,
-    removeSizeFromProduct
+    removeSizeFromProduct,
+    removeAllSizesFromProduct
 }

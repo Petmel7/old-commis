@@ -1,7 +1,7 @@
 
 import { useState, useEffect } from 'react';
 import { getServerUrl } from '@/utils/env';
-import { addSizeToProduct } from '@/services/sizes';
+import { addSizeToProduct, removeAllSizesFromProduct } from '@/services/sizes';
 import DeleteImage from './DeleteImage';
 import DeleteIcon from '../../../public/img/delete.svg';
 import CategorySelect from '../Catalog/CategorySelect';
@@ -22,10 +22,11 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [internationalSizes, setInternationalSizes] = useState([]);
     const [ukrainianSizes, setUkrainianSizes] = useState([]);
     const [shoeSizes, setShoeSizes] = useState([]);
+
     const [images, setImages] = useState([]);
     const [imagePreviews, setImagePreviews] = useState(
         Array.isArray(initialData.images)
-            ? initialData.images.map(image => `${getServerUrl()}/${image}`)
+            ? initialData.images.map(image => image)
             : []
     );
 
@@ -47,14 +48,33 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
         setDescription(initialData.description || '');
         setPrice(initialData.price || '');
         setStock(initialData.stock || '');
-        setCategory(initialData.category || '');
-        setSubcategory(initialData.subcategory || '');
-        setInternationalSizes([]);
-        setUkrainianSizes([]);
-        setShoeSizes([]);
+        if (initialData?.category?.name) {
+            setCategory(initialData.category.name || '');
+        }
+        if (initialData?.subcategory?.name) {
+            setSubcategory(initialData.subcategory.name);
+        }
+
+        if (initialData?.sizes?.length > 0) {
+            const sizes = initialData.sizes.map(s => s.size);
+
+            const shoeSizeOptions = ["38", "39", "40", "41", "42", "43", "44", "45"];
+            const ukrainianSizeOptions = ["40", "42", "44", "46", "48", "50", "52", "54"];
+            const internationalSizeOptions = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
+
+            const shoe = sizes.filter(size => shoeSizeOptions.includes(size));
+            const intl = sizes.filter(size => internationalSizeOptions.includes(size));
+            const ua = sizes.filter(size => ukrainianSizeOptions.includes(size));
+
+            setShoeSizes(shoe);
+            setInternationalSizes(intl);
+            setUkrainianSizes(ua);
+        }
+
+        // ✅ Завантажити попередній перегляд зображень
         setImagePreviews(
             Array.isArray(initialData.images)
-                ? initialData.images.map(image => `${getServerUrl()}/${image}`)
+                ? initialData.images.map(image => image)
                 : []
         );
     }, [initialData]);
@@ -84,18 +104,31 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
         e.preventDefault();
 
         const uploadedUrls = [];
-        for (const image of images) {
-            const formData = new FormData();
-            formData.append('image', image);
 
-            const res = await fetch(`${getServerUrl()}/api/upload-image`, {
-                method: 'POST',
-                body: formData,
-            });
+        if (images.length > 0) {
+            for (const image of images) {
+                const formData = new FormData();
+                formData.append('image', image);
 
-            const { url } = await res.json();
-            uploadedUrls.push(url);
+                const res = await fetch(`${getServerUrl()}/api/upload-image`, {
+                    method: 'POST',
+                    body: formData,
+                });
+
+                const { url } = await res.json();
+                uploadedUrls.push(url);
+            }
         }
+
+        // 🔁 Об'єднуємо старі + нові зображення
+        const cleanedImagePreviews = imagePreviews.filter(
+            (img) => !img.startsWith('blob:')
+        );
+
+        const finalImages =
+            images.length > 0
+                ? [...cleanedImagePreviews, ...uploadedUrls]
+                : cleanedImagePreviews;
 
         const productData = {
             name,
@@ -104,7 +137,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             stock,
             category,
             subcategory,
-            images: uploadedUrls,
+            images: finalImages,
         };
 
         let selectedSizes = [];
@@ -123,6 +156,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             const response = await onSubmit(productData);
 
             if (response && response.product) {
+                await removeAllSizesFromProduct(response.product.id);
                 await addSizeToProduct(response.product.id, selectedSizes);
             }
         } catch (error) {

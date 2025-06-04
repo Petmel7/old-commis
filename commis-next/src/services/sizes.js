@@ -9,3 +9,9 @@ export const addSizeToProduct = async (productId, sizes) => {
     const response = await api.post(`/products/${productId}/sizes`, { sizes });
     return response.data;
 };
+
+export const removeAllSizesFromProduct = async (productId) => {
+    const response = await api.post('/products/sizes/remove-all', { productId });
+    return response.data;
+};
+

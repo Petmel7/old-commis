@@ -9,13 +9,6 @@ export const register = async (data) => {
     return response.data;
 };
 
-// export const login = async (data) => {
-//     const response = await api.post('/users/login', data);
-//     localStorage.setItem('accessToken', response.data.accessToken);
-//     localStorage.setItem('refreshToken', response.data.refreshToken);
-//     return response.data;
-// };
-
 export const login = async (data) => {
     try {
         const response = await api.post('/users/login', data);
