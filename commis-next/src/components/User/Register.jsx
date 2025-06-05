@@ -1,5 +1,7 @@
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useRouter } from 'next/router';
+import { useAuth } from '@/context/AuthContext';
 import { register } from '../../services/auth';
 import { validateName, validateEmail, validatePassword } from '@/utils/validation';
 import GoogleAuth from './GoogleAuth';
@@ -16,7 +18,9 @@ const Register = () => {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
+    const { isRegistered } = useAuth();
     const { isModalOpen, openModal, closeModal } = useModal();
+    const router = useRouter();
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
@@ -31,6 +35,12 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (isRegistered) {
+            alert(`Користувач з такою поштою: ${email} уже зареєстрований`);
+            router.push('/login');
+            return;
+        }
 
         if (!validateForm()) return;
 

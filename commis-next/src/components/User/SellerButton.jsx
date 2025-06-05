@@ -4,7 +4,7 @@ import { useAuth } from '@/context/AuthContext';
 import styles from './styles/Auth.module.css';
 
 const SellerButton = () => {
-    const { isRegistered, isGoogleRegistered, user } = useAuth();
+    const { isRegistered, isGoogleRegistered } = useAuth();
 
     return (
         <div>

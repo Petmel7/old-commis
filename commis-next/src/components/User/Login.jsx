@@ -15,7 +15,7 @@ const Login = () => {
     const [errors, setErrors] = useState({});
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
-    const { handleLogin } = useAuth();
+    const { handleLogin, isRegistered } = useAuth();
     const router = useRouter();
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
@@ -30,6 +30,12 @@ const Login = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        if (!isRegistered) {
+            alert('Ви ще не зареєстровані зареєструйтесь будь-ласка.');
+            router.push('/register');
+            return;
+        }
 
         if (!validateForm()) return;
 
