@@ -14,8 +14,6 @@ import useUserStatus from '@/hooks/useUserStatus';
 
 const LS_KEY = 'productFormData';
 
-console.log('LS_KEY', LS_KEY);
-
 const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [name, setName] = useState(initialData.name || '');
     const [description, setDescription] = useState(initialData.description || '');

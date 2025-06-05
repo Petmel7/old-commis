@@ -1,7 +1,7 @@
 const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs');
-const { Product, Category, Subcategory, Size } = require('../models');
+const { Product, Order, OrderItem, Category, Subcategory, Size } = require('../models');
 
 const getProducts = async () => {
     const products = await Product.findAll();
@@ -96,6 +96,18 @@ const checkOwnershipOrAdmin = async (user, productId) => {
 };
 
 const deleteProduct = async (product) => {
+    // ✅ Перевірка замовлень
+    const ordersWithProduct = await Order.findAll({
+        include: [{
+            model: OrderItem,
+            where: { product_id: product.id }
+        }]
+    });
+
+    if (ordersWithProduct.length > 0) {
+        throw { status: 400, message: 'Неможливо видалити продукт, оскільки він уже є в замовленнях. Видалыть спочатку замовлення.' };
+    }
+
     const subcategoryId = product.subcategory_id;
 
     console.log('🗑️ Deleting product id:', product.id, 'with subcategoryId:', subcategoryId);

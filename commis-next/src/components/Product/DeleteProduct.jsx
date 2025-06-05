@@ -11,12 +11,20 @@ const DeleteProduct = ({ productId }) => {
             await deleteProduct(productId);
             router.push('/userProducts');
         } catch (error) {
-            console.log('handleDeleteProduct->error', error);
+            console.error('handleDeleteProduct->error', error);
+
+            // ✅ Перевірка повідомлення від сервера
+            if (error?.response?.data?.message) {
+                alert(error.response.data.message);
+            } else {
+                alert('Сталася помилка під час видалення продукту.');
+            }
         }
-    }
+    };
     return (
         <button className={styles.deleteProduct} onClick={handleDeleteProduct}>Видалити</button>
     )
 }
 
 export default DeleteProduct;
+
