@@ -12,6 +12,10 @@ import AddPhoneNumber from '../User/AddPhoneNumber';
 import ConfirmPhoneModal from '../User/ConfirmPhoneModal';
 import useUserStatus from '@/hooks/useUserStatus';
 
+const LS_KEY = 'productFormData';
+
+console.log('LS_KEY', LS_KEY);
+
 const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const [name, setName] = useState(initialData.name || '');
     const [description, setDescription] = useState(initialData.description || '');
@@ -44,40 +48,94 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
     const shoeSubcategories = ['Чоловіче взуття', 'Жіноче взуття', 'Дитяче взуття'];
 
     useEffect(() => {
-        setName(initialData.name || '');
-        setDescription(initialData.description || '');
-        setPrice(initialData.price || '');
-        setStock(initialData.stock || '');
-        if (initialData?.category?.name) {
-            setCategory(initialData.category.name || '');
+        if (initialData.id) {
+            // 🔄 Якщо редагуємо існуючий продукт
+            setName(initialData.name || '');
+            setDescription(initialData.description || '');
+            setPrice(initialData.price || '');
+            setStock(initialData.stock || '');
+            if (initialData?.category?.name) {
+                setCategory(initialData.category.name || '');
+            }
+            if (initialData?.subcategory?.name) {
+                setSubcategory(initialData.subcategory.name || '');
+            }
+
+            if (initialData?.sizes?.length > 0) {
+                const sizes = initialData.sizes.map(s => s.size);
+
+                const shoeSizeOptions = ["38", "39", "40", "41", "42", "43", "44", "45"];
+                const ukrainianSizeOptions = ["40", "42", "44", "46", "48", "50", "52", "54"];
+                const internationalSizeOptions = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
+
+                const shoe = sizes.filter(size => shoeSizeOptions.includes(size));
+                const intl = sizes.filter(size => internationalSizeOptions.includes(size));
+                const ua = sizes.filter(size => ukrainianSizeOptions.includes(size));
+
+                setShoeSizes(shoe);
+                setInternationalSizes(intl);
+                setUkrainianSizes(ua);
+            }
+
+            // Показати зображення з бекенду
+            setImagePreviews(Array.isArray(initialData.images) ? initialData.images : []);
+        } else {
+            // 💾 Якщо додаємо новий продукт і є дані в localStorage
+            const savedFormData = localStorage.getItem(LS_KEY);
+            if (savedFormData) {
+                try {
+                    const parsed = JSON.parse(savedFormData);
+                    setName(parsed.name || '');
+                    setDescription(parsed.description || '');
+                    setPrice(parsed.price || '');
+                    setStock(parsed.stock || '');
+                    setCategory(parsed.category || '');
+                    setSubcategory(parsed.subcategory || '');
+                    setInternationalSizes(parsed.internationalSizes || []);
+                    setUkrainianSizes(parsed.ukrainianSizes || []);
+                    setShoeSizes(parsed.shoeSizes || []);
+                    setImagePreviews(parsed.imagePreviews || []);
+                } catch (e) {
+                    console.error('Помилка парсингу localStorage:', e);
+                }
+            }
         }
-        if (initialData?.subcategory?.name) {
-            setSubcategory(initialData.subcategory.name);
-        }
-
-        if (initialData?.sizes?.length > 0) {
-            const sizes = initialData.sizes.map(s => s.size);
-
-            const shoeSizeOptions = ["38", "39", "40", "41", "42", "43", "44", "45"];
-            const ukrainianSizeOptions = ["40", "42", "44", "46", "48", "50", "52", "54"];
-            const internationalSizeOptions = ["XXS", "XS", "S", "M", "L", "XL", "XXL"];
-
-            const shoe = sizes.filter(size => shoeSizeOptions.includes(size));
-            const intl = sizes.filter(size => internationalSizeOptions.includes(size));
-            const ua = sizes.filter(size => ukrainianSizeOptions.includes(size));
-
-            setShoeSizes(shoe);
-            setInternationalSizes(intl);
-            setUkrainianSizes(ua);
-        }
-
-        // ✅ Завантажити попередній перегляд зображень
-        setImagePreviews(
-            Array.isArray(initialData.images)
-                ? initialData.images.map(image => image)
-                : []
-        );
     }, [initialData]);
+
+    //****************
+
+    useEffect(() => {
+        if (initialData.id) return; // Не зберігати при редагуванні
+
+        const formDataToSave = {
+            name,
+            description,
+            price,
+            stock,
+            category,
+            subcategory,
+            internationalSizes,
+            ukrainianSizes,
+            shoeSizes,
+            imagePreviews,
+        };
+
+        localStorage.setItem(LS_KEY, JSON.stringify(formDataToSave));
+    }, [
+        name,
+        description,
+        price,
+        stock,
+        category,
+        subcategory,
+        internationalSizes,
+        ukrainianSizes,
+        shoeSizes,
+        imagePreviews,
+        initialData.id
+    ]);
+
+    //****************
 
     const handleInternationalSizeChange = (e) => {
         const selectedSizes = Array.from(e.target.selectedOptions, option => option.value);
@@ -159,6 +217,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
                 await removeAllSizesFromProduct(response.product.id);
                 await addSizeToProduct(response.product.id, selectedSizes);
             }
+            localStorage.removeItem(LS_KEY);
         } catch (error) {
             console.error('Error in handleSubmit:', error);
         }
@@ -292,6 +351,7 @@ const ProductForm = ({ initialData = {}, onSubmit, fetchProduct }) => {
             <div className={styles.formGroup}>
                 <input
                     id="fileUpload"
+                    name="images"
                     className={styles.inputFile}
                     type="file"
                     multiple
