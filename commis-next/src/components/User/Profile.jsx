@@ -2,6 +2,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { useAuth } from '@/context/AuthContext';
+import useCheckUserBlocked from '@/hooks/useCheckUserBlocked';
 import ConfirmEmailModal from './ConfirmEmailModal';
 import AddPhoneNumber from './AddPhoneNumber';
 import ConfirmPhoneModal from './ConfirmPhoneModal';
@@ -11,7 +12,9 @@ import UserStatusText from '../UserStatusText/UserStatusText';
 import styles from './styles/Profile.module.css';
 
 const Profile = () => {
+    useCheckUserBlocked();
     const { user, isBlocked } = useAuth();
+
     const {
         loadingErrorComponent,
         isEmailModalOpen,

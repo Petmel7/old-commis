@@ -9,6 +9,7 @@ import { validateArray } from "@/utils/validation";
 const UsersManagement = () => {
     const { data: rawUsers, loading, error } = useFetchData(getUserRoleCounts);
     const users = validateArray(rawUsers);
+    console.log('rawUsers', rawUsers);
 
     const loadingAndError = useLoadingAndError(loading, error);
 

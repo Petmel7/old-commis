@@ -39,6 +39,7 @@
     display: flex;
     gap: 1rem;
     margin-top: 1.5rem;
+    flex-wrap: wrap;
 }
 
 .userActions button {
@@ -46,6 +47,9 @@
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.2s ease;
+    flex: 1 1 auto;
+    /* дозволяє кнопкам розтягуватися рівномірно */
+    min-width: 120px;
 }
 
 .editButton {
@@ -76,6 +80,17 @@
 
 .blockButton:hover {
     background-color: #e76f51;
+}
+
+@media (max-width: 468px) {
+    .userActions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .userActions button {
+        width: 100%;
+    }
 }
 
 .buttonContainer {

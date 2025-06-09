@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }) => {
         try {
             const userProfile = await getUserProfile();
             setUser(userProfile);
+            setIsBlocked(false);
         } catch (error) {
             if (error.response && error.response.status === 403) {
                 setIsBlocked(true);
@@ -81,6 +82,7 @@ export const AuthProvider = ({ children }) => {
             user,
             loading,
             setUser,
+            setIsBlocked,
             handleLogin,
             handleLogout,
             handleRegister,

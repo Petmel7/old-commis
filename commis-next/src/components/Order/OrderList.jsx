@@ -1,6 +1,9 @@
 
 import { useState, useEffect } from 'react';
 import { getSellerOrders } from '../../services/order';
+import { useAuth } from '@/context/AuthContext';
+import useCheckUserBlocked from '@/hooks/useCheckUserBlocked';
+import UserStatusText from '../UserStatusText/UserStatusText';
 import DeleteOrderList from './DeleteOrderList';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
@@ -18,7 +21,14 @@ const OrderList = () => {
         deleteOrder: null
     });
 
+    const loadingBlocked = useCheckUserBlocked();
+    const { isBlocked } = useAuth();
+
     const loadingErrorComponent = useLoadingAndError(loading, error);
+
+    useEffect(() => {
+        fetchOrders();
+    }, []);
 
     const fetchOrders = async () => {
         try {
@@ -30,10 +40,6 @@ const OrderList = () => {
             setLoading(false);
         }
     };
-
-    useEffect(() => {
-        fetchOrders();
-    }, []);
 
     const openImageModal = (orderId) => {
         setModalState({ ...modalState, viewImage: orderId });
@@ -47,6 +53,8 @@ const OrderList = () => {
         setModalState({ viewImage: null, deleteOrder: null });
     };
 
+    if (loadingBlocked) return null;
+    if (isBlocked) return <UserStatusText />;
     if (loadingErrorComponent) return loadingErrorComponent;
 
     if (orders.length === 0) {

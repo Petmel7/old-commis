@@ -33,6 +33,7 @@ const UserDetails = () => {
             try {
                 if (userId) {
                     const userData = await getUserById(userId);
+                    console.log('userData', userData);
                     setUserById(userData);
                     setEditData({
                         name: userData.name || "",
@@ -67,17 +68,17 @@ const UserDetails = () => {
         e.preventDefault();
         try {
             await updateUser(userId, editData);
-            setUserById({ ...userById, ...editData });
+            setUserById((prev) => ({ ...prev, ...editData }));
             setIsEditMode(false);
         } catch (error) {
-            console.log('handleEditSubmit->error', error);
+            console.error("❌ handleEditSubmit error:", error);
         }
     };
 
     if (loadingErrorComponent) return loadingErrorComponent;
     if (!userById) return <p>Завантаження...</p>;
 
-    const date = formatDate(userById?.createdat);
+    const date = formatDate(userById?.created_at);
     const userStatus = userById.is_blocked ? 'заблокований' : 'активний';
 
     return (

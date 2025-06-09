@@ -2,6 +2,9 @@
 import { getUserProducts } from '../../services/products';
 import { getServerUrl } from '@/utils/env';
 import { validateArray } from '@/utils/validation';
+import { useAuth } from '@/context/AuthContext';
+import useCheckUserBlocked from '@/hooks/useCheckUserBlocked';
+import UserStatusText from '../UserStatusText/UserStatusText';
 import useLoadingAndError from '../../hooks/useLoadingAndError';
 import BackButton from '../BackButton/BackButton';
 import NoProducts from '../NoProducts/NoProducts';
@@ -9,13 +12,19 @@ import UserProductsCart from './UserProductsCart';
 import useFetchDataWithArg from '@/hooks/useFetchDataWithArg';
 
 const UserProducts = () => {
+    const loadingBlocked = useCheckUserBlocked();
+    const { isBlocked } = useAuth();
+
     const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+
+    if (loadingBlocked) return null;
+
+    if (isBlocked) return <UserStatusText />;
 
     const { data: rawUserProducts, loading, error } = useFetchDataWithArg(getUserProducts, accessToken);
     const userProducts = validateArray(rawUserProducts);
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
-
     if (loadingErrorComponent) return loadingErrorComponent;
 
     if (userProducts.length === 0) {
@@ -25,7 +34,7 @@ const UserProducts = () => {
                 buttonLink='/'
                 buttonText='Додати продукт'
             />
-        )
+        );
     }
 
     return (
@@ -52,3 +61,4 @@ const UserProducts = () => {
 };
 
 export default UserProducts;
+

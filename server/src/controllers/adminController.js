@@ -73,8 +73,10 @@ const deleteUserForAdmin = async (req, res, next) => {
 const updateUser = async (req, res, next) => {
     const userId = req.params.id;
     const { name, email, phone, role } = req.body;
+
     try {
-        await AdminService.updateUser(userId, name, email, phone, role);
+        const updatedUser = await AdminService.updateUser(userId, name, email, phone, role);
+        res.json(updatedUser);
     } catch (error) {
         next(error);
     }

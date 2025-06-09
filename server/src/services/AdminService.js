@@ -69,10 +69,6 @@ const getUsersByRole = async (role) => {
         attributes: ['id', 'name', 'email', 'phone', 'role', 'created_at']
     });
 
-    if (users.length === 0) {
-        throw { status: 404, message: `Users with a role ${role} not found` };
-    }
-
     return users;
 };
 
@@ -93,7 +89,7 @@ const deleteUserForAdmin = async (userId) => {
     await User.destroy({ where: { id: userId } });
 }
 
-const updateUser = async (userId) => {
+const updateUser = async (userId, name, email, phone, role) => {
 
     const user = await User.findByPk(userId);
     if (!user) {

@@ -4,11 +4,16 @@ import { useRouter } from 'next/router';
 import { addProduct, updateProduct, getProductById } from '../../services/products';
 import { getSubcategoryById, getCategoryBySubcategoryId } from '@/services/catalog';
 import { getSizesByProductId } from '@/services/sizes';
+import { useAuth } from '@/context/AuthContext';
+import useCheckUserBlocked from '@/hooks/useCheckUserBlocked';
+import UserStatusText from '../UserStatusText/UserStatusText';
 import ProductForm from './ProductForm';
 import BackButton from '../BackButton/BackButton';
 import styles from './styles/ProductForm.module.css';
 
 const AddOrUpdateProduct = () => {
+    useCheckUserBlocked();
+    const { isBlocked } = useAuth();
     const router = useRouter();
     const { productId } = router.query;
     const [initialData, setInitialData] = useState({});
@@ -54,6 +59,8 @@ const AddOrUpdateProduct = () => {
         router.push('/userProducts');
         return response;
     };
+
+    if (isBlocked) return <UserStatusText />;
 
     return (
         <>
