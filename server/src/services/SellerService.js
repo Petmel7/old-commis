@@ -1,4 +1,4 @@
-
+const { QueryTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const { User, Product, Order } = require('../models');
 const { Op } = require('sequelize');
@@ -75,10 +75,6 @@ const getActiveSellersById = async (sellerId) => {
         ]
     });
 
-    if (!activeSeller) {
-        throw { status: 404, message: 'Seller not found' };
-    }
-
     return activeSeller;
 };
 
@@ -111,13 +107,24 @@ const getBlockedSellers = async () => {
     return blockedSellers;
 };
 
-const getSellerStatistics = async () => {
+// const getSellerStatistics = async () => {
 
-    const query = getSellerStatisticsQuery();
+//     const query = getSellerStatisticsQuery();
 
-    return await sequelize.query(query, {
-        type: sequelize.QueryTypes.SELECT
-    });
+//     return await sequelize.query(query, {
+//         type: sequelize.QueryTypes.SELECT
+//     });
+// };
+
+const getSellerStatistics = async (sellerId = null) => {
+    const query = getSellerStatisticsQuery(sellerId);
+
+    const options = {
+        type: QueryTypes.SELECT,
+        ...(sellerId && { replacements: { sellerId } })
+    };
+
+    return await sequelize.query(query, options);
 };
 
 const getSellerStatisticsById = async (sellerId) => {
