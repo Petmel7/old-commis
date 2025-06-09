@@ -107,15 +107,6 @@ const getBlockedSellers = async () => {
     return blockedSellers;
 };
 
-// const getSellerStatistics = async () => {
-
-//     const query = getSellerStatisticsQuery();
-
-//     return await sequelize.query(query, {
-//         type: sequelize.QueryTypes.SELECT
-//     });
-// };
-
 const getSellerStatistics = async (sellerId = null) => {
     const query = getSellerStatisticsQuery(sellerId);
 
