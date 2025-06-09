@@ -14,7 +14,7 @@ const ActiveSellers = () => {
 
     return (
         <div>
-            <p>Active Sellers</p>
+            <p>Активні продавці</p>
             <ul>
                 {sellers.map(seller => (
                     <li key={seller.id}>

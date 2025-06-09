@@ -12,6 +12,7 @@ const ActiveSellersDetails = () => {
     const { data: rawSeller, loading, error } = useFetchDataWithArg(getActiveSellerById, sellerId);
 
     const seller = Array.isArray(rawSeller) ? rawSeller[0] : rawSeller;
+    console.log('seller', seller);
 
     if (loading) return <p>Завантаження...</p>;
     if (error) return <p>Помилка: {error}</p>;

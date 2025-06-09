@@ -1,7 +1,7 @@
 
 const SellerService = require('../services/SellerService');
 
-const getActiveSellers = async (res, next) => {
+const getActiveSellers = async (req, res, next) => {
     try {
         const activeSellers = await SellerService.getActiveSellers();
 
@@ -33,7 +33,7 @@ const getNewSellers = async (req, res, next) => {
     }
 };
 
-const getBlockedSellers = async (res, next) => {
+const getBlockedSellers = async (req, res, next) => {
     try {
         const blockedSellers = await SellerService.getBlockedSellers();
         res.status(200).json({ status: 'success', data: blockedSellers })

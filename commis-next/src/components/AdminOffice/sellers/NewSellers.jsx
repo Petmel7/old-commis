@@ -14,7 +14,7 @@ const NewSellers = () => {
 
     return (
         <div>
-            <h3>Blocked Sellers</h3>
+            <h3>Нові продавці</h3>
             <ul>
                 {sellers.map((seller) => (
                     <li key={seller.id}>

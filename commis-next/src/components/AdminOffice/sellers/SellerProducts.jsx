@@ -28,7 +28,7 @@ const SellerProducts = () => {
                     <li key={product.id} className='product-item'>
                         <UserProductsCart
                             pathProductId={`/products/userDetails/${product.id}`}
-                            productImages={product.images[0]} // Перше зображення
+                            productImages={product.images[0]}
                             productNames={product.name}
                             productPrices={product.price}
                         />

@@ -1,6 +1,7 @@
+
+const sequelize = require('../config/db');
 const { User, Product, Order } = require('../models');
 const { Op } = require('sequelize');
-const sequelize = require('../config/db');
 const { getSellerStatisticsQuery } = require('../utils/queries');
 
 const getActiveSellers = async () => {
@@ -28,7 +29,7 @@ const getActiveSellers = async () => {
                     status: {
                         [Op.in]: ['shipped', 'completed', 'cancelled']
                     },
-                    createdat: {
+                    created_at: {
                         [Op.gte]: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000)
                     }
                 },
@@ -65,7 +66,7 @@ const getActiveSellersById = async (sellerId) => {
                     status: {
                         [Op.in]: ['shipped', 'completed', 'cancelled']
                     },
-                    createdat: {
+                    created_at: {
                         [Op.gte]: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000)
                     }
                 },
@@ -88,7 +89,7 @@ const getNewSellers = async (days = 7) => {
     const newSellers = await User.findAll({
         where: {
             role: 'seller',
-            createdat: {
+            created_at: {
                 [Op.gte]: thresholdDate,
             },
         },
@@ -117,7 +118,6 @@ const getSellerStatistics = async () => {
     return await sequelize.query(query, {
         type: sequelize.QueryTypes.SELECT
     });
-
 };
 
 const getSellerStatisticsById = async (sellerId) => {
