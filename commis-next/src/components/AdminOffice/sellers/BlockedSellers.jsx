@@ -1,4 +1,4 @@
-
+import Link from "next/link";
 import useFetchData from '@/hooks/useFetchData';
 import { getBlockedSellers } from '@/services/admin';
 import { validateArray } from '@/utils/validation';
@@ -18,7 +18,9 @@ const BlockedSellers = () => {
             <ul>
                 {sellers.map((seller) => (
                     <li key={seller.id}>
-                        {seller.name} ({seller.email})
+                        <Link key={seller.id} href={`/admin/user-details/${seller.id}`}>
+                            {seller.name} ({seller.email})
+                        </Link>
                     </li>
                 ))}
             </ul>

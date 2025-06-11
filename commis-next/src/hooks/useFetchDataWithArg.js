@@ -27,3 +27,4 @@ const useFetchDataWithArg = (fetchFunction, arg) => {
 };
 
 export default useFetchDataWithArg;
+

@@ -17,14 +17,13 @@ const UserProducts = () => {
 
     const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
 
-    if (loadingBlocked) return null;
-
-    if (isBlocked) return <UserStatusText />;
-
-    const { data: rawUserProducts, loading, error } = useFetchDataWithArg(getUserProducts, accessToken);
+    const { data: rawUserProducts, loading, error } = useFetchDataWithArg(getUserProducts, accessToken); // хук 3
     const userProducts = validateArray(rawUserProducts);
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
+
+    if (loadingBlocked) return null;
+    if (isBlocked) return <UserStatusText />;
     if (loadingErrorComponent) return loadingErrorComponent;
 
     if (userProducts.length === 0) {
