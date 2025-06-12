@@ -1,7 +1,5 @@
 
 import { getUserProducts } from '../../services/products';
-import { getServerUrl } from '@/utils/env';
-import { validateArray } from '@/utils/validation';
 import { useAuth } from '@/context/AuthContext';
 import useCheckUserBlocked from '@/hooks/useCheckUserBlocked';
 import UserStatusText from '../UserStatusText/UserStatusText';
@@ -10,21 +8,28 @@ import BackButton from '../BackButton/BackButton';
 import NoProducts from '../NoProducts/NoProducts';
 import UserProductsCart from './UserProductsCart';
 import useFetchDataWithArg from '@/hooks/useFetchDataWithArg';
+import PaginationControls from '../Pagination/PaginationControls';
 
 const UserProducts = () => {
-    const loadingBlocked = useCheckUserBlocked();
-    const { isBlocked } = useAuth();
-
     const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
+    const { isBlocked } = useAuth();
+    const loadingBlocked = useCheckUserBlocked();
 
-    const { data: rawUserProducts, loading, error } = useFetchDataWithArg(getUserProducts, accessToken); // хук 3
-    const userProducts = validateArray(rawUserProducts);
+    const {
+        data: userProducts,
+        loading,
+        error,
+        page,
+        setPage,
+        totalPages
+    } = useFetchDataWithArg(getUserProducts, accessToken);
 
     const loadingErrorComponent = useLoadingAndError(loading, error);
-
     if (loadingBlocked) return null;
     if (isBlocked) return <UserStatusText />;
     if (loadingErrorComponent) return loadingErrorComponent;
+
+    console.log('userProducts', userProducts);
 
     if (userProducts.length === 0) {
         return (
@@ -39,25 +44,25 @@ const UserProducts = () => {
     return (
         <>
             <BackButton />
-            <ul className='product-list'>
+            <ul className="product-list">
                 {userProducts.map(product => (
-                    <li key={product.id} className='product-item'>
+                    <li key={product.id} className="product-item">
                         <UserProductsCart
+                            productImages={product.images[0]}
                             pathProductId={`/products/userDetails/${product.id}`}
-                            productImages={
-                                Array.isArray(product.images) && product.images.length > 0
-                                    ? product.images[0]
-                                    : `${getServerUrl()}/img/fallback.jpg`
-                            }
                             productNames={product.name}
                             productPrices={product.price}
                         />
                     </li>
                 ))}
             </ul>
+            <PaginationControls
+                currentPage={page}
+                totalPages={totalPages}
+                onPageChange={setPage}
+            />
         </>
     );
 };
 
 export default UserProducts;
-

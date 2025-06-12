@@ -1,17 +1,28 @@
 const { Op } = require('sequelize');
 const path = require('path');
 const fs = require('fs');
+const paginate = require('../utils/paginate');
+const parsePagination = require('../utils/parsePagination');
 const { User, Product, Order, OrderItem, Category, Subcategory, Size } = require('../models');
 
-const getProducts = async () => {
-    const products = await Product.findAll();
-    return products;
-}
+const getProducts = async (page, limit) => {
+    const { page: pageNum, limit: limitNum } = parsePagination(page, limit);
 
-const getUserProducts = async (productId) => {
-    const products = await Product.findAll(productId);
-    return products;
-}
+    return await paginate(Product, {
+        page: pageNum,
+        limit: limitNum,
+    });
+};
+
+const getUserProducts = async ({ userId, page, limit }) => {
+    const { page: pageNum, limit: limitNum } = parsePagination(page, limit);
+
+    return await paginate(Product, {
+        page: pageNum,
+        limit: limitNum,
+        where: { user_id: userId },
+    });
+};
 
 const getProductById = async (id) => {
     const product = await Product.findByPk(id, {
@@ -22,7 +33,7 @@ const getProductById = async (id) => {
                 include: [
                     {
                         model: Category,
-                        as: 'category' // Повинен відповідати `as` з асоціації
+                        as: 'category'
                     }
                 ]
             },

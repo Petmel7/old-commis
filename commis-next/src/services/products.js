@@ -1,21 +1,30 @@
 import api from './api';
 
-export const getProducts = async () => {
-    const response = await api.get('/products/all');
+export const getProducts = async (page = 1, limit = 10) => {
+    const response = await api.get('/products/all', {
+        params: {
+            page,
+            limit
+        }
+    });
+    return response.data;
+};
+
+export const getUserProducts = async (accessToken, page = 1, limit = 10) => {
+    const response = await api.get('/products', {
+        headers: {
+            Authorization: `Bearer ${accessToken}`
+        },
+        params: {
+            page,
+            limit
+        }
+    });
     return response.data;
 };
 
 export const getProductById = async (productId) => {
     const response = await api.get(`/products/${productId}`);
-    return response.data;
-};
-
-export const getUserProducts = async (accessToken) => {
-    const response = await api.get('/products', {
-        headers: {
-            Authorization: `Bearer ${accessToken}`
-        }
-    });
     return response.data;
 };
 

@@ -3,9 +3,19 @@ const path = require('path');
 const ProductService = require('../services/ProductService');
 const UserService = require('../services/UserService');
 
+// const getProducts = async (req, res, next) => {
+//     try {
+//         const products = await ProductService.getProducts();
+//         res.json(products);
+//     } catch (error) {
+//         console.error('DB error:', error);
+//         next(error);
+//     }
+// };
+
 const getProducts = async (req, res, next) => {
     try {
-        const products = await ProductService.getProducts();
+        const products = await ProductService.getProducts(req.query.page, req.query.limit);
         res.json(products);
     } catch (error) {
         console.error('DB error:', error);
@@ -15,12 +25,26 @@ const getProducts = async (req, res, next) => {
 
 const getUserProducts = async (req, res, next) => {
     try {
-        const products = await ProductService.getUserProducts({ where: { user_id: req.user.id } });
+        const products = await ProductService.getUserProducts({
+            userId: req.user.id,
+            page: req.query.page,
+            limit: req.query.limit
+        });
+
         res.json(products);
     } catch (error) {
         next(error);
     }
 };
+
+// const getUserProducts = async (req, res, next) => {
+//     try {
+//         const products = await ProductService.getUserProducts({ where: { user_id: req.user.id } });
+//         res.json(products);
+//     } catch (error) {
+//         next(error);
+//     }
+// };
 
 const getProductById = async (req, res, next) => {
     const { id } = req.params;
