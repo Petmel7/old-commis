@@ -53,7 +53,7 @@ const Product = sequelize.define('Product', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false,
-    }
+    },
 }, {
     timestamps: false,
     tableName: 'products'

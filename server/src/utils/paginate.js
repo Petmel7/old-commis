@@ -30,7 +30,7 @@ const paginate = async (model, {
     limit = 10,
     where = {},
     include = [],
-    order = [['created_at', 'DESC']],
+    order = [],
 }) => {
 
     try {
