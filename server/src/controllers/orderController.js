@@ -9,7 +9,7 @@ const createOrder = async (req, res, next) => {
         const { order, total, orderDetails } = await OrderService.createOrder(req.user.id, items, address);
 
         await sendOrderEmail(req.user.email, order.id, orderDetails, total);
-
+        console.log('🔥controller->orderDetails', orderDetails);
         res.status(201).json({ message: 'Order created successfully', orderId: order.id });
     } catch (error) {
         next(error);

@@ -15,5 +15,4 @@ module.exports = {
     isProduction,
     getServerUrl,
     getClientUrl,
-    // getGoogleCallbackUrl
 };

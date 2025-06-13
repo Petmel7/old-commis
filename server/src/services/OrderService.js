@@ -1,7 +1,6 @@
 
 const { Product, User, Order, OrderItem } = require('../models');
 const path = require('path');
-const { getServerUrl } = require('../utils/env')
 
 const getProductAndValidateStock = async (productId, quantity) => {
     const product = await Product.findByPk(productId);
@@ -14,37 +13,51 @@ const getProductAndValidateStock = async (productId, quantity) => {
     return product;
 };
 
-const createOrder = async (userId, items, address) => {
-
-    let total = 0;
+const generateOrderDetailsHTML = async (items) => {
     let orderDetails = '';
     const sellers = new Set();
 
     for (const item of items) {
         const product = await getProductAndValidateStock(item.product_id, item.quantity);
-        total += product.price * item.quantity;
-
-        const productImageURL = `${getServerUrl()}/uploads/${path.basename(product.images[0])}`;
         const seller = await User.findByPk(product.user_id, { attributes: ['name', 'last_name', 'email'] });
         if (seller) sellers.add(seller.email);
 
         orderDetails += `
-            <tr>
-                <td><img src="${productImageURL}" alt="${product.name}" width="50"/></td>
-                <td>${product.name}</td>
-                <td>${item.quantity}</td>
-                <td>${product.price}</td>
-                <td>${seller.name} ${seller.lastname}</td>
-            </tr>`;
+        <tr style="border-bottom: 1px solid #ddd;">
+            <td style="padding: 10px;"><strong>Фото:</strong></td>
+            <td style="padding: 10px;"><img src="${product.images[0]}" alt="${product.name}" width="70" style="border-radius: 4px;"/></td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;"><strong>Назва товару:</strong></td>
+            <td style="padding: 10px;">${product.name}</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;"><strong>Кількість:</strong></td>
+            <td style="padding: 10px;">${item.quantity}</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;"><strong>Ціна:</strong></td>
+            <td style="padding: 10px;">${product.price}</td>
+        </tr>
+        <tr>
+            <td style="padding: 10px;"><strong>Продавець:</strong></td>
+            <td style="padding: 10px;">${seller.name} ${seller.last_name}</td>
+        </tr>
+        <tr><td colspan="2" style="height:20px;"></td></tr>
+    `;
     }
 
-    console.log('???????Order creation data:', {
-        user_id: userId,
-        total,
-        region: address[0].region,
-        city: address[0].city,
-        post_office: address[0].post_office,
-    });
+    return { orderDetails, sellers };
+};
+
+const createOrder = async (userId, items, address) => {
+    let total = 0;
+    const { orderDetails, sellers } = await generateOrderDetailsHTML(items);
+
+    for (const item of items) {
+        const product = await getProductAndValidateStock(item.product_id, item.quantity);
+        total += product.price * item.quantity;
+    }
 
     const order = await Order.create({
         user_id: userId,
@@ -63,7 +76,6 @@ const createOrder = async (userId, items, address) => {
             price: product.price * item.quantity,
             size: item.size,
         });
-
         await product.update({ stock: product.stock - item.quantity });
     }
 

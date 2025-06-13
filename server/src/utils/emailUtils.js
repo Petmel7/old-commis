@@ -1,25 +1,21 @@
-const transporter = require('../config/emailConfig');
-const { getServerUrl } = require('../utils/env');
 
-const sendOrderEmail = async (userEmail, orderId, orderDetails, total) => {
-    const baseURL = `${getServerUrl()}/uploads`;
+const transporter = require('../config/emailConfig');
+
+const sendOrderEmail = async (userEmail, orderId, orderDetailsHtmlString, total) => {
+    const htmlContent = `
+        <h2 style="margin-bottom: 10px;">Деталі замовлення №${orderId}</h2>
+
+        <table style="width: 100%; border-collapse: collapse;">
+            ${orderDetailsHtmlString}
+        </table>
+
+        <p style="margin-top: 20px; font-weight: bold;">Загальна сума: ${total} грн</p>
+    `;
+
     await transporter.sendMail({
         to: userEmail,
-        subject: `Ваше замовлення ${orderId} отримано продавцями`,
-        html: `
-            <h1>Деталі замовлення</h1>
-            <table>
-                <tr>
-                    <th>Фото</th>
-                    <th>Назва товару</th>
-                    <th>Кількість</th>
-                    <th>Ціна</th>
-                    <th>Продавець</th>
-                </tr>
-                ${orderDetails}
-            </table>
-            <p>Загальна сума: ${total}</p>
-        `
+        subject: `Ваше замовлення №${orderId} отримано`,
+        html: htmlContent,
     });
 };
 
