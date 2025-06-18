@@ -1,8 +1,6 @@
 import api from './api';
 import { getServerUrl } from '@/utils/env';
 
-console.log('servicesFront->getServerUrl');
-
 export const register = async (data) => {
     const response = await api.post('/users/register', data);
     localStorage.setItem('isRegistered', response.data.isRegistered);
@@ -27,6 +25,11 @@ export const googleAuth = async () => {
 
 export const addPhone = async (data) => {
     const response = await api.post('/users/add-phone', data);
+    return response.data;
+};
+
+export const addlastName = async (data) => {
+    const response = await api.post('/users/add-last-name', data);
     return response.data;
 };
 

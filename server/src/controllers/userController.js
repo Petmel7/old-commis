@@ -53,6 +53,17 @@ const confirmPhoneNumber = async (req, res, next) => {
     }
 };
 
+const addLastName = async (req, res, next) => {
+    const { lastName } = req.body;
+
+    try {
+        await UserService.addLastName(lastName, req.user.id);
+        res.status(200).json({ message: 'last Name added' });
+    } catch (error) {
+        next(error);
+    }
+}
+
 const loginUser = async (req, res, next) => {
     const { email, password } = req.body;
 
@@ -128,6 +139,7 @@ module.exports = {
     registerUser,
     confirmEmail,
     addPhoneNumber,
+    addLastName,
     confirmPhoneNumber,
     loginUser,
     googleCallback,

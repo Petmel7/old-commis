@@ -51,6 +51,13 @@ const addPhoneNumber = async (phone, userId) => {
     });
 }
 
+const addLastName = async (lastName, userId) => {
+    const user = await User.findByPk(userId);
+    if (!user) throw { status: 404, message: 'User not found' };
+
+    await user.update({ last_name: lastName });
+};
+
 const confirmPhoneNumber = async (userId, confirmationcode) => {
 
     const user = await User.findByPk(userId);
@@ -218,6 +225,7 @@ module.exports = {
     registerUser,
     confirmEmail,
     addPhoneNumber,
+    addLastName,
     confirmPhoneNumber,
     loginUser,
     handleGoogleLogin,

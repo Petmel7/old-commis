@@ -12,6 +12,7 @@ import useLoadingAndError from '@/hooks/useLoadingAndError';
 import DeleteOrder from './DeleteOrderCart';
 import AddressForm from './AddressForm';
 import EmptyCart from './EmptyСart';
+import PaymentMethod from './PaymentMethod';
 import styles from './styles/Cart.module.css';
 
 const PlacingAnOrder = () => {
@@ -42,6 +43,64 @@ const PlacingAnOrder = () => {
         }
     }, [cart, user]);
 
+    // const handleOrder = async (e) => {
+    //     e.preventDefault();
+
+    //     if (!address) {
+    //         alert('Будь ласка, виберіть адресу для доставки');
+    //         return;
+    //     }
+
+    //     setLoading(true);
+
+    //     const items = cart.map(item => ({
+    //         product_id: item.id,
+    //         quantity: item.quantity,
+    //         size: item.size
+    //     }));
+
+    //     const orderDetails = {
+    //         items,
+    //         address: [address],
+    //     };
+
+    //     try {
+    //         const response = await createOrder(orderDetails);
+    //         const orderId = response?.orderId;
+
+    //         if (!orderId) {
+    //             throw new Error('Не вдалося створити замовлення: orderId не знайдено');
+    //         }
+
+    //         if (paymentMethod === 'paypal') {
+    //             const dataPayment = {
+    //                 amount: cart.reduce((total, item) => total + item.price * item.quantity, 0),
+    //                 currency: 'USD',
+    //                 orderId,
+    //                 userId: user.id,
+    //             };
+    //             const paymentResponse = await createPayment(dataPayment);
+    //             const approvalUrl = paymentResponse.links.find(link => link.rel === 'approve')?.href;
+
+    //             if (approvalUrl) {
+    //                 window.location.href = approvalUrl;
+    //             } else {
+    //                 throw new Error('Не вдалося отримати URL для підтвердження оплати.');
+    //             }
+    //         } else if (paymentMethod === 'cod') {
+    //             router.push('/thanksForTheOrder');
+    //         } else {
+    //             alert('Будь ласка, виберіть метод оплати');
+    //         }
+
+    //         setLoading(false);
+    //     } catch (error) {
+    //         setError(error);
+    //         console.error('OrderDetails->error', error.message || error);
+    //         alert('Щось пішло не так. Спробуйте ще раз.');
+    //     }
+    // };
+
     const handleOrder = async (e) => {
         e.preventDefault();
 
@@ -71,9 +130,11 @@ const PlacingAnOrder = () => {
                 throw new Error('Не вдалося створити замовлення: orderId не знайдено');
             }
 
+            const totalAmount = cart.reduce((total, item) => total + item.price * item.quantity, 0);
+
             if (paymentMethod === 'paypal') {
                 const dataPayment = {
-                    amount: cart.reduce((total, item) => total + item.price * item.quantity, 0),
+                    amount: totalAmount,
                     currency: 'USD',
                     orderId,
                     userId: user.id,
@@ -87,6 +148,15 @@ const PlacingAnOrder = () => {
                     throw new Error('Не вдалося отримати URL для підтвердження оплати.');
                 }
             } else if (paymentMethod === 'cod') {
+                await createPayment({
+                    amount: totalAmount,
+                    currency: 'UAH',
+                    orderId,
+                    userId: user.id,
+                    status: 'cash_on_delivery',
+                    payment_intent_id: null
+                });
+
                 router.push('/thanksForTheOrder');
             } else {
                 alert('Будь ласка, виберіть метод оплати');
@@ -138,31 +208,11 @@ const PlacingAnOrder = () => {
                             </div>
                         </div>
                     ))}
-
                     <h3 className={styles.cartTitle}>Оплата</h3>
-                    <div>
-                        <div>
-                            <input
-                                type='radio'
-                                name="paymentMethod"
-                                value="paypal"
-                                checked={paymentMethod === 'paypal'}
-                                onChange={(e) => setPaymentMethod(e.target.value)}
-                            />
-                            <label>Оплатити через PayPal</label>
-                        </div>
-
-                        <div>
-                            <input
-                                type='radio'
-                                name="paymentMethod"
-                                value="cod"
-                                checked={paymentMethod === 'cod'}
-                                onChange={(e) => setPaymentMethod(e.target.value)}
-                            />
-                            <label>Оплата при отриманні</label>
-                        </div>
-                    </div>
+                    <PaymentMethod
+                        paymentMethod={paymentMethod}
+                        setPaymentMethod={setPaymentMethod}
+                    />
 
                     <h3 className={styles.cartTitle}>Доставка</h3>
                     <AddressForm onAddressSelected={setAddress} />

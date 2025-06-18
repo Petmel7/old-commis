@@ -1,7 +1,7 @@
 
 const express = require('express');
 const passport = require('../config/passport');
-const { registerUser, confirmEmail, addPhoneNumber, confirmPhoneNumber, loginUser, googleCallback, getUserProfile, refreshToken, logoutUser } = require('../controllers/userController');
+const { registerUser, confirmEmail, addPhoneNumber, confirmPhoneNumber, loginUser, googleCallback, getUserProfile, refreshToken, logoutUser, addLastName } = require('../controllers/userController');
 const { protect } = require('../middleware/authMiddleware');
 const router = express.Router();
 
@@ -16,5 +16,6 @@ router.post('/logout', logoutUser);
 router.post('/refresh-token', refreshToken);
 router.post('/add-phone', protect, addPhoneNumber);
 router.post('/confirm-phone', protect, confirmPhoneNumber);
+router.post('/add-last-name', protect, addLastName);
 
 module.exports = router;

@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getUserById, updateUser } from "@/services/admin";
 import { formatDate } from "@/utils/formatDate";
+import { useAuth } from "@/context/AuthContext";
 import DeleteUser from "./DeleteUser";
 import Modal from "../Modal/Modal";
 import BlockedButton from "./BlockedButton";
@@ -14,9 +15,10 @@ const UserDetails = () => {
     const router = useRouter();
     const { userId } = router.query;
     const { isModalOpen, openModal, closeModal } = useModal();
+    const { user } = useAuth();
     const [userById, setUserById] = useState(null);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [editData, setEditData] = useState({ name: "", email: "", phone: "", role: "" });
+    const [editData, setEditData] = useState({ name: "", last_name: "", email: "", phone: "", role: "" });
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -37,6 +39,7 @@ const UserDetails = () => {
                     setUserById(userData);
                     setEditData({
                         name: userData.name || "",
+                        last_name: userData.last_name || "",
                         email: userData.email || "",
                         phone: userData.phone || "",
                         role: userData.role || ""
@@ -88,6 +91,7 @@ const UserDetails = () => {
                 <>
                     <div className={styles.userInfo}>
                         <p>Ім'я: {userById.name}</p>
+                        <p>Прізвище: {userById.last_name ?? 'Відсутнє'}</p>
                         <p>Email: {userById.email}</p>
                         <p>Номер: {userById.phone}</p>
                         <p>Роль: {roleTranslations[userById.role] || userById.role}</p>
@@ -96,15 +100,19 @@ const UserDetails = () => {
                     </div>
                     <div className={styles.userActions}>
                         <button onClick={handleEditClick} className={styles.editButton}>Редагувати</button>
-                        <button onClick={openModal} className={styles.deleteButton}>Видалити</button>
+                        {user?.role === "superadmin" &&
+                            <>
+                                <button onClick={openModal} className={styles.deleteButton}>Видалити</button>
 
-                        <BlockedButton
-                            id={userId}
-                            isBlocked={userById.is_blocked}
-                            onStatusChange={setUserById}
-                            type='user'
-                            className={styles.blockButton}
-                        />
+                                <BlockedButton
+                                    id={userId}
+                                    isBlocked={userById.is_blocked}
+                                    onStatusChange={setUserById}
+                                    type='user'
+                                    className={styles.blockButton}
+                                />
+                            </>
+                        }
                     </div>
                     <Modal show={isModalOpen} onClose={closeModal} text='Ви справді хочете видалити цього користувача? Ця дія видалить користувача разом з його продуктами!'>
                         <div className={styles.buttonContainer}>
@@ -118,18 +126,25 @@ const UserDetails = () => {
                     <label>Ім'я:</label>
                     <input type="text" name="name" value={editData.name} onChange={handleChange} />
 
+                    <label>Прізвище:</label>
+                    <input type="text" name="last_name" value={editData.last_name} onChange={handleChange} />
+
                     <label>Email:</label>
                     <input type="email" name="email" value={editData.email} onChange={handleChange} />
 
                     <label>Номер:</label>
                     <input type="text" name="phone" value={editData.phone} onChange={handleChange} />
 
-                    <label>Роль:</label>
-                    <select name="role" value={editData.role} onChange={handleChange}>
-                        <option value="buyer">Покупець</option>
-                        <option value="seller">Продавець</option>
-                        <option value="superadmin">Адміністратор</option>
-                    </select>
+                    {user?.role === 'superadmin' &&
+                        <>
+                            <label>Роль:</label>
+                            <select name="role" value={editData.role} onChange={handleChange}>
+                                <option value="buyer">Покупець</option>
+                                <option value="seller">Продавець</option>
+                                <option value="superadmin">Адміністратор</option>
+                            </select>
+                        </>
+                    }
                     <button type="submit">Зберегти</button>
                 </form>
             )}
@@ -138,3 +153,4 @@ const UserDetails = () => {
 };
 
 export default UserDetails;
+

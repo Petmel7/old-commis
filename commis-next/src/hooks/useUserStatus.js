@@ -28,6 +28,12 @@ const useUserStatus = () => {
         closeModal: closeConfirmPhoneModal
     } = useModal();
 
+    const {
+        isModalOpen: isAddLastNameModalOpen,
+        openModal: openAddLastNameModal,
+        closeModal: closeAddLastNameModal
+    } = useModal();
+
     const loadingErrorComponent = useLoadingAndError(loading, error);
 
     useEffect(() => {
@@ -39,6 +45,7 @@ const useUserStatus = () => {
             setLoading,
             openEmailModal,
             openAddPhoneModal,
+            openAddLastNameModal,
             openConfirmPhoneModal
         });
     }, [user]);
@@ -49,13 +56,16 @@ const useUserStatus = () => {
         user,
         loadingErrorComponent,
         isEmailModalOpen,
+        isAddLastNameModalOpen,
+        isAddPhoneModalOpen,
+        isConfirmPhoneModalOpen,
         openEmailModal,
         closeEmailModal,
-        isAddPhoneModalOpen,
         openAddPhoneModal,
+        openAddLastNameModal,
         closeAddPhoneModal,
-        isConfirmPhoneModalOpen,
         openConfirmPhoneModal,
+        closeAddLastNameModal,
         closeConfirmPhoneModal,
     };
 };
