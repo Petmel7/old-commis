@@ -95,8 +95,28 @@ const capturePayment = async (req, res, next) => {
     }
 };
 
+const createCashPayment = async (req, res, next) => {
+    const { amount, orderId, userId } = req.body;
+
+    try {
+        const payment = await Payment.create({
+            order_id: orderId,
+            user_id: userId,
+            amount,
+            status: 'cash_on_delivery',
+            payment_intent_id: null
+        });
+
+        res.status(201).json({ payment });
+    } catch (error) {
+        console.error('Error creating cash payment:', error);
+        next(error);
+    }
+};
+
 module.exports = {
     createPayment,
-    capturePayment
+    capturePayment,
+    createCashPayment
 };
 

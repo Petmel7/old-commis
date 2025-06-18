@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useCart } from '@/context/CartContext';
 import { createOrder } from '../../services/order';
 import { createPayment } from '@/services/payment';
+import { createCashPayment } from '@/services/payment';
 import { useRouter } from 'next/router';
 import useUserStatus from '../../hooks/useUserStatus';
 import ConfirmEmailModal from '../User/ConfirmEmailModal';
@@ -148,13 +149,19 @@ const PlacingAnOrder = () => {
                     throw new Error('Не вдалося отримати URL для підтвердження оплати.');
                 }
             } else if (paymentMethod === 'cod') {
-                await createPayment({
+                // await createPayment({
+                //     amount: totalAmount,
+                //     currency: 'UAH',
+                //     orderId,
+                //     userId: user.id,
+                //     status: 'cash_on_delivery',
+                //     payment_intent_id: null
+                // });
+
+                await createCashPayment({
                     amount: totalAmount,
-                    currency: 'UAH',
                     orderId,
-                    userId: user.id,
-                    status: 'cash_on_delivery',
-                    payment_intent_id: null
+                    userId: user.id
                 });
 
                 router.push('/thanksForTheOrder');

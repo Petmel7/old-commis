@@ -10,3 +10,9 @@ export const createPayment = async (dataPayment) => {
         throw error;
     }
 };
+
+export const createCashPayment = async (data) => {
+    const response = await api.post('/payments/cash', data);
+    return response.data;
+}
+

@@ -94,7 +94,7 @@ Category.hasMany(Subcategory, {
 
 Subcategory.belongsTo(Category, {
     foreignKey: 'category_id',
-    as: 'category' // ✅ Додаємо `as` щоб include працював
+    as: 'category'
 });
 
 Subcategory.hasMany(Product, {

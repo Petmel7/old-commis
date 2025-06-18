@@ -1,5 +1,5 @@
 
-const { Product, User, Order, OrderItem } = require('../models');
+const { Product, User, Order, OrderItem, Payment } = require('../models');
 const renderOrderItem = require('../templates/orderItemTemplate');
 const path = require('path');
 
@@ -108,7 +108,51 @@ const getUserOrders = async (userId) => {
     return orders;
 };
 
+// const getSellerOrders = async (sellerId) => {
+//     const sellerOrders = await Order.findAll({
+//         include: [
+//             {
+//                 model: OrderItem,
+//                 required: true,
+//                 include: [
+//                     {
+//                         model: Product,
+//                         required: true,
+//                         where: { user_id: sellerId },
+//                         include: [{ model: User, as: 'seller', attributes: ['name', 'email', 'phone'] }]
+//                     }
+//                 ]
+//             },
+//             {
+//                 model: User,
+//                 as: 'buyer',
+//                 attributes: ['name', 'email', 'phone']
+//             }
+//         ]
+//     });
+
+//     return sellerOrders.map(order => ({
+//         order_id: order.id,
+//         buyer_name: order.buyer.name,
+//         buyer_email: order.buyer.email,
+//         buyer_phone: order.buyer.phone,
+//         shipping_address: {
+//             region: order.region,
+//             city: order.city,
+//             post_office: order.post_office
+//         },
+//         products: order.OrderItems.map(item => ({
+//             product_name: item.Product.name,
+//             product_price: item.Product.price,
+//             product_images: item.Product.images,
+//             quantity: item.quantity,
+//             product_size: item.size
+//         }))
+//     }));
+// };
+
 const getSellerOrders = async (sellerId) => {
+    console.log('☑️sellerId', sellerId);
     const sellerOrders = await Order.findAll({
         include: [
             {
@@ -119,7 +163,13 @@ const getSellerOrders = async (sellerId) => {
                         model: Product,
                         required: true,
                         where: { user_id: sellerId },
-                        include: [{ model: User, as: 'seller', attributes: ['name', 'email', 'phone'] }]
+                        include: [
+                            {
+                                model: User,
+                                as: 'seller',
+                                attributes: ['name', 'email', 'phone']
+                            }
+                        ]
                     }
                 ]
             },
@@ -127,6 +177,11 @@ const getSellerOrders = async (sellerId) => {
                 model: User,
                 as: 'buyer',
                 attributes: ['name', 'email', 'phone']
+            },
+            {
+                model: Payment,
+                required: false,
+                attributes: ['amount', 'status', 'payment_intent_id']
             }
         ]
     });
@@ -141,6 +196,13 @@ const getSellerOrders = async (sellerId) => {
             city: order.city,
             post_office: order.post_office
         },
+        payment: order.Payments?.[0]
+            ? {
+                amount: order.Payments[0].amount,
+                status: order.Payments[0].status,
+                intent_id: order.Payments[0].payment_intent_id
+            }
+            : null,
         products: order.OrderItems.map(item => ({
             product_name: item.Product.name,
             product_price: item.Product.price,

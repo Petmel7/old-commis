@@ -33,6 +33,7 @@ const OrderList = () => {
     const fetchOrders = async () => {
         try {
             const fetchedOrders = await getSellerOrders();
+            console.log('fetchedOrders', fetchedOrders);
             setOrders(fetchedOrders);
             setLoading(false);
         } catch (error) {
@@ -120,6 +121,21 @@ const OrderList = () => {
                             ))}
                         </ul>
 
+                        <div>
+                            <h3 className={styles.orderTitle}>Доставка</h3>
+                            <p className={styles.orderReplica}>
+                                Статус: {
+                                    order.payment?.status === 'cash_on_delivery'
+                                        ? 'Оплата при отриманні'
+                                        : order.payment?.status === 'pending'
+                                            ? 'Очікує передоплату'
+                                            : order.payment?.status === 'paid'
+                                                ? 'Оплачено'
+                                                : 'Невідомо'
+                                }
+                            </p>
+                        </div>
+
                         <div className={styles.buttonContainer}>
                             <button className={styles.modalButtonOpen} onClick={() => openDeleteModal(order.order_id)}>Видалити</button>
                         </div>
@@ -132,6 +148,7 @@ const OrderList = () => {
                                 </div>
                             </div>
                         </Modal>
+
                     </li>
                 ))}
             </ul>
