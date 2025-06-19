@@ -28,6 +28,18 @@ const deleteOrder = async (req, res, next) => {
     }
 };
 
+const cancelOrderBySeller = async (req, res, next) => {
+    const { id } = req.params;
+
+    try {
+        await OrderService.cancelOrderBySeller(id);
+
+        res.status(200).json({ message: 'Order cancelled by seller' });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getOrder = async (req, res, next) => {
     const { id } = req.params;
 
@@ -63,6 +75,7 @@ const getSellerOrders = async (req, res, next) => {
 module.exports = {
     createOrder,
     deleteOrder,
+    cancelOrderBySeller,
     getOrder,
     getUserOrders,
     getSellerOrders

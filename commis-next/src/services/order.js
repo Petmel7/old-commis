@@ -24,3 +24,8 @@ export const deleteOrder = async (orderId) => {
     }
 };
 
+export const cancelOrderBySeller = async (orderId) => {
+    const response = await api.put(`/orders/${orderId}`);
+    return response.data;
+};
+

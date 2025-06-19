@@ -31,7 +31,7 @@ const useFetchData = (fetchFunction, initialPage = 1, limit = 10) => {
         fetchData();
     }, [fetchFunction, page, limit]);
 
-    return { data, loading, error, page, setPage, totalPages };
+    return { data, setData, loading, error, page, setPage, totalPages };
 };
 
 export default useFetchData;

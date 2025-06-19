@@ -1,6 +1,7 @@
 
 const { Product, User, Order, OrderItem, Payment } = require('../models');
 const renderOrderItem = require('../templates/orderItemTemplate');
+const { Op } = require('sequelize');
 const path = require('path');
 
 const getProductAndValidateStock = async (productId, quantity) => {
@@ -62,20 +63,34 @@ const createOrder = async (userId, items, address) => {
 };
 
 const deleteOrder = async (id) => {
+    console.log('☑️id', id);
     const order = await Order.findByPk(id);
+    console.log('☑️order', order);
     if (!order) {
         throw { status: 404, message: 'Order not found' };
     }
 
     const orderItems = await OrderItem.findAll({ where: { order_id: id } });
-
+    console.log('☑️orderItems', orderItems);
     for (let item of orderItems) {
         const product = await Product.findByPk(item.product_id);
         await product.update({ stock: product.stock + item.quantity });
     }
-
+    console.log('☑️{ where: { order_id: id } }', { where: { order_id: id } });
+    console.log('☑️{ where: { id } }', { where: { id } });
     await OrderItem.destroy({ where: { order_id: id } });
     await Order.destroy({ where: { id } });
+    await Payment.destroy({ where: { order_id: id } });
+};
+
+const cancelOrderBySeller = async (id) => {
+    const order = await Order.findByPk(id);
+    console.log('☑️order', order);
+    if (!order) {
+        throw { status: 404, message: 'Order not found' };
+    }
+
+    await order.update({ status: 'cancelled_by_seller' });
 };
 
 const getOrder = async (id) => {
@@ -108,52 +123,13 @@ const getUserOrders = async (userId) => {
     return orders;
 };
 
-// const getSellerOrders = async (sellerId) => {
-//     const sellerOrders = await Order.findAll({
-//         include: [
-//             {
-//                 model: OrderItem,
-//                 required: true,
-//                 include: [
-//                     {
-//                         model: Product,
-//                         required: true,
-//                         where: { user_id: sellerId },
-//                         include: [{ model: User, as: 'seller', attributes: ['name', 'email', 'phone'] }]
-//                     }
-//                 ]
-//             },
-//             {
-//                 model: User,
-//                 as: 'buyer',
-//                 attributes: ['name', 'email', 'phone']
-//             }
-//         ]
-//     });
-
-//     return sellerOrders.map(order => ({
-//         order_id: order.id,
-//         buyer_name: order.buyer.name,
-//         buyer_email: order.buyer.email,
-//         buyer_phone: order.buyer.phone,
-//         shipping_address: {
-//             region: order.region,
-//             city: order.city,
-//             post_office: order.post_office
-//         },
-//         products: order.OrderItems.map(item => ({
-//             product_name: item.Product.name,
-//             product_price: item.Product.price,
-//             product_images: item.Product.images,
-//             quantity: item.quantity,
-//             product_size: item.size
-//         }))
-//     }));
-// };
-
 const getSellerOrders = async (sellerId) => {
     console.log('☑️sellerId', sellerId);
+
     const sellerOrders = await Order.findAll({
+        where: {
+            status: { [Op.ne]: 'cancelled_by_seller' }
+        },
         include: [
             {
                 model: OrderItem,
@@ -216,6 +192,7 @@ const getSellerOrders = async (sellerId) => {
 module.exports = {
     createOrder,
     deleteOrder,
+    cancelOrderBySeller,
     getOrder,
     getUserOrders,
     getSellerOrders,
