@@ -10,6 +10,11 @@ export const getSellerOrders = async () => {
     return response.data;
 };
 
+export const getSellerOrderById = async (id) => {
+    const response = await api.get(`/orders/seller/order/${id}`);
+    return response.data;
+};
+
 export const deleteOrder = async (orderId) => {
     try {
         const response = await api.delete(`/orders/${orderId}`);

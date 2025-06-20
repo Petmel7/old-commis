@@ -189,6 +189,74 @@ const getSellerOrders = async (sellerId) => {
     }));
 };
 
+const getSellerOrderById = async (orderId, sellerId) => {
+    console.log('☑️getSellerOrderById->orderId', orderId);
+    console.log('☑️getSellerOrderById->sellerId', sellerId);
+    const order = await Order.findOne({
+        where: { id: orderId, status: { [Op.ne]: 'cancelled_by_seller' } },
+        include: [
+            {
+                model: OrderItem,
+                required: true,
+                include: [
+                    {
+                        model: Product,
+                        required: true,
+                        where: { user_id: sellerId },
+                        include: [
+                            {
+                                model: User,
+                                as: 'seller',
+                                attributes: ['name', 'email', 'phone']
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                model: User,
+                as: 'buyer',
+                attributes: ['name', 'email', 'phone']
+            },
+            {
+                model: Payment,
+                required: false,
+                attributes: ['amount', 'status', 'payment_intent_id']
+            }
+        ]
+    });
+
+    if (!order || !order.OrderItems.some(i => i.Product.user_id === sellerId)) {
+        throw { status: 403, message: 'Access denied or order not found' };
+    }
+
+    return {
+        order_id: order.id,
+        buyer_name: order.buyer.name,
+        buyer_email: order.buyer.email,
+        buyer_phone: order.buyer.phone,
+        shipping_address: {
+            region: order.region,
+            city: order.city,
+            post_office: order.post_office
+        },
+        products: order.OrderItems.map(item => ({
+            product_name: item.Product.name,
+            product_price: item.Product.price,
+            product_images: item.Product.images,
+            quantity: item.quantity,
+            product_size: item.size
+        })),
+        payment: order.Payments?.[0]
+            ? {
+                amount: order.Payments[0].amount,
+                status: order.Payments[0].status,
+                intent_id: order.Payments[0].payment_intent_id
+            }
+            : null
+    };
+};
+
 module.exports = {
     createOrder,
     deleteOrder,
@@ -196,5 +264,6 @@ module.exports = {
     getOrder,
     getUserOrders,
     getSellerOrders,
+    getSellerOrderById,
     getProductAndValidateStock
 };

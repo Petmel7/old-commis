@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
+    gap: 5px;
 }
 
 .orderItem {
@@ -14,6 +14,16 @@
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.2s ease-in-out;
+    margin-bottom: 5px;
+}
+
+.orderItemBlock {
+    display: flex;
+    align-items: center;
+}
+
+.orderItemBlock img {
+    margin-right: 20px;
 }
 
 .orderTitle {
@@ -89,4 +99,10 @@
 .modalButtonContainer {
     display: flex;
     justify-content: center;
+}
+
+.filterButton,
+.toggleButton {
+    margin-bottom: 5px;
+    width: 100%;
 }

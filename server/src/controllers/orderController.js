@@ -72,11 +72,24 @@ const getSellerOrders = async (req, res, next) => {
     }
 };
 
+const getSellerOrderById = async (req, res, next) => {
+    const { id } = req.params;
+    const sellerId = req.user.id;
+
+    try {
+        const order = await OrderService.getSellerOrderById(id, sellerId);
+        res.json(order);
+    } catch (error) {
+        next(error);
+    }
+};
+
 module.exports = {
     createOrder,
     deleteOrder,
     cancelOrderBySeller,
     getOrder,
     getUserOrders,
-    getSellerOrders
+    getSellerOrders,
+    getSellerOrderById
 };
