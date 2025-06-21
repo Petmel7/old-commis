@@ -89,7 +89,7 @@ const deleteUserForAdmin = async (userId) => {
     await User.destroy({ where: { id: userId } });
 }
 
-const updateUser = async (userId, name, email, phone, role) => {
+const updateUser = async (userId, name, last_name, email, phone, role) => {
 
     const user = await User.findByPk(userId);
     if (!user) {
@@ -97,6 +97,7 @@ const updateUser = async (userId, name, email, phone, role) => {
     }
 
     user.name = name || user.name;
+    user.last_name = last_name || user.last_name;
     user.email = email || user.email;
     user.phone = phone || user.phone;
     user.role = role || user.role;
@@ -107,6 +108,7 @@ const updateUser = async (userId, name, email, phone, role) => {
         user: {
             id: user.id,
             name: user.name,
+            last_name: user.last_name,
             email: user.email,
             phone: user.phone,
             role: user.role,

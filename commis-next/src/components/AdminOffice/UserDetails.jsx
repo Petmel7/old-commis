@@ -127,6 +127,7 @@ const UserDetails = () => {
                     <input type="text" name="name" value={editData.name} onChange={handleChange} />
 
                     <label>Прізвище:</label>
+                    {console.log('editData.last_name', editData.last_name)}
                     <input type="text" name="last_name" value={editData.last_name} onChange={handleChange} />
 
                     <label>Email:</label>
