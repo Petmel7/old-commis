@@ -1,17 +1,19 @@
-.productItem {
-    flex: 1 1 calc(33.333% - 16px);
+.productDetails {
+    max-width: 600px;
+    margin: 0 auto;
     box-sizing: border-box;
 }
 
 .productCard {
     background-color: #fff;
     border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    padding: 16px;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    padding: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-bottom: 30px;
 }
 
 .slider {
@@ -23,7 +25,6 @@
     width: 100%;
     position: relative;
     padding-top: 75%;
-    /* Регулюйте співвідношення сторін за необхідністю */
 }
 
 .productImage {
@@ -37,21 +38,25 @@
 }
 
 .productName {
-    font-size: 1.25em;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin: 12px 0 6px;
     text-align: center;
 }
 
 .productDescription {
-    font-size: 1em;
+    font-size: 1.1rem;
     color: #666;
     text-align: center;
+    margin-bottom: 12px;
+    padding: 0 10px;
 }
 
 .productPrice {
-    font-size: 1.2em;
+    font-size: 1.25rem;
     font-weight: bold;
     color: #333;
-    margin-bottom: 10px;
+    margin-bottom: 16px;
 }
 
 .userProductsContainer>:first-child {
@@ -66,11 +71,71 @@
     background-color: rgb(142, 37, 37);
 }
 
+.editButton:hover {
+    background-color: #1e90ff;
+}
+
 .modalContainer {
-    padding: 10px;
+    padding: 20px;
+    text-align: center;
 }
 
 .modalText {
-    margin-right: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    color: #333;
+}
+
+@media (max-width: 768px) {
+    .productName {
+        font-size: 1.3rem;
+    }
+
+    .productDescription {
+        font-size: 1rem;
+    }
+
+    .productPrice {
+        font-size: 1.1rem;
+    }
+
+    .userProductsContainer {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .userProductsContainer>:first-child {
+        margin-right: 0;
+    }
+
+    .editButton,
+    .modalButtonOpen,
+    .blockedButton {
+        width: 100%;
+        max-width: 280px;
+        margin-bottom: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .productCard {
+        padding: 15px;
+    }
+
+    .productName {
+        font-size: 1.2rem;
+    }
+
+    .productDescription {
+        font-size: 0.95rem;
+    }
+
+    .productPrice {
+        font-size: 1rem;
+    }
+
+    .modalText {
+        font-size: 0.95rem;
+    }
 }

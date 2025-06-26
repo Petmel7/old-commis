@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { useFavorites } from '@/context/FavoritesContext';
-import { getServerUrl } from '@/utils/env';
 import Slider from 'react-slick';
 import useProduct from '@/hooks/useProduct';
 import BackButton from '../BackButton/BackButton';

@@ -9,6 +9,7 @@ import NoProducts from '../NoProducts/NoProducts';
 import UserProductsCart from './UserProductsCart';
 import useFetchDataWithArg from '@/hooks/useFetchDataWithArg';
 import PaginationControls from '../Pagination/PaginationControls';
+import styles from './styles/ProductList.module.css';
 
 const UserProducts = () => {
     const accessToken = typeof window !== 'undefined' ? localStorage.getItem('accessToken') : null;
@@ -41,12 +42,14 @@ const UserProducts = () => {
         );
     }
 
+    console.log('userProducts', userProducts);
+
     return (
         <>
             <BackButton />
-            <ul className="product-list">
+            <ul className={styles.productList}>
                 {userProducts.map(product => (
-                    <li key={product.id} className="product-item">
+                    <li className={styles.productCardWrapper} key={product.id}>
                         <UserProductsCart
                             productImages={product.images[0]}
                             pathProductId={`/products/userDetails/${product.id}`}

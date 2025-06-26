@@ -4,7 +4,7 @@
     margin: 0 auto;
     background-color: #f9f9f9;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
 }
 
 .title {
@@ -68,7 +68,6 @@
 }
 
 .quantityButtonContainer:hover {
-    /* background-color: #566573; */
     background-color: #7F8C8D;
 }
 
@@ -90,7 +89,6 @@
 }
 
 .quantityButton:hover {
-    /* background-color: #566573; */
     background-color: #7F8C8D;
 }
 
@@ -121,36 +119,33 @@
     margin: 0 auto;
 }
 
-.actionButtonContainer {
-    margin-bottom: 20px;
-}
-
-.actionButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    width: 100%;
-}
-
-.continueShoppingButton {
-    background-color: #7F8C8D;
-}
-
 .emptyCartMessage {
-    text-align: center;
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
 }
 
 .cartImg {
-    width: 100%;
+    width: 200px;
     height: auto;
-    max-width: 300px;
-    max-height: 300px;
-    margin-bottom: 20px;
+    margin: 20px 0;
     object-fit: contain;
 }
 
-.continueShoppingButton:hover {
-    background-color: #566573;
+.actionButton {
+    border: none;
+    padding: 12px 24px;
+    font-size: 1rem;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.actionButtonContainer {
+    margin-bottom: 10px;
 }
 
 .emptyCartMessage p {
@@ -176,4 +171,34 @@
 
 .cartButton {
     margin: 0 auto;
+}
+
+@media (max-width: 768px) {
+    .cartImg {
+        width: 150px;
+    }
+
+    .actionButton {
+        font-size: 0.95rem;
+        padding: 10px 20px;
+    }
+
+    .container {
+        padding: 15px;
+    }
+}
+
+@media (max-width: 480px) {
+    .cartImg {
+        width: 120px;
+    }
+
+    .actionButton {
+        font-size: 0.9rem;
+        padding: 8px 16px;
+    }
+
+    .container {
+        padding: 10px;
+    }
 }

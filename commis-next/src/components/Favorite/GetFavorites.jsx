@@ -5,6 +5,7 @@ import ProductCard from '../Product/ProductCard';
 import BackButton from '../BackButton/BackButton';
 import NoSelectedProducts from '../NoSelectedProducts/NoSelectedProducts';
 import useLoadingAndError from '@/hooks/useLoadingAndError';
+import styles from '../Product/styles/ProductList.module.css';
 
 const GetFavorites = () => {
     const { favorites, loadFavorites } = useFavorites();
@@ -35,15 +36,16 @@ const GetFavorites = () => {
     return (
         <>
             <BackButton />
-            <ul className='product-list'>
+            <ul className={styles.productList}>
                 {favorites.map(favorite => (
                     favorite.product && (
-                        <ProductCard
-                            key={favorite.product.id}
-                            product={favorite.product}
-                            isFavorite={true}
-                            favoriteId={favorite.id}
-                        />
+                        <li className={styles.productCardWrapper} key={favorite.id}>
+                            <ProductCard
+                                product={favorite.product}
+                                isFavorite={true}
+                                favoriteId={favorite.id}
+                            />
+                        </li>
                     )
                 ))}
             </ul>

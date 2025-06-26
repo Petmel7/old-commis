@@ -17,3 +17,11 @@
 .blackButton:hover {
     background-color: black;
 }
+
+@media (max-width: 768px) {
+    .blockedButton {
+        width: 100%;
+        max-width: 280px;
+        margin-left: 0;
+    }
+}
